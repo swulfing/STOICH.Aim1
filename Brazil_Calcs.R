@@ -4,7 +4,7 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library("VennDiagram")
 
-datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/ResearchAim1/ChemData_Brazil.csv")
+datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_Brazil.csv")
 points <- data.frame(datapoints)
 
 ##Medians Calculations##
@@ -15,10 +15,10 @@ cleaned_rows <- points %>%
             PO4_Median = median(PO4, na.rm = TRUE),
             pH = median(pH, na.rm = TRUE))
 
-write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/ResearchAim1/MedianCalcs/BrazilData_Medians.csv", row.names = FALSE)
+write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/BrazilData_Medians.csv", row.names = FALSE)
 
 ##Venn Diagram of Data##
-#counts <- read.csv("C:/Users/sophi/Documents/STOICH/ResearchAim1/MedianCalcs/BrazilData_Medians.csv")
+#counts <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/BrazilData_Medians.csv")
 
 #DOC_Set <- counts$DOC_Median
 #PO4_Set <- counts$PO4_Median
@@ -49,3 +49,15 @@ ggplot(data = world) +
   coord_sf(xlim = c(-85, -30), ylim = c(-35, 15), expand = FALSE) +
   geom_point(data = sites, aes(x = Lon, y = Lat), size = 1, 
              shape = 23, fill = "blue")
+##Plots##
+counts <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/BrazilData_Medians.csv")
+counts<-data.frame(counts)
+
+plot(counts$DOC_Median, counts$PO4_Median, main="Brazil",
+     xlab="DOC ", ylab="PO4", pch=19)
+
+plot(counts$DOC_Median, counts$NO3_Median, main="Brazil",
+     xlab="DOC ", ylab="NO3", pch=19)
+
+plot(counts$PO4_Median, counts$NO3_Median, main="Brazil",
+     xlab="PO4", ylab="NO3", pch=19)

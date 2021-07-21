@@ -4,7 +4,7 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library("VennDiagram")
 
-datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/ResearchAim1/ChemData_NLAwl2016.csv")
+datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_NLAwl2016.csv")
 points <- data.frame(datapoints)
 
 ##Medians Calculations##
@@ -16,7 +16,7 @@ cleaned_rows <- points %>%
             TN_Median = median(NTL_RESULT, na.rm = TRUE),
             TP_Median = median(PTL_RESULT, na.rm = TRUE))
 
-write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/ResearchAim1/MedianCalcs/NLAwl2016_Medians.csv", row.names = FALSE)
+write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLAwl2016_Medians.csv", row.names = FALSE)
 
 ##Venn Diagram of Data##
 #counts <- read.csv("C:/Users/sophi/Documents/STOICH/ResearchAim1/BrazilData_Medians.csv")
