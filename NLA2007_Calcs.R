@@ -61,6 +61,47 @@ plot(points$DOC, points$NtoP, main="NLA2007",
 abline(mod4)
 legend("topright", c(lab1, lab2), cex=0.8)
 
+###NO3 Calcs##
+##DOC NO3##
+
+mod2 = lm(NO3~DOC, data = points)
+modsum = summary(mod2)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$DOC, points$NO3, main="NLA2007",
+     xlab="DOC ", ylab="NO3", pch=19)
+abline(mod2)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+##NO3 TP
+mod3 = lm(PTL~NO3, data = points)
+modsum = summary(mod3)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$NO3, points$PTL, main="NLA2007",
+     xlab="NO3 ", ylab="PTL", pch=19)
+abline(mod3)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+
+# DOC NO3:P Ratio
+mod4 = lm(NO3toP~DOC, data = points)
+modsum = summary(mod4)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$DOC, points$NO3toP, main="NLA2007",
+     xlab="DOC ", ylab="NO3toP", pch=19)
+abline(mod4)
+legend("topright", c(lab1, lab2), cex=0.8)
 
 
 ##Medians Calculations##
