@@ -7,6 +7,62 @@ library("VennDiagram")
 datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_NLA2007.csv")
 points <- data.frame(datapoints)
 
+##DOC TP##
+mod1 = lm(PTL~DOC, data = points)
+modsum = summary(mod1)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$DOC, points$PTL, main="NLA2007",
+     xlab="DOC ", ylab="PTL", pch=19)
+abline(mod1)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+##DOC TN##
+
+mod2 = lm(NTL~DOC, data = points)
+modsum = summary(mod2)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$DOC, points$NTL, main="NLA2007",
+     xlab="DOC ", ylab="NTL", pch=19)
+abline(mod2)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+##TN TP
+mod3 = lm(PTL~NTL, data = points)
+modsum = summary(mod3)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$NTL, points$PTL, main="NLA2007",
+     xlab="NTL ", ylab="PTL", pch=19)
+abline(mod3)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+
+# DOC NP Ratio
+mod4 = lm(NtoP~DOC, data = points)
+modsum = summary(mod4)
+r2 = round(modsum$adj.r.squared, digits = 4)
+pVal = signif(modsum$coefficients[2,4], digits = 3)
+lab1 = paste("pValue ", pVal)
+lab2 = paste("RSq ", r2)
+
+plot(points$DOC, points$NtoP, main="NLA2007",
+     xlab="DOC ", ylab="NtoP", pch=19)
+abline(mod4)
+legend("topright", c(lab1, lab2), cex=0.8)
+
+
+
 ##Medians Calculations##
 cleaned_rows <- points %>%
   group_by(SITE_ID) %>%
