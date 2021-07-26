@@ -57,7 +57,7 @@ lab1 = paste("pValue ", pVal)
 lab2 = paste("RSq ", r2)
 
 plot(points$DOC, points$NtoP, main="NLA2007",
-     xlab="DOC ", ylab="NtoP", pch=19)
+     xlab="DOC ", ylab="NtoP", pch=19, xlim = c(0,10))
 abline(mod4)
 legend("topright", c(lab1, lab2), cex=0.8)
 

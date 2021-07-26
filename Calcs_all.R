@@ -93,7 +93,7 @@ Type.DOC.TN<- ggplot(NULL, aes(DOC_Median, TN_Median))+
   geom_point(data = NLArs2019, col = "green")+
   geom_point(data = NLAs2004, col = "green")+
   geom_point(data = Chla, col = "blue")+
-  geom_point(data = NLA2007, col = "blue")
+  geom_point(data = NLA2007, col = "blue")+
   #geom_point(data = NLAwl2016, col = "pink")+
   labs(x = "DOC",
        y = "TN")
@@ -143,18 +143,18 @@ Nitrate.DOC.TP<- ggplot(NULL, aes(DOC_Median, TP_Median))+
 Nitrate.DOC.TP  
 
 #DOC TN
-Nitrate.DOC.TN<- ggplot(NULL, aes(DOC_Median, TN_Median))+
-  geom_point(data = NLA2007, col = "red")+
+Nitrate.DOC.NO3<- ggplot(NULL, aes(DOC_Median, NO3_Median))+
+  #geom_point(data = NLA2007, col = "red")+
   geom_point(data = NLArs2008, col = "yellow")+
   geom_point(data = NLArs2019, col = "blue")+
   geom_point(data = NLAs2004, col = "purple")+
   labs(x = "DOC",
-       y = "TP")
+       y = "NO3")
 
-Nitrate.DOC.TN
+Nitrate.DOC.NO3
 
 #TN to TP
-Nitrate.TN.TP<- ggplot(NULL, aes(TN_Median, TP_Median))+
+Nitrate.TN.TP<- ggplot(NULL, aes(TNO3_Median, TP_Median))+
   geom_point(data = NLA2007, col = "red")+
   geom_point(data = NLArs2008, col = "yellow")+
   geom_point(data = NLArs2019, col = "blue")+
@@ -167,13 +167,13 @@ Nitrate.TN.TP
 
 #Doc to NP Ratio
 #DOC TN
-Nitrate.DOC.TNTP<- ggplot(NULL, aes(DOC_Median, TNtoTP_Median))+
-  geom_point(data = NLA2007, col = "red")+
+Nitrate.DOC.TNTP<- ggplot(NULL, aes(DOC_Median, NO3toTP_Median))+
+  #geom_point(data = NLA2007, col = "red")+
   geom_point(data = NLArs2008, col = "yellow")+
   geom_point(data = NLArs2019, col = "blue")+
   geom_point(data = NLAs2004, col = "purple")+
   labs(x = "DOC",
-       y = "TP")
+       y = "NO3/TP")
 
 Nitrate.DOC.TNTP
 
