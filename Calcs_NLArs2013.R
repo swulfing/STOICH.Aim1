@@ -8,56 +8,56 @@ datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_NLAr
 points <- data.frame(datapoints)
 
 ##DOC TP##
-mod1 = lm(PTL~DOC, data = points)
+mod1 = lm(PTL_RESULT~DOC_RESULT, data = points)
 modsum = summary(mod1)
 r2 = round(modsum$adj.r.squared, digits = 4)
 pVal = signif(modsum$coefficients[2,4], digits = 3)
 lab1 = paste("pValue ", pVal)
 lab2 = paste("RSq ", r2)
 
-plot(points$DOC, points$PTL, main="NLArs2013",
+plot(points$DOC_RESULT, points$PTL_RESULT, main="NLArs2013",
      xlab="DOC ", ylab="PTL", pch=19)
 abline(mod1)
 legend("topright", c(lab1, lab2), cex=0.8)
 
 ##DOC TN##
 
-mod2 = lm(NTL~DOC, data = points)
+mod2 = lm(NITRATE_N_RESULT~DOC_RESULT, data = points)
 modsum = summary(mod2)
 r2 = round(modsum$adj.r.squared, digits = 4)
 pVal = signif(modsum$coefficients[2,4], digits = 3)
 lab1 = paste("pValue ", pVal)
 lab2 = paste("RSq ", r2)
 
-plot(points$DOC, points$NTL, main="NLArs2013",
-     xlab="DOC ", ylab="NTL", pch=19)
+plot(points$DOC_RESULT, points$NITRATE_N_RESULT, main="NLArs2013",
+     xlab="DOC ", ylab="NO3", pch=19)
 abline(mod2)
 legend("topright", c(lab1, lab2), cex=0.8)
 
 ##TN TP
-mod3 = lm(PTL~NTL, data = points)
+mod3 = lm(PTL_RESULT~NITRATE_N_RESULT, data = points)
 modsum = summary(mod3)
 r2 = round(modsum$adj.r.squared, digits = 4)
 pVal = signif(modsum$coefficients[2,4], digits = 3)
 lab1 = paste("pValue ", pVal)
 lab2 = paste("RSq ", r2)
 
-plot(points$NTL, points$PTL, main="NLArs2013",
-     xlab="NTL ", ylab="PTL", pch=19)
+plot(points$NITRATE_N_RESULT, points$PTL_RESULT, main="NLArs2013",
+     xlab="NO3", ylab="PTL", pch=19)
 abline(mod3)
 legend("topright", c(lab1, lab2), cex=0.8)
 
 
 # DOC NP Ratio
-mod4 = lm(NtoP~DOC, data = points)
+mod4 = lm(NO3toP~DOC, data = points)
 modsum = summary(mod4)
 r2 = round(modsum$adj.r.squared, digits = 4)
 pVal = signif(modsum$coefficients[2,4], digits = 3)
 lab1 = paste("pValue ", pVal)
 lab2 = paste("RSq ", r2)
 
-plot(points$DOC, points$NtoP, main="NLArs2013",
-     xlab="DOC ", ylab="NtoP", pch=19)
+plot(points$DOC, points$NO3toTP, main="NLArs2013",
+     xlab="DOC ", ylab="NO3:P", pch=19)
 abline(mod4)
 legend("topright", c(lab1, lab2), cex=0.8)
 
@@ -66,10 +66,10 @@ cleaned_rows <- points %>%
   group_by(SITE_ID) %>%
   summarise(Lat = mean(LAT_DD83),
             Lon = mean(LON_DD83),
-            DOC_Median = median(DOC, na.rm = TRUE),
-            TN_Median = median(NTL, na.rm = TRUE),
-            TP_Median = median(PTL, na.rm = TRUE),
-            TNtoTP_Median = median(NtoP, na.rm = TRUE))
+            DOC_Median = median(DOC_RESULT, na.rm = TRUE),
+            NO3_Median = median(NITRATE_N_RESULT, na.rm = TRUE),
+            TP_Median = median(PTL_RESULT, na.rm = TRUE),
+            NO3toTP_Median = median(NO3toTP, na.rm = TRUE))
 
 write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLArs2013_Medians.csv", row.names = FALSE)
 

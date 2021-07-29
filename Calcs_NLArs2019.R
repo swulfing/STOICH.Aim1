@@ -20,47 +20,6 @@ plot(points$DOC_RESULT, points$PTL_RESULT, main="NLArs2019",
 abline(mod1)
 legend("topright", c(lab1, lab2), cex=0.8)
 
-##DOC_RESULT TN##
-
-mod2 = lm(NTL_RESULT~DOC_RESULT, data = points)
-modsum = summary(mod2)
-r2 = round(modsum$adj.r.squared, digits = 4)
-pVal = signif(modsum$coefficients[2,4], digits = 3)
-lab1 = paste("pValue ", pVal)
-lab2 = paste("RSq ", r2)
-
-plot(points$DOC_RESULT, points$NTL_RESULT, main="NLArs2019",
-     xlab="DOC ", ylab="NTL", pch=19)
-abline(mod2)
-legend("topright", c(lab1, lab2), cex=0.8)
-
-##TN TP
-mod3 = lm(PTL_RESULT~NTL_RESULT, data = points)
-modsum = summary(mod3)
-r2 = round(modsum$adj.r.squared, digits = 4)
-pVal = signif(modsum$coefficients[2,4], digits = 3)
-lab1 = paste("pValue ", pVal)
-lab2 = paste("RSq ", r2)
-
-plot(points$NTL_RESULT, points$PTL_RESULT, main="NLArs2019",
-     xlab="NTL", ylab="PTL", pch=19)
-abline(mod3)
-legend("topright", c(lab1, lab2), cex=0.8)
-
-
-# DOC_RESULT NP Ratio
-mod4 = lm(NtoP~DOC_RESULT, data = points)
-modsum = summary(mod4)
-r2 = round(modsum$adj.r.squared, digits = 4)
-pVal = signif(modsum$coefficients[2,4], digits = 3)
-lab1 = paste("pValue ", pVal)
-lab2 = paste("RSq ", r2)
-
-plot(points$DOC_RESULT, points$NtoP, main="NLArs2019",
-     xlab="DOC ", ylab="NtoP", pch=19, ylim = c(0,.4))
-abline(mod4)
-legend("topright", c(lab1, lab2), cex=0.8)
-
 ###NITRATE Calcs##
 ##DOC NITRATE##
 
@@ -91,7 +50,7 @@ legend("topright", c(lab1, lab2), cex=0.8)
 
 
 # DOC_RESULT NO3:P Ratio
-mod4 = lm(N03toP~DOC_RESULT, data = points)
+mod4 = lm(NO3toP~DOC_RESULT, data = points)
 modsum = summary(mod4)
 r2 = round(modsum$adj.r.squared, digits = 4)
 pVal = signif(modsum$coefficients[2,4], digits = 3)
