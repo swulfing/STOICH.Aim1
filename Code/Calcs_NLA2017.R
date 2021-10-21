@@ -4,7 +4,7 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library("VennDiagram")
 
-datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_NLA2017.csv")
+datapoints <-read.csv("Data/NLA/ChemData_NLA2017.csv")
 points <- data.frame(datapoints)
 
 ##Medians Calculations##
@@ -14,10 +14,10 @@ cleaned_rows <- points %>%
             NO3_Median = median(NITRATE_N, na.rm = TRUE),
             TP_Median = median(PTL, na.rm = TRUE))
 
-write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2017_Medians.csv", row.names = FALSE)
+write.csv(cleaned_rows,"Data/MedianCalcs/NLA2017_Medians.csv", row.names = FALSE)
 
 ##Venn Diagram of Data##
-#counts <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/BrazilData_Medians.csv")
+#counts <- read.csv("Data/BrazilData_Medians.csv")
 
 #DOC_Set <- counts$DOC_Median
 #PO4_Set <- counts$PO4_Median
@@ -38,7 +38,7 @@ write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/
 
 
 ##Mapping#
-datapoints <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2017_Medians.csv")
+datapoints <- read.csv("Data/MedianCalcs/NLA2017_Medians.csv")
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 class(world)

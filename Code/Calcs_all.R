@@ -5,14 +5,14 @@ library("rnaturalearthdata")
 library("VennDiagram")
 library("lme4")
 
-brazil <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/BrazilData_Medians.csv"))
-Chla <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/ChlaData_Medians.csv"))
-NLA2012 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2012_Medians.csv"))
-NLA2017 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2017_Medians.csv"))
-NLArs2008 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLArs2008_Medians.csv"))
-NLArs2013 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLArs2013_Medians.csv"))
-NLArs2019 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLArs2019_Medians.csv"))
-NLAs2004 <-data.frame(read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLAs2004_Medians.csv"))
+brazil <-data.frame(read.csv("Data/MedianCalcs/BrazilData_Medians.csv"))
+Chla <-data.frame(read.csv("Data/MedianCalcs/ChlaData_Medians.csv"))
+NLA2012 <-data.frame(read.csv("Data/MedianCalcs/NLA2012_Medians.csv"))
+NLA2017 <-data.frame(read.csv("Data/MedianCalcs/NLA2017_Medians.csv"))
+NLArs2008 <-data.frame(read.csv("Data/MedianCalcs/NLArs2008_Medians.csv"))
+NLArs2013 <-data.frame(read.csv("Data/MedianCalcs/NLArs2013_Medians.csv"))
+NLArs2019 <-data.frame(read.csv("Data/MedianCalcs/NLArs2019_Medians.csv"))
+NLAs2004 <-data.frame(read.csv("Data/MedianCalcs/NLAs2004_Medians.csv"))
 
 ##All Data##
 #DOC TN
@@ -92,7 +92,7 @@ Nitrate.TP
 
 ##Mapping##
 
-#datapoints <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLArs2013_Medians.csv")
+#datapoints <- read.csv("Data/MedianCalcs/NLArs2013_Medians.csv")
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 class(world)

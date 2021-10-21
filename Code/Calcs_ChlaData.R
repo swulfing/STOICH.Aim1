@@ -4,7 +4,7 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library("VennDiagram")
 
-datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_Chla.csv")
+datapoints <-read.csv("Data/ChemData_Chla.csv")
 points <- data.frame(datapoints)
 
 ##DOC TP##
@@ -73,10 +73,10 @@ cleaned_rows <- points %>%
             TNtoTPRatio_Median = median(NtoP, na.rm = TRUE),
             pH = median(pH, na.rm = TRUE))
 
-write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/ChlaData_Medians.csv", row.names = FALSE)
+write.csv(cleaned_rows,"Data/MedianCalcs/ChlaData_Medians.csv", row.names = FALSE)
 
 ##Venn Diagram of Data##
-# counts <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/ChlaData_Medians.csv")
+# counts <- read.csv("Data/MedianCalcs/ChlaData_Medians.csv")
 # 
 # DOC_Set <- counts$DOC_Median
 # TP_Set <- counts$TP_Median

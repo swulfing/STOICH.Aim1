@@ -4,14 +4,14 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library("VennDiagram")
 
-datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/ChemData_NLA2012.csv")
-siteinfo <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/Points_NLA2012.csv")
+datapoints <-read.csv("Data/NLA/ChemData_NLA2012.csv")
+siteinfo <-read.csv("Data/NLA/Metadata/Points_NLA2012.csv")
 waterchem <- data.frame(datapoints)
 siteID <- data.frame(siteinfo)
 
 combined <-merge(waterchem, siteID, by = "UID")
-write.csv(combined,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/NLA2012_combinedData.csv", row.names = FALSE)
-points <- datapoints <-read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/NLA2012_combinedData.csv")
+write.csv(combined,"Data/NLA/NLA2012_combinedData.csv", row.names = FALSE)
+points <- datapoints <-read.csv("Data/NLA/NLA2012_combinedData.csv")
 
 ##DOC TP##
 mod1 = lm(PTL_RESULT~DOC_RESULT, data = points)
@@ -76,7 +76,7 @@ cleaned_rows <- points %>%
             NO3_Median = median(NITRATE_N_RESULT, na.rm = TRUE),
             TP_Median = median(PTL_RESULT, na.rm = TRUE))
 
-write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2012_Medians.csv", row.names = FALSE)
+write.csv(cleaned_rows,"Data/MedianCalcs/NLA2012_Medians.csv", row.names = FALSE)
 
 ##Venn Diagram of Data##
 #counts <- read.csv("C:/Users/sophi/Documents/STOICH/ResearchAim1/BrazilData_Medians.csv")
@@ -100,7 +100,7 @@ write.csv(cleaned_rows,"C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/
 
 
 ##Mapping##
-datapoints <- read.csv("C:/Users/sophi/Documents/STOICH/STOICH.Aim1/MedianCalcs/NLA2012_Medians.csv")
+datapoints <- read.csv("Data/MedianCalcs/NLA2012_Medians.csv")
 world <- ne_countries(scale = "medium", returnclass = "sf")
 class(world)
 
