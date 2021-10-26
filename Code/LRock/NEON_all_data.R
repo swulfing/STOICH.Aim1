@@ -75,6 +75,7 @@ chems_dataset1 <- chems_dataset %>%
   filter(!is.na(analyteConcentration),
          analyteConcentration > 0)
 
+write.csv(chems_dataset1, "Data/NEON/SIMPLE_SURFACE_WATER_CHEMS_DATA.csv")
 
   
 #simplifying location data
