@@ -21,5 +21,22 @@ help.search("datasets", package = "LAGOSNE")
 #Question -- do we only want to keep rows that have all 3: DOC, nitrite/nitrate, TP?
 
 lagos_data <- lagos$epi_nutr %>%
-  select(lagoslakeid, sampledate, doc, no2no3, tp)
+  select(lagoslakeid, sampledate, doc, no2no3, tp) %>%
+  drop_na() #only keeps sites/data where doc, nitrate, and tp were concurrently collected
 
+median_lagos <- lagos_data %>%
+  group_by(lagoslakeid) %>%
+  mutate(median_doc = median(doc),
+         median_no2no3 = median(no2no3),
+         median_tp = median(tp)) %>%
+  ungroup() %>%
+  select(-doc, -no2no3, - tp, -sampledate) %>%
+  distinct()
+
+ggplot(median_lagos) +
+  geom_point(aes(median_doc, median_no2no3, color = median_tp)) +
+  #scale_y_log10() +
+  scale_color_viridis_c(direction = -1, "Total Phosphorus"~mu~g~L^-1) +
+  theme_bw() +
+  labs(x = "DOC"~mu~g~L^-1,
+       y = "Nitrate"~mu~g~L^-1)
