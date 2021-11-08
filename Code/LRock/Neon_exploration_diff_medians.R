@@ -32,7 +32,7 @@ median_neon <- neon %>%
 ggplot(median_neon) +
   geom_point(aes(DOC, no2no3, color = TP)) +
  # scale_y_log10() +
-  scale_color_viridis_c(direction = -1) +
+  scale_color_viridis_c(direction = -1, "Total Phosphorus"~mg~L^-1) +
   theme_bw() +
   labs(x = "DOC"~mg~L^-1,
        y = "Nitrate"~mg~L^-1)
@@ -54,7 +54,7 @@ daily_median_neon <- neon %>%
 ggplot(daily_median_neon) +
   geom_point(aes(DOC, no2no3, color = TP)) +
   #scale_y_log10() +
-  scale_color_viridis_c(direction = -1) +
+  scale_color_viridis_c(direction = -1, "Total Phosphorus"~mg~L^-1) +
   theme_bw() +
   labs(x = "DOC"~mg~L^-1,
        y = "Nitrate"~mg~L^-1)
@@ -77,7 +77,7 @@ annual_median_neon <- neon %>%
 ggplot(annual_median_neon) +
   geom_point(aes(DOC, no2no3, color = TP)) +
   #scale_y_log10() +
-  scale_color_viridis_c(direction = -1) +
+  scale_color_viridis_c(direction = -1, "Total Phosphorus"~mg~L^-1) +
   theme_bw() +
   labs(x = "DOC"~mg~L^-1,
        y = "Nitrate"~mg~L^-1)
