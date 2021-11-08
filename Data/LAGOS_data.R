@@ -18,10 +18,8 @@ lagos <- lagosne_load()
 help.search("datasets", package = "LAGOSNE")
 
 ####Filter for DOC, Nitrate, TP data####
-#Question -- do we want total dissolved P? or just TP? Maybe depends on what is avaialable from other data sources?
-#Question -- can we use nitrite, nitrate - N? 
 #Question -- do we only want to keep rows that have all 3: DOC, nitrite/nitrate, TP?
 
 lagos_data <- lagos$epi_nutr %>%
-  select(lagoslakeid, sampledate, doc, no2no3, tp, tdp)
+  select(lagoslakeid, sampledate, doc, no2no3, tp)
 
