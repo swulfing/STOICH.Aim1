@@ -1,7 +1,21 @@
 library(tidyverse)
 library(lubridate)
+library(patchwork)
 
 neon <- read.csv("Data/NEON/SIMPLE_SURFACE_WATER_CHEMS_DATA.csv")
+
+#checking out site variation
+p1 <- ggplot(neon %>% filter(analyte != "DOC")) +
+  geom_boxplot(aes(siteID, analyteConcentration, color = analyte)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) 
+
+p2 <- ggplot(neon %>% filter(analyte == "DOC")) +
+  geom_boxplot(aes(siteID, analyteConcentration, color = analyte)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+
+p1 | p2
 
 
 #total median of all time per site####
