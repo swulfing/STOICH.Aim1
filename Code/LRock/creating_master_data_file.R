@@ -22,9 +22,35 @@ nla_sites_rivers <- read.csv("Data/NLA/Metadata/Points_NLArs2008.csv") %>%
   distinct() %>%
   mutate(ECO_TYPE = "River/Stream")
 
-NLA_sites <- nla_sites_lakes %>%
-  rbind(nla_sites_rivers)
+nla_2013_sites <- read.csv("Data/NLA/ChemData_NLArs2013.csv") %>%
+  select(SITE_ID, LAT_DD83, LON_DD83) %>%
+  distinct() %>%
+  mutate(ECO_TYPE = "River/Stream")
 
+nla_2017_sites <- read.csv("Data/NLA/Metadata/nla_2017_site_information-data.csv") %>%
+  select(SITE_ID, LAT_DD83, LON_DD83) %>%
+  distinct() %>%
+  mutate(ECO_TYPE = "Lake")
+
+NLA_sites <- nla_sites_lakes %>%
+  rbind(nla_sites_rivers)%>%
+  rbind(nla_2013_sites) %>% #9086
+  distinct()
+
+sites_names <- NLA_sites %>%
+  select(LAT_DD83, LON_DD83) %>%
+  distinct() %>%
+  mutate(site_ID = paste("NLA_", 1:9015, sep = ""))#9015 -- this means there are 71 sites with different names that are the same?
+
+sites_check <- NLA_sites[duplicated(NLA_sites$LAT_DD83),] 
+sites_check <- sites_check %>%
+  select(LAT_DD83, LON_DD83) %>%
+  mutate(unique = "Y") %>%
+  unique()
+
+
+sites_check2 <- NLA_sites %>%
+  left_join(sites_check)
 
 #nla data
 nla_2012 <- read.csv("Data/NLA/NLA2012_combinedData.csv") %>%
@@ -68,6 +94,8 @@ nla_rs_2013 <- read.csv("Data/NLA/ChemData_NLArs2013.csv") %>%
          TP_FLAG = PTL_NARS_FLAG)  %>%
   mutate(DATE_COL = as.Date(DATE_COL, format = "%m/%d/%Y"))
 
+
+
 nla_rs_2004 <- read.csv("Data/NLA/ChemData_NLAs2004.csv") %>%
   select(SITE_ID, DATE_COL, DOC, NO3, PTL, DOCF, NO3F, PTLF) %>%
   mutate(YEAR = 2004)  %>%
@@ -93,13 +121,6 @@ nla_rs_2019 <- read.csv("Data/NLA/ChemData_NLArs2019.csv") %>%
          TP_UNITS = PTL_UNITS,
          TP_FLAG = PTL_NARS_FLAG) %>%
   mutate(DATE_COL = as.Date(DATE_COL, format = "%m/%d/%Y"))
-
-
-
-
-
-
-
 
 #2017 data -- annoying as hell
 nla_2017_results <- read.csv("Data/NLA/Original_ChemData_NLA2017.csv") %>%
@@ -138,6 +159,9 @@ nla_2017 <- nla_2017_results %>%
 
 
 
+
+
+
 ALL_NLA_CNP <- nla_2017 %>%
   rbind(nla_2012) %>%
   rbind(nla_rs_2004) %>%
@@ -146,7 +170,7 @@ ALL_NLA_CNP <- nla_2017 %>%
   rbind(nla_rs_2019) %>%
   arrange(DATE_COL) %>%
   select(-DOC_FLAG, -NO3_FLAG, -TP_FLAG) %>%
-  left_join(NLA_sites)
+  left_join(NLA_sites) 
 
 
 
