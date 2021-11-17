@@ -34,23 +34,39 @@ nla_2017_sites <- read.csv("Data/NLA/Metadata/nla_2017_site_information-data.csv
 
 NLA_sites <- nla_sites_lakes %>%
   rbind(nla_sites_rivers)%>%
-  rbind(nla_2013_sites) %>% #9086
+  rbind(nla_2013_sites) %>% 
+  rbind(nla_2017_sites) %>%
   distinct()
 
-sites_names <- NLA_sites %>%
-  select(LAT_DD83, LON_DD83) %>%
-  distinct() %>%
-  mutate(site_ID = paste("NLA_", 1:9015, sep = ""))#9015 -- this means there are 71 sites with different names that are the same?
-
-sites_check <- NLA_sites[duplicated(NLA_sites$LAT_DD83),] 
-sites_check <- sites_check %>%
-  select(LAT_DD83, LON_DD83) %>%
-  mutate(unique = "Y") %>%
-  unique()
+site_names <- NLA_sites %>%
+  select(LAT_DD83, LON_DD83, ECO_TYPE) %>%
+  distinct() 
 
 
-sites_check2 <- NLA_sites %>%
-  left_join(sites_check)
+fun <- function(vec)
+{
+  n = length(vec)
+  
+  if(all(is.na(vec)))
+    return(rep(FALSE,n))
+  
+  noNA = vec[!is.na(vec)]
+  
+  if(length(unique(noNA))==1)
+    return(!is.na(vec))
+  
+  res = rep(FALSE, n)
+  
+  for(i in 1:n)
+    if(any(abs(vec[i]-vec[-i])<=vec[-i]*0.001, na.rm = TRUE))
+      res[i] = TRUE
+  
+  res
+}
+
+output=data.frame(apply(sites_names,1,fun))
+
+
 
 #nla data
 nla_2012 <- read.csv("Data/NLA/NLA2012_combinedData.csv") %>%
