@@ -3,7 +3,7 @@
 #script to build master datasheet
 library(tidyverse)
 library(lubridate)
-
+library(sf)
 
 
 #NLA data####
@@ -152,20 +152,132 @@ nla_2017 <- nla_2017_results %>%
 
 ALL_NLA_CNP <- nla_2017 %>%
   rbind(nla_2012) %>%
-  rbind(nla_rs_2004) %>%
+ # rbind(nla_rs_2004) %>% #get rid of this dataset :( It uses units of uEq/L but does not provide enough information to convert. Also, it seems to include MASSIVE outliers -- NO3 values that would be ~3000 mg N/L (if the calculation I tried was even correct)
   rbind(nla_rs_2008) %>%
   rbind(nla_rs_2013) %>%
   rbind(nla_rs_2019) %>%
   arrange(DATE_COL) %>%
   select(-DOC_FLAG, -NO3_FLAG, -TP_FLAG) %>%
   left_join(NLA_sites) %>%
-  mutate(DOC_UNITS = "mg/L")
+  mutate(DOC = as.numeric(DOC),
+         NO3 = as.numeric(NO3),
+         TP = as.numeric(TP)) %>%
+  mutate(DOC_UNITS = "mg/L",
+         NO3_UNITS = "mg N/L")%>%
+  mutate(TP = TP/1000) %>%
+  mutate(TP_UNITS = "mg/L") %>%
+  drop_na(LON_DD83)
 
 
-units_no3 <- ALL_NLA_CNP %>%
-  select(NO3_UNITS) %>%
-  distinct()
+#Not enough information to convert -- is this uEq/L NO3 or N?
+#converting NO3 uEq/L to mg N/L
+#molar mass of NO3 = 62.0049 g/mol
+#valency of NO3 = -1, so use 1
+#mg NO3/L to mg N/L =   * 0.2259
+#NO3 mg N/L =[62.0049 ug/mmol * uEq/L (/1) /1000] *0.2259
+# 
 
-ggplot(ALL_NLA_CNP) +
-  geom_boxplot()
+
+
+# units_TP <- ALL_NLA_CNP %>%
+#   select(TP_UNITS) %>%
+#   distinct()
+
+#creating a 1 km buffer to lump overlapping sites that don't have lat, longs reported the same
+NLA_SITES_1 <- ALL_NLA_CNP %>%
+  select(SITE_ID, LAT_DD83, LON_DD83, ECO_TYPE) %>%
+  distinct() #8354 sites -- but lots of overlaps
+
+write.csv(NLA_SITES_1, "NLA_temporary.csv")
+
+#rounded numbers and saved to new csv file
+
+test_check <- read.csv("C:/Users/linne/OneDrive/Documents/Book1.csv")
+
+test_check2 <- test_check %>%
+  select(LAT_DD83, LON_DD83) %>%
+  distinct() %>%
+  mutate(seq_id = paste("NLA_", seq(1:nrow(test_check2)), sep = "")) #6461 sites
+
+sites <- test_check %>%
+  left_join(test_check2) 
+
+
+NLA_unique_sites <- sites %>%
+  select(seq_id, LAT_DD83, LON_DD83, ECO_TYPE) %>%
+  distinct() %>%
+  rename(SITE_ID = seq_id)
+
+
+write.csv(NLA_unique_sites, "Data/NLA/NLA_unique_sites.csv")
+
+
+sites_1 <- sites %>%
+  select(SITE_ID, seq_id)
+
+
+ALL_NLA_CNP_1 <- ALL_NLA_CNP %>%
+  left_join(sites_1)
+
+
+
+ALL_NLA_CNP_1 <- ALL_NLA_CNP_1 %>%
+  select(-SITE_ID) %>%
+  rename(SITE_ID = seq_id)
+
+
+write.csv(ALL_NLA_CNP_1, "Data/NLA/SIMPLE_NLA_CNP.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 
+# NLA_SITES_sf <- NLA_SITES_1 %>% 
+#   st_as_sf(coords = c("LON_DD83", "LAT_DD83"), crs = 4326) %>%
+#   rename(site_geometry = geometry)
+# 
+# circle_df <- NLA_SITES_1 %>%
+#   st_as_sf(coords = c("LON_DD83", "LAT_DD83"), crs = 4326) %>%
+#   st_transform(3035) %>%
+#   st_buffer(dist = units::set_units(1, "kilometers")) %>%
+#   rename(circle_geometry = geometry) 
+# 
+# # in_intersection <- st_intersection(circle_df) %>% 
+# #   filter(n.overlaps == 1) %>%
+# #   st_transform(4326) #%>%
+#   # st_within(NLA_SITES_sf, .) %>%
+#   # map_lgl(is_empty) %>%
+#   # "!"() %>%
+#   # which() %>%
+#   # slice(NLA_SITES_sf, .) 
+# 
+# 
+# plot(st_geometry(circle_df %>% filter(SITE_ID == "FW08NV012") %>% st_transform(4326)))
+# plot(st_geometry(NLA_SITES_sf %>% filter(SITE_ID == "FW08NV012")), add = TRUE)
+# 
+# 
+# sites_check <- NLA_SITES_sf %>%
+#   left_join(as.data.frame(circle_df)) %>%
+#   mutate(sequence = NA) %>%
+#   reorder(site_geometry)
+# 
+# for(i in 1:nrow(sites_check)) {
+#   
+#   sites_check$sequence[i] = sites_check$site_geometry[i+1] - sites_check$site_geometry[i]
+#   
+# }
 
