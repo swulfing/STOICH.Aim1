@@ -11,11 +11,9 @@ Authors: Sophie Wulfing, Reilly Farrell, Linnea Rock
 **Figures:** Any figures we create and want to save. 
 
 **Data:**  
-Filazzola, A., Mahdiyan, O., Shuvo, A., Ewins, C., Moslenko, L., Sadis, T., Blagrave, K., Imrit, M.A., Gray, D.K., Quinlan, R, O'Reilly, C.M.,Sharma, A. (2020).  A database of chlorophyll and water chemistry in freshwater lakes. Sci Data 7, 310. https://doi.org/10.1038/s41597-020-00648-2
-
 National Ecological Observatory Network. 2021. Data Product DP1.20093.001, Chemical properties of surface water. Provisional data downloaded from https://data.neonscience.org on October 26, 2021. Battelle, Boulder, CO, USA NEON. 2021.
 
-Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904
+++++Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 ++++ We can't use this becuase of units
 
 Soranno, P.A., E.G. Bissell, K.S. Cheruvelil, S.T. Christel, S.M. Collins, C.E. Fergus, C.T. Filstrup, J.F. Lapierre, N.R. Lottig, S.K. Oliver, C.E. Scott, N.J. Smith, S. Stopyak, S. Yuan, M.T. Bremigan, J.A. Downing, C. Gries, E.N. Henry, N.K. Skaff, E.H. Stanley, C.A. Stow, P.-N. Tan, T. Wagner, K.E. Webster. 2015. Building a multi-scaled geospatial temporal ecology database from disparate data sources: Fostering open science and data reuse. GigaScience 4:28  https://doi.org/10.1186/s13742-015-0067-4
 
