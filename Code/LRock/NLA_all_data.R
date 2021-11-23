@@ -158,7 +158,14 @@ ALL_NLA_CNP <- nla_2017 %>%
   rbind(nla_rs_2019) %>%
   arrange(DATE_COL) %>%
   select(-DOC_FLAG, -NO3_FLAG, -TP_FLAG) %>%
-  left_join(NLA_sites) 
+  left_join(NLA_sites) %>%
+  mutate(DOC_UNITS = "mg/L")
 
 
+units_no3 <- ALL_NLA_CNP %>%
+  select(NO3_UNITS) %>%
+  distinct()
+
+ggplot(ALL_NLA_CNP) +
+  geom_boxplot()
 
