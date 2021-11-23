@@ -190,7 +190,7 @@ NLA_SITES_1 <- ALL_NLA_CNP %>%
 
 write.csv(NLA_SITES_1, "NLA_temporary.csv")
 
-#rounded numbers and saved to new csv file
+#rounded numbers and saved to new csv file ^ deleted above file too
 
 test_check <- read.csv("C:/Users/linne/OneDrive/Documents/Book1.csv")
 
