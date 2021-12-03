@@ -166,7 +166,9 @@ ALL_NLA_CNP <- nla_2017 %>%
          NO3_UNITS = "mg N/L")%>%
   mutate(TP = TP/1000) %>%
   mutate(TP_UNITS = "mg/L") %>%
-  drop_na(LON_DD83)
+  drop_na(LON_DD83) %>%
+  rename(LAT = LAT_DD83,
+         LON = LON_DD83)
 
 
 #Not enough information to convert -- is this uEq/L NO3 or N?
