@@ -1,4 +1,5 @@
 library(tidyverse)
+library(scorecard)
 
 
 WQP <- read.csv("C:/Users/linne/Downloads/result/result.csv") 
@@ -157,7 +158,19 @@ WQP_all_data <- combine %>%
   mutate(ECO_TYPE = ifelse(ECO_TYPE == "Channelized Stream", "River/Stream", ECO_TYPE)) %>%
   mutate(Year = year(DATE_COL))
 
-write.csv(WQP_all_data, "Data/WQP_CNP.csv")
+
+
+#this dataset is too large as a single csv
+split_list <- split_df(WQP_all_data, ratios = c(0.25, 0.25, 0.25, 0.25), name_dfs = c("A", "B", "C", "D"))
+A <- split_list$A
+B <- split_list$B
+C <- split_list$C
+D <- split_list$D
+
+write.csv(A, "Data/WQP_CNP_A.csv")
+write.csv(B, "Data/WQP_CNP_B.csv")
+write.csv(C, "Data/WQP_CNP_C.csv")
+write.csv(D, "Data/WQP_CNP_D.csv")
 
 
 
