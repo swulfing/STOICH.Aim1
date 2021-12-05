@@ -91,21 +91,24 @@ wqpDOC <- wqpDOC %>%
   rename(DATE_COL = ActivityStartDate)
 
   
+#Total Nitrogen
+# wqpNO3 <- WQP7 %>%
+#   filter(CharacteristicName == "Total Nitrogen, mixed forms") %>%
+#   pivot_wider(id_cols = c(ActivityStartDate, MonitoringLocationIdentifier, ResultMeasure.MeasureUnitCode, ResultSampleFractionText), names_from = CharacteristicName, values_from = Result)%>%
+#   unnest() %>%
+#   rename(no3 = `Total Nitrogen, mixed forms`,
+#          units = ResultMeasure.MeasureUnitCode)
+# 
+# units <- as.data.frame(unique(wqpNO3$units))
+# 
+# wqpNO3 <- wqpNO3 %>%
+#   mutate(NO3 = ifelse(units == "ug/l", no3 * 1000, no3)) %>%
+#   mutate(NO3_UNITS = "mg/L")  %>%
+#   select(-c(no3, units, ResultSampleFractionText)) %>%
+#   rename(DATE_COL = ActivityStartDate)
+
 #NO3
-wqpNO3 <- WQP7 %>%
-  filter(CharacteristicName == "Total Nitrogen, mixed forms") %>%
-  pivot_wider(id_cols = c(ActivityStartDate, MonitoringLocationIdentifier, ResultMeasure.MeasureUnitCode, ResultSampleFractionText), names_from = CharacteristicName, values_from = Result)%>%
-  unnest() %>%
-  rename(no3 = `Total Nitrogen, mixed forms`,
-         units = ResultMeasure.MeasureUnitCode)
 
-units <- as.data.frame(unique(wqpNO3$units))
-
-wqpNO3 <- wqpNO3 %>%
-  mutate(NO3 = ifelse(units == "ug/l", no3 * 1000, no3)) %>%
-  mutate(NO3_UNITS = "mg/L")  %>%
-  select(-c(no3, units, ResultSampleFractionText)) %>%
-  rename(DATE_COL = ActivityStartDate)
 
 #TP
 wqpTP <- WQP7 %>%
