@@ -34,19 +34,12 @@ WQP.n3 <- WQP.n2 %>%
            ResultMeasure.MeasureUnitCode != "count"&
            ResultMeasure.MeasureUnitCode != "MPN/100ml")
 units <- as.data.frame(unique(WQP.n3$ResultMeasure.MeasureUnitCode))
-##pick up here###############################################################################################################
-
-#keep only DOC
-DOC <- WQP.n3 %>%
-  filter(CharacteristicName == "Organic carbon") %>%
-  filter(ResultSampleFractionText == "Dissolved")
 
 
 WQP.n4 <- WQP.n3 %>%
-  filter(CharacteristicName != "Organic carbon") %>%
-  rbind(DOC) %>%
   mutate(ResultMeasure.MeasureUnitCode = ifelse(ResultMeasure.MeasureUnitCode == "ppb", "ug/l", ResultMeasure.MeasureUnitCode),
-         ResultMeasure.MeasureUnitCode = ifelse(ResultMeasure.MeasureUnitCode == "ppm", "mg/l", ResultMeasure.MeasureUnitCode))
+         ResultMeasure.MeasureUnitCode = ifelse(ResultMeasure.MeasureUnitCode == "ppm", "mg/l", ResultMeasure.MeasureUnitCode),
+         ResultMeasure.MeasureUnitCode = ifelse(ResultMeasure.MeasureUnitCode == "mg/L", "mg/l", ResultMeasure.MeasureUnitCode))
 
 
 params <- as.data.frame(unique(WQP.n4$CharacteristicName))
@@ -63,16 +56,68 @@ WQP.n5 <- WQP.n4 %>%
   mutate(realResult = ifelse(str_detect(ResultMeasureValue, "\\."), "Y", realResult)) %>%
   filter(realResult == "Y")
 
-check <- WQP.n6 %>%
-  filter(str_detect(Result, "^\\."))
+
+units <- as.data.frame(unique(WQP.n5$ResultMeasure.MeasureUnitCode))
+# check <- WQP.n6 %>%
+#   filter(str_detect(Result, "^\\."))
 
 WQP.n6 <- WQP.n5 %>%
   mutate(Result = ifelse(str_detect(ResultMeasureValue, "^<"), gsub("<", "", ResultMeasureValue), ResultMeasureValue)) %>%
   mutate(Result = ifelse(str_detect(ResultMeasureValue, "^\\."), gsub("\\.", "0.", ResultMeasureValue), Result)) 
+
+units <- as.data.frame(unique(WQP.n6$ResultMeasure.MeasureUnitCode))
 
 #keep values greater than 0 
 WQP.n7 <- WQP.n6 %>%
   mutate(Result = as.numeric(Result)) %>%
   filter(Result > 0,
          !is.na(Result))
+
+units <- as.data.frame(unique(WQP.n7$ResultMeasure.MeasureUnitCode))
+
+
+WQP.n8 <- WQP.n7 %>%
+  mutate(Result = ifelse(ResultMeasure.MeasureUnitCode == "mg/l asNO3", Result * 0.2259, Result),
+         NO3_UNIT = ifelse(ResultMeasure.MeasureUnitCode == "mg/l asNO3", "mg/L", ResultMeasure.MeasureUnitCode),
+         NO3_UNIT = ifelse(ResultMeasure.MeasureUnitCode == "mg/l as N", "mg/L", NO3_UNIT),
+         Result = ifelse(ResultMeasure.MeasureUnitCode == "ug/l", Result / 1000, Result),
+         NO3_UNIT = ifelse(CharacteristicName == "Nitrate-N", "mg/L", NO3_UNIT),
+         NO3_UNIT = ifelse(CharacteristicName == "Nitrate as N", "mg/L", NO3_UNIT))
+
+WQP.test <- WQP.n8 %>%
+  filter(NO3_UNIT == "mg/L") %>%
+  rename(DATE_COL = ActivityStartDate,
+         NO3 = Result) %>%
+  select(DATE_COL, MonitoringLocationIdentifier, NO3, NO3_UNIT) %>%
+  filter(DATE_COL < Sys.Date())
+
+
+sites.n <- read.csv("C:/Users/linne/Downloads/station (1)/station.csv") 
+sites1 <- sites.n %>%
+  select(MonitoringLocationIdentifier, MonitoringLocationTypeName, LatitudeMeasure, LongitudeMeasure)
+
+
+combine <- left_join(WQP.test, sites1)  
+
+combine1 <- combine %>%
+  select(MonitoringLocationIdentifier, MonitoringLocationTypeName, LatitudeMeasure, LongitudeMeasure) %>%
+  distinct() %>%
+  rename(LAT = LatitudeMeasure,
+         LON = LongitudeMeasure,
+         ECO_TYPE = MonitoringLocationTypeName)
+
+#############################################################################################################################################
+WQP_all_data <- combine %>%
+  rename(LAT = LatitudeMeasure,
+         LON = LongitudeMeasure,
+         ECO_TYPE = MonitoringLocationTypeName,
+         SITE_ID = MonitoringLocationIdentifier) %>%
+  mutate(ECO_TYPE = ifelse(ECO_TYPE == "Channelized Stream", "River/Stream", ECO_TYPE)) %>%
+  mutate(Year = year(DATE_COL))
+
+  
+  
+  
+  
+
 
