@@ -40,3 +40,9 @@ ggplot(median_lagos) +
   theme_bw() +
   labs(x = "DOC"~mu~g~L^-1,
        y = "Nitrate"~mu~g~L^-1)
+
+
+
+
+#find sources
+sources <- lagos$lagos_source_program

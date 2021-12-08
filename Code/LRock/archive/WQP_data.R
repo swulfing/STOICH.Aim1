@@ -181,3 +181,22 @@ combine2 <- combine1 %>%
   rename(SITE_ID = MonitoringLocationIdentifier)
 
 write.csv(combine2, "Data/WQP_unique_sites.csv")
+
+
+wqp <- read.csv("Data/WQP_CNP_A.csv") %>%
+  rbind(read.csv("Data/WQP_CNP_B.csv")) %>%
+  rbind(read.csv("Data/WQP_CNP_C.csv")) %>%
+  rbind(read.csv("Data/WQP_CNP_D.csv")) 
+
+wqp2 <- wqp %>%
+  select(-NO3, -NO3_UNITS) %>%
+  mutate(DATE_COL = as.Date(DATE_COL))
+
+#from wqp_nitrate.R
+WQP_combined <- full_join(wqp2, WQP_all_data) %>%
+  distinct() %>%
+  drop_na()
+
+sites <- WQP_combined %>%
+  select(SITE_ID, LAT, LON, ECO_TYPE)
+
