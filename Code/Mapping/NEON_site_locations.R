@@ -17,7 +17,6 @@ ggplot() +
   theme_bw() +
   labs(x = "Longitude",
        y = "Latitude") +
-  theme(legend.title = element_blank()) +
-  caption
+  theme(legend.title = element_blank()) 
 
 ggsave("Plots/NEON_site_locations.png", width = 6.25, height = 4.25, units = "in", dpi = 500)
