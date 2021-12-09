@@ -43,6 +43,5 @@ ggplot(median_lagos) +
 
 
 
-
 #find sources
 sources <- lagos$lagos_source_program
