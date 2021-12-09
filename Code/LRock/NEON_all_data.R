@@ -70,5 +70,48 @@ sites <- site_dataset %>%
 
 write.csv(sites, "Data/NEON/SIMPLE_NEON_SPATIAL.csv")
 
+######################Fixing the data##############################################
+NEON <- read.csv("Data/NEON/SIMPLE_SURFACE_WATER_CHEMS_DATA.csv")
+
+condition <- as.data.frame(unique(NEON$sampleCondition)) #all ok
+units <- as.data.frame(unique(NEON$analyteUnits)) #mg/L
+
+neon.a <- NEON %>%
+  mutate(siteID = ifelse(namedLocation == "TOOK.AOS.outlet", "TOOK.outlet", siteID),
+         siteID = ifelse(namedLocation == "TOOK.AOS.inlet", "TOOK.inlet", siteID),
+         siteID = ifelse(namedLocation == "TOOK.AOS.buoy.c1" |
+                           namedLocation == "TOOK.AOS.buoy.c2" |
+                           namedLocation == "TOOK.AOS.buoy.c0", "TOOK.buoy", siteID))
+
+NEON.1 <- neon.a %>%
+  dplyr::select(siteID, DateTime, analyte, analyteConcentration, analyteUnits) %>%
+  rename(SITE_ID = siteID) %>%
+  mutate(DATE_COL = as.Date(DateTime)) %>%
+  group_by(SITE_ID, analyte, DATE_COL) %>%
+  summarise(RESULT = mean(analyteConcentration)) %>%
+  ungroup() 
 
 
+#data ready to pair
+NEON.2 <- NEON.1 %>%
+  pivot_wider(id_cols = c(SITE_ID, DATE_COL), names_from = analyte, values_from = RESULT) %>%
+  mutate(UNITS = "mg/L") %>%
+  rename(`NO3 as N` = `NO3+NO2 - N`) %>%
+  drop_na() 
+
+#sites
+sites <- read.csv("Data/NEON/SIMPLE_NEON_SPATIAL.csv") 
+
+sites.a <-sites %>%
+  dplyr::select(-namedLocation, -X, -elevation, -domainID) %>%
+  rename(SITE_ID = siteID,
+         LAT = decimalLatitude,
+         LON = decimalLongitude,
+         ECO_TYPE = aquaticSiteType) %>%
+  mutate(ECO_TYPE = ifelse(ECO_TYPE == "stream" |
+                             ECO_TYPE == "river", "River/Stream", "Lake"))
+
+
+combine <- left_join(NEON.2, sites.a)
+
+write.csv(combine, "Data/NEON/SIMPLE_NEON.csv")

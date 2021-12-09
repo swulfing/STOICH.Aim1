@@ -231,11 +231,20 @@ ALL_NLA_CNP_1 <- ALL_NLA_CNP_1 %>%
 write.csv(ALL_NLA_CNP_1, "Data/NLA/SIMPLE_NLA_CNP.csv")
 
 
+##################format to simplified############################################################
+
+NLA <- read.csv("Data/NLA/SIMPLE_NLA_CNP.csv")
+
+nla.a <- NLA %>%
+  dplyr::select(DATE_COL, SITE_ID, DOC, NO3, TP, LAT_DD83, LON_DD83, ECO_TYPE) %>%
+  rename(`NO3 as N` = NO3,
+         LAT = LAT_DD83,
+         LON = LON_DD83) %>%
+  mutate(UNITS = "mg/L") %>%
+  drop_na()
 
 
-
-
-
+write.csv(nla.a, "Data/Simplified_datasets_per_source/SIMPLE_NLA.csv")
 
 
 
