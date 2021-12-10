@@ -11,20 +11,11 @@ Authors: Sophie Wulfing, Reilly Farrell, Linnea Rock
 **Figures:** Any figures we create and want to save. 
 
 **Data:**  
+Government of Canada: National Long-term Water Quality Monitoring Data (https://open.canada.ca/data/en/dataset/67b44816-9764-4609-ace1-68dc1764e9ea)
+
 National Ecological Observatory Network. 2021. Data Product DP1.20093.001, Chemical properties of surface water. Provisional data downloaded from https://data.neonscience.org on October 26, 2021. Battelle, Boulder, CO, USA NEON. 2021.
 
-U.S. Environmental Protection Agency. 2006-2020. National Aquatic Resource Surveys. National Aquatic Resource Surveys. (data and metadata files). Available from U.S. EPA web page: https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys. Date accessed: YYYY-MM-DD.
-
-waterqualitydata.us --- 2000 - Oct. 2021
-
-
-
-**Data that may not be used**
-++++ We can't use this becuase of units++++
-Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 
-
-
-+++++LAGOS data may be redundant++++
+++be careful with LAGOS data, check sources to ensure we don't have redundancy++
 Soranno, P.A., E.G. Bissell, K.S. Cheruvelil, S.T. Christel, S.M. Collins, C.E. Fergus, C.T. Filstrup, J.F. Lapierre, N.R. Lottig, S.K. Oliver, C.E. Scott, N.J. Smith, S. Stopyak, S. Yuan, M.T. Bremigan, J.A. Downing, C. Gries, E.N. Henry, N.K. Skaff, E.H. Stanley, C.A. Stow, P.-N. Tan, T. Wagner, K.E. Webster. 2015. Building a multi-scaled geospatial temporal ecology database from disparate data sources: Fostering open science and data reuse. GigaScience 4:28  https://doi.org/10.1186/s13742-015-0067-4
 
 Soranno P., K. Cheruvelil. 2019. LAGOS-NE-LIMNO v1.087.3: A module for LAGOS-NE, a multi-scaled geospatial and temporal database of lake ecological context and water quality for thousands of U.S. Lakes: 1925-2013. Environmental Data Initiative.
@@ -34,3 +25,14 @@ Soranno, P.A., L.C. Bacon, M. Beauchene, K.E. Bednar, E.G. Bissell, C.K. Boudrea
 
 Stachelek J., Oliver S. 2019. LAGOSNE: Interface to the Lake Multi-scaled Geospatial and Temporal Database. R package version 2.0.1.
 https://cran.r-project.org/package=LAGOSNE
+
+U.S. Environmental Protection Agency. 2006-2020. National Aquatic Resource Surveys. National Aquatic Resource Surveys. (data and metadata files). Available from U.S. EPA web page: https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys. Date accessed: YYYY-MM-DD.
+
+European Environement Agency: Waterbase - Water Quality ICM (https://www.eea.europa.eu/data-and-maps/data/waterbase-water-quality-icm-1)
+
+
+**Data that may not be used**
+++++ We can't use this becuase of units and wrong variables??++++
+Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 
+
+WQP data -- doesn't seem to be overlapping NO3, DOC, and TP
