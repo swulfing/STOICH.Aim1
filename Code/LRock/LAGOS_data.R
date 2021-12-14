@@ -43,11 +43,12 @@ sites <- lagos$locus %>%
   rename(SITE_ID = lagoslakeid,
          LAT = nhd_lat,
          LON = nhd_long) %>%
-  mutate(ECO_TYPE = "Lake")
+  mutate(ECO_TYPE = "Lake") 
 
 
 combine <- left_join(lagos_data.1, sites) %>%
-  distinct()
+  distinct() %>%
+  mutate(SITE_ID = paste("LAGOS_",SITE_ID, sep = ""))
 
 write.csv(combine, "DATA/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")
 
@@ -73,3 +74,4 @@ write.csv(combine, "DATA/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")
 # 
 #find sources
  sources <- lagos$lagos_source_program
+ 
