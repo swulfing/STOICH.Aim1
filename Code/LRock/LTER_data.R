@@ -425,5 +425,5 @@ o.1 <- o %>%
 
 
 
-p <- read.csv("C:/Users/lrock1/Downloads/knb-lter-knz.50.13/glvwatsolu.dm.data.csv")
+p <- read.csv("C:/Users/lrock1/Downloads/.csv")
 
