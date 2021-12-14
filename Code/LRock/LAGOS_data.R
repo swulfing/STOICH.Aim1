@@ -71,5 +71,5 @@ write.csv(combine, "DATA/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")
 # 
 # 
 # 
-# #find sources
-# sources <- lagos$lagos_source_program
+#find sources
+ sources <- lagos$lagos_source_program
