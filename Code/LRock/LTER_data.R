@@ -38,6 +38,7 @@ a.2 <-a.1 %>%
 
 #NTL lakes need to have same site id as LAGOS lakes becuase data prior to 2012 is in LAGOS
 library(LAGOSNE)
+lagosne_get()
 lagos <- lagosne_load()
 LTER_sites <- lagos$lakes_limno %>%
   filter(meandepthsource == "WI_LTER_SECCHI") %>%
@@ -425,5 +426,32 @@ o.1 <- o %>%
 
 
 
-p <- read.csv("C:/Users/lrock1/Downloads/.csv")
+p <- read.csv("C:/Users/linne/OneDrive/Desktop/knb-lter-ntl.281.2/powers_dissertation_stream_chemistry.csv")
+p.1 <- p %>%
+  select(sampledate, streamname, stationid, doc, no32_2, tp) %>%
+  drop_na() %>%
+  mutate(DATE_COL = as.Date(sampledate, format = "%m/%d/%Y")) %>%
+  group_by(DATE_COL, streamname, stationid) %>%
+  summarise(DOC = mean(doc),
+            `NO3 as N` = mean(no32_2),
+            TP = mean(tp)) %>%
+  ungroup()%>%
+  mutate(UNITS = "mg/L",
+         ECO_TYPE = "River/Stream")
+
+p.sites <- read.csv("C:/Users/linne/OneDrive/Desktop/knb-lter-ntl.281.2/powers_streams_and_stations.csv") %>%
+  drop_na() %>%
+  rename(LAT = lat_decimal,
+         LON = long_decimal) %>%
+  select(-wb_id)
+
+p.2 <- left_join(p.1, p.sites) %>%
+  distinct() %>%
+  mutate(SITE_ID = paste(streamname, stationid, sep = "_")) %>%
+  select(-streamname, - stationid)
+
+
+
+####combine all datasets into one LTER dataset##################################
+
 
