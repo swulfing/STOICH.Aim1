@@ -38,7 +38,7 @@ a.2 <-a.1 %>%
 
 #NTL lakes need to have same site id as LAGOS lakes becuase data prior to 2012 is in LAGOS
 library(LAGOSNE)
-lagosne_get()
+#lagosne_get()
 lagos <- lagosne_load()
 LTER_sites <- lagos$lakes_limno %>%
   filter(meandepthsource == "WI_LTER_SECCHI") %>%
