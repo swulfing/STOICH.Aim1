@@ -16,11 +16,11 @@ a.1 <- a %>%
 # L data and blind differ by more than 15%
 # K data suspect
 a.2 <-a.1 %>%
-  select(-error) %>%
+  dplyr::select(-error) %>%
   group_by(sampledate, lakeid, item) %>%
   mutate(result = mean(value)) %>%
   ungroup() %>%
-  select(-value) %>%
+  dplyr::select(-value) %>%
   distinct() %>%
   pivot_wider(id_cols = c(sampledate, lakeid), names_from = item, values_from = result) %>%
   drop_na() %>%
@@ -33,7 +33,7 @@ a.2 <-a.1 %>%
          `NO3 as N` = no3no2,
          DOC = doc,
          TP = totpuf) %>%
-  select(-totpf) %>%
+  dplyr::select(-totpf) %>%
   filter(DATE_COL >= "2012-01-01") #avoid overlap with LAGOS
 
 #NTL lakes need to have same site id as LAGOS lakes becuase data prior to 2012 is in LAGOS
@@ -42,7 +42,7 @@ library(LAGOSNE)
 lagos <- lagosne_load()
 LTER_sites <- lagos$lakes_limno %>%
   filter(meandepthsource == "WI_LTER_SECCHI") %>%
-  select(lagoslakeid, nhd_lat, nhd_long, lagosname1) %>%
+  dplyr::select(lagoslakeid, nhd_lat, nhd_long, lagosname1) %>%
   mutate(SITE_ID = paste("LAGOS_",lagoslakeid, sep = "")) %>%
   rename(LAT = nhd_lat,
          LON = nhd_long) %>%
@@ -60,7 +60,7 @@ LTER_sites <- lagos$lakes_limno %>%
 #final for this one
 a.3 <- left_join(a.2, LTER_sites) %>%
   drop_na() %>%
-  select(-lakeid, -lagoslakeid, -lagosname1)
+  dplyr::select(-lakeid, -lagoslakeid, -lagosname1)
 
 
 
@@ -68,7 +68,7 @@ a.3 <- left_join(a.2, LTER_sites) %>%
 
 b <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.213.1/soddsolu.mw.data.csv")
 b.1 <- b %>%
-  select(LTER_site, samp_loc, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, samp_loc, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -78,7 +78,7 @@ b.1 <- b %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.047778,
          LON = -105.570833) %>%
-  select(-LTER_site, - samp_loc) %>%
+  dplyr::select(-LTER_site, - samp_loc) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -86,12 +86,12 @@ b.1 <- b %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct()
 
-c <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.110.7/inlesolu.nc.data.csv")
+c <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.110.7/inlesolu.nc.data.csv")
 c.1 <- c %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -101,7 +101,7 @@ c.1 <- c %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.047178,
          LON = -105.607123) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -109,14 +109,14 @@ c.1 <- c %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() %>%
   filter(year(DATE_COL) >= 2000)
 
-d <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.9.4/sad007solu.mw.data.csv")
+d <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.9.4/sad007solu.mw.data.csv")
 d.1 <- d %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -126,7 +126,7 @@ d.1 <- d %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.05485646,
          LON = -105.5901358) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -134,15 +134,15 @@ d.1 <- d %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
-e <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.103.14/albisolu.nc.data.csv")
+e <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.103.14/albisolu.nc.data.csv")
 e.1 <- e %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -152,7 +152,7 @@ e.1 <- e %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0428746797462,
          LON = -105.59229602595) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -160,14 +160,14 @@ e.1 <- e %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
-f <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.109.12/gre5solu.nc.data.csv")
+f <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.109.12/gre5solu.nc.data.csv")
 f.1 <- f %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -177,7 +177,7 @@ f.1 <- f %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0536706761558,
          LON = -105.627913103381) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -185,14 +185,14 @@ f.1 <- f %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
-g <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.112.4/martsolu.nc.data.csv")
+g <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.112.4/martsolu.nc.data.csv")
 g.1 <- g %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -202,7 +202,7 @@ g.1 <- g %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0506020197246,
          LON = -105.595805026708) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -210,14 +210,14 @@ g.1 <- g %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
-h <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.114.6/spilsolu.nc.data.csv")
+h <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.114.6/spilsolu.nc.data.csv")
 h.1 <- h %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -227,7 +227,7 @@ h.1 <- h %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.04287468,
          LON = -105.592296) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -235,16 +235,16 @@ h.1 <- h %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
 
-i <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.160.3/saddsolu.nc.data.csv")
+i <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.160.3/saddsolu.nc.data.csv")
 i.1 <- i %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -254,7 +254,7 @@ i.1 <- i %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.04903177,
          LON =-105.5923174) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -262,15 +262,15 @@ i.1 <- i %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
-j <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.163.3/grrgsolu.nc.data.csv")
+j <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.163.3/grrgsolu.nc.data.csv")
 j.1 <- j %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -280,7 +280,7 @@ j.1 <- j %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.05213501,
          LON = -105.6289841) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -288,15 +288,15 @@ j.1 <- j %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
-k <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.162.1/flumesolu.nc.data.csv")
+k <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.162.1/flumesolu.nc.data.csv")
 k.1 <- k %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -306,7 +306,7 @@ k.1 <- k %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.01368597,
          LON = -105.5578493) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -314,12 +314,12 @@ k.1 <- k %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
-l <- read.csv("C:/Users/lrock1/Downloads/edi.1006.1/Waterchem.csv")
+l <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter//edi.1006.1/Waterchem.csv")
 l.1 <- l %>%
  filter(Analysis == "DOC" |
           Analysis == "Nitrate" | 
@@ -334,10 +334,10 @@ l.1 <- l %>%
   mutate(UNITS = "mg/L",
          ECO_TYPE = "Lake")
 
-l.sites <- read.csv("C:/Users/lrock1/Downloads/edi.1006.1/Site_locations.csv") %>%
+l.sites <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/edi.1006.1/Site_locations.csv") %>%
   mutate(SITE_ID = paste("Huron_", Collection.Site.or.Zone, sep = "")) %>%
   mutate(SITE_ID = gsub(" ", "", SITE_ID)) %>%
-  select(-Collection.Site.or.Zone) %>%
+  dplyr::select(-Collection.Site.or.Zone) %>%
   rename(LAT = Latitude.Centroid,
          LON = Longitude.Centroid) %>%
   mutate(SITE_ID = ifelse(SITE_ID == "Huron_PointUrie", "Huron_UriePoint", SITE_ID))
@@ -347,10 +347,10 @@ l.2 <- left_join(l.1, l.sites) %>%
 
 
 
-m <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.104.13/ariksolu.nc.data.csv")
+m <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.104.13/ariksolu.nc.data.csv")
 m.1 <- m %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -360,7 +360,7 @@ m.1 <- m %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0505740259853,
          LON = -105.642890924836) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -368,15 +368,15 @@ m.1 <- m %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
-n <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.107.10/gre1solu.nc.data.csv")
+n <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.107.10/gre1solu.nc.data.csv")
 n.1 <- n %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -386,7 +386,7 @@ n.1 <- n %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0615,
          LON = -105.643) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -394,16 +394,16 @@ n.1 <- n %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
 
-o <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.108.12/gre4solu.nc.data.csv")
+o <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.108.12/gre4solu.nc.data.csv")
 o.1 <- o %>%
   filter(year >= 2000) %>%
-  select(LTER_site, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
   mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
   mutate(DOC = as.numeric(DOC)) %>%
@@ -413,7 +413,7 @@ o.1 <- o %>%
          ECO_TYPE = "River/Stream",
          LAT = 40.0558068853579,
          LON = -105.621371408807) %>%
-  select(-LTER_site) %>%
+  dplyr::select(-LTER_site) %>%
   rename(DATE_COL = date) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   group_by(DATE_COL) %>%
@@ -421,14 +421,14 @@ o.1 <- o %>%
          DOC = mean(DOC),
          TP = mean(TP)) %>%
   ungroup() %>%
-  select(-NO3.) %>%
+  dplyr::select(-NO3.) %>%
   distinct() 
 
 
 
 p <- read.csv("C:/Users/linne/OneDrive/Desktop/knb-lter-ntl.281.2/powers_dissertation_stream_chemistry.csv")
 p.1 <- p %>%
-  select(sampledate, streamname, stationid, doc, no32_2, tp) %>%
+  dplyr::select(sampledate, streamname, stationid, doc, no32_2, tp) %>%
   drop_na() %>%
   mutate(DATE_COL = as.Date(sampledate, format = "%m/%d/%Y")) %>%
   group_by(DATE_COL, streamname, stationid) %>%
@@ -443,15 +443,16 @@ p.sites <- read.csv("C:/Users/linne/OneDrive/Desktop/knb-lter-ntl.281.2/powers_s
   drop_na() %>%
   rename(LAT = lat_decimal,
          LON = long_decimal) %>%
-  select(-wb_id)
+  dplyr::select(-wb_id)
 
 p.2 <- left_join(p.1, p.sites) %>%
   distinct() %>%
   mutate(SITE_ID = paste(streamname, stationid, sep = "_")) %>%
-  select(-streamname, - stationid)
+  dplyr::select(-streamname, - stationid)
 
 
 
 ####combine all datasets into one LTER dataset##################################
+LTER_all <- rbind(a.3, b.1, c.1, d.1, e.1, f.1, g.1, h.1, i.1, j.1, k.1, l.2, m.1, n.1, o.1, p.2)
 
-
+write.csv(LTER_all, "Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")
