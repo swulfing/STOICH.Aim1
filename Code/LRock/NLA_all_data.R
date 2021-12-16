@@ -6,8 +6,10 @@ library(lubridate)
 library(sf)
 
 
+#Note: NLA 2007 (dates 2007-06-05 - 2007-10-17) is included in LAGOS. Not included here in the NLA simplified dataset
+
 #NLA data####
-#QUESTION: is all NLA data in mg/L?? -- no it's not.. ANNOYING
+
 
 #nla location info - more info in full metadata 
 nla_sites_lakes <- read.csv("Data/NLA/NLA2012_combinedData.csv") %>%

@@ -14,7 +14,10 @@ EU <- read.csv("Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
   mutate(DATE_COL = as.Date(DATE_COL))
 
-ALL_CNP <- rbind(EU, temp)
+ALL_CNP <- rbind(EU, temp) #This dataset contains all DOC, nitrate as N, and TP data, all in mg/L
+
+
+
 
 
 
