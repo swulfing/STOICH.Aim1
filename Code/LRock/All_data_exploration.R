@@ -1,25 +1,10 @@
 library(tidyverse)
 library(lubridate)
 
-#call in the data & ensure it is ready to use#####
-temp <- (read.csv("Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_NLA.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_NRC.csv")) %>%
-  mutate(DATE_COL = as.Date(DATE_COL)) %>%
-  filter(year(DATE_COL) >= 2000) #get rid of any data pre 2000
 
 
-EU <- read.csv("Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
-  mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
-  mutate(DATE_COL = as.Date(DATE_COL))
-
-ALL_CNP <- rbind(EU, temp) #This dataset contains all DOC, nitrate as N, and TP data, all in mg/L
-
-
-
-
-
+#call in data:
+source("Code/masterData.R")
 
 
 #plotting all the data#####
@@ -29,7 +14,8 @@ ggplot(ALL_CNP) +
   theme_bw() +
   labs(title = "All data",
     x = "DOC"~(mg~L^-1)) +
-  ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
+  ylab(expression(Nitrogen - NO[3]~(mg~L^-1))) +
+  scale_y_log10()
      
 
 ggplot(ALL_CNP %>% filter(ECO_TYPE == "Lake")) +
@@ -85,6 +71,7 @@ ggplot(by_year %>% filter(ECO_TYPE != "Lake")) +
   labs(title = "Rivers/Streams - yearly medians",
        x = "DOC"~(mg~L^-1)) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))  
+
 
 
 #medians per decade#####
