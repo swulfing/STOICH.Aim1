@@ -10,11 +10,41 @@ Authors: Sophie Wulfing, Reilly Farrell, Linnea Rock
 
 **Figures:** Any figures we create and want to save. 
 
-**Data:**  
+**Data:**  Data from 2000 to present 
+Brooks, C.N., A.M. Marcarelli, C.J. Huckins, and A. Grimm. 2021. Water chemistry and aquatic vegetation data from Les Cheneaux Islands, Northern Lake Huron, Michigan, USA, 2016-2018 ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/205f63f4786f8fd76da3de164660408e (Accessed 2021-12-13).
+ 
+Caine, T. 2019. Stream water chemistry data for Lake Albion inlet, 1984 - 2004. ver 7. Environmental Data Initiative. https://doi.org/10.6073/pasta/9f5908f3c9853be7aa48a3ea8971d301 (Accessed 2021-12-13).
+
+Caine, T. 2019. Stream water chemistry data for Lake Albion spillway, 1984 - 2004. ver 6. Environmental Data Initiative. https://doi.org/10.6073/pasta/389359d3111475da818bfec5b7b925a2 (Accessed 2021-12-13).
+
+Caine, T. 2019. Stream water chemistry data for Watershed Flume site, 2005 - ongoing. ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/7624d220c8ab0e7caca719320fe7f36f (Accessed 2021-12-13).
+     
+Caine, T. 2021. Stream water chemistry data for Albion site, 1982 - ongoing. ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/59396e2b8d291badcfb140425e1b3a38 (Accessed 2021-12-13).
+
+Caine, T. 2021. Stream water chemistry data for Arikaree cirque, 1984 - ongoing. ver 13. Environmental Data Initiative. https://doi.org/10.6073/pasta/db83e4bb2f3fb8c9be1fafa5956957d0 (Accessed 2021-12-13).
+   
+Caine, T. 2021. Stream water chemistry data for Green Lake 5 outlet, 1984 - ongoing. ver 12. Environmental Data Initiative. https://doi.org/10.6073/pasta/effe6d9f1a764ebaccb7ae9b28cba7a5 (Accessed 2021-12-13).
+
+Caine, T. 2021. Stream water chemistry data for Green Lake 4, 1982 - ongoing. ver 12. Environmental Data Initiative. https://doi.org/10.6073/pasta/277121f0334757746d9d52ce2c2e82ab (Accessed 2021-12-13).
+
+Caine, T. 2021. Stream water chemistry data for Green Lake 5 Rock Glacier, 1998 - ongoing. ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/09667eb64c33a5d9a5e35b8d1c516d93 (Accessed 2021-12-13).
+ 
+Caine, T. 2021. Stream water chemistry data for Martinelli basin, 1984 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/5534a25d64cd018f9c96a6a4c2f49315 (Accessed 2021-12-13).
+
+Caine, T. 2021. Stream water chemistry data for Saddle Stream site, 1994 - ongoing. ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/9173009d00ed4602fcda5a529ee4a603 (Accessed 2021-12-13).
+ 
+European Environement Agency: Waterbase - Water Quality ICM (https://www.eea.europa.eu/data-and-maps/data/waterbase-water-quality-icm-1)
+
 Government of Canada: National Long-term Water Quality Monitoring Data (https://open.canada.ca/data/en/dataset/67b44816-9764-4609-ace1-68dc1764e9ea)
 
 National Ecological Observatory Network. 2021. Data Product DP1.20093.001, Chemical properties of surface water. Provisional data downloaded from https://data.neonscience.org on October 26, 2021. Battelle, Boulder, CO, USA NEON. 2021.
 
+Niwot Ridge LTER and N. Caine. 2018. Stream water chemistry data for Green Lake 1, 1985 - 2010. ver 10. Environmental Data Initiative. https://doi.org/10.6073/pasta/ea17637406c07cd69b8de8ca263799ca (Accessed 2021-12-13).
+ 
+N. Lead PI, J. Magnuson, S. Carpenter, and E. Stanley. 2020. North Temperate Lakes LTER: Chemical Limnology of Primary Study Lakes: Nutrients, pH and Carbon 1981 - current ver 52. Environmental Data Initiative. https://doi.org/10.6073/pasta/8359d27bbd91028f222d923a7936077d (Accessed 2021-12-13). **data after 2012 to not overlap with LAGOS**
+
+Powers, S. and E. Stanley. 2014. River Nutrient Uptake and Transport at North Temperate Lakes LTER (2005-2011) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/16d2a519bcb283fedb7efc605512e870 (Accessed 2021-12-13).
+  
 ++be careful with LAGOS data, check sources to ensure we don't have redundancy++
 Soranno, P.A., E.G. Bissell, K.S. Cheruvelil, S.T. Christel, S.M. Collins, C.E. Fergus, C.T. Filstrup, J.F. Lapierre, N.R. Lottig, S.K. Oliver, C.E. Scott, N.J. Smith, S. Stopyak, S. Yuan, M.T. Bremigan, J.A. Downing, C. Gries, E.N. Henry, N.K. Skaff, E.H. Stanley, C.A. Stow, P.-N. Tan, T. Wagner, K.E. Webster. 2015. Building a multi-scaled geospatial temporal ecology database from disparate data sources: Fostering open science and data reuse. GigaScience 4:28  https://doi.org/10.1186/s13742-015-0067-4
 
@@ -28,11 +58,13 @@ https://cran.r-project.org/package=LAGOSNE
 
 U.S. Environmental Protection Agency. 2006-2020. National Aquatic Resource Surveys. National Aquatic Resource Surveys. (data and metadata files). Available from U.S. EPA web page: https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys. Date accessed: YYYY-MM-DD.
 
-European Environement Agency: Waterbase - Water Quality ICM (https://www.eea.europa.eu/data-and-maps/data/waterbase-water-quality-icm-1)
-
-
+Williams, M. 2019. Stream water chemistry data for Soddie stream, 1999-2013. ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/49ace263067caf02c0b27c8b6a877683 (Accessed 2021-12-13).
+ 
+Williams, M. 2021. Stream water chemistry data for Saddle stream (007), 1994 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/d8a48465249f41936816a5d0d1d22e87 (Accessed 2021-12-13).
+  
+  
 **Data that may not be used**
-++++ We can't use this becuase of units and wrong variables??++++
-Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 
 
-WQP data -- doesn't seem to be overlapping NO3, DOC, and TP
+Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 -- data is from 80s & 90s
+
+WQP data -- lots of uncertainty, lots of overlap with sources alreayd found
