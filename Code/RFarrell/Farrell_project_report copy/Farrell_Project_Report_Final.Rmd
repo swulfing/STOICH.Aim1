@@ -1,0 +1,288 @@
+---
+title: "Project Final Report"
+author: "Reilly Farrell"
+date: "12/3/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+#Load Packages
+library(car)
+library(stringr)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(AICcmodavg)
+library(MuMIn)
+```
+
+Introduction
+
+Previous studies have established that lakes take up more nitrate as concentrations of dissolved organic carbon (DOC) increase (Taylor and Townsend 2010).  This trend is associated with two distinct cellular processes: assimilatory processes related to heterotrophic microbes processing DOC and translating this food source into energy and macromolecules within the cell as well as dissimilatory processes such as denitrification, a reaction that uses nitrate instead of oxygen as an electron acceptor during anaerobic respiration (Taylor and Townsend 2010, Helton et al. 2015).  On the ecosystem level, organisms respond to pulses in nutrients and increase development when they are no longer limited. This development leads to organisms taking up nutrients in the stream and buffering streams against nutrient enrichment (Mulholland 2004).  While various processes by which nitrate is removed at high DOC levels have been established, the mechanisms of nitrate uptake in lakes with lower DOC levels are not well understood.  Lake surveys indicate that at low levels of DOC, nitrate availability varies significantly (figure 1).  Factors controlling water nitrate level are of public interest given that nitrate can spur the growth bacteria and algae in aquatic systems.  This can produce eutrophic conditions downstream that deoxygenate aquatic ecosystems and subsequently create vastly different conditions for inhabitant organisms.  Some of these organisms produce toxins that negatively impact drinking water quality (Rastogi et al. 2015).
+
+The EPA’s 2017 National Lakes Assessment (NLA) allows for an opportunity to test hypotheses about the factors driving nitrate levels in lakes using data from a wide array of lakes around the U.S.  The NLA dataset provides a suite of abiotic variables that could easily be included in an analysis to determine the factors driving nitrate variation in lakes with low levels of DOC.  These variables include a litany of elemental data (magnesium, silica, chloride, etc.) as well as other water quality-related variables (pH, turbidity, chlorophyll-a, etc.) that could potentially be correlated with varying nitrate levels. Of primary interest in this study are levels of phosphorus given that previous studies have shown that limiting nutrients like phosphate can constrain microbial growth and subsequent uptake of nonlimiting nutrients such as nitrate (Schade et al. 2010). Phosphorus is frequently limiting in aquatic systems, so I hypothesize that nitrate at low DOC levels is controlled by phosphorus availability (and therefore that a model incorporating DOC:phosphate is the best).  As a part of this hypothesized relationship, I predict that increasing levels of phosphorus correspond with decreasing levels of nitrates as organisms are no longer limited by phosphorus and take up nitrate at a higher rate.   With that said, other studies demonstrate interactions that could dictate nitrate availability in lakes. For instance, this study is building on an established pattern between DOC and nitrate levels (Taylor and Townsend 2010), whereby heterotrophs are able to take up nitrates in lake systems when they have more DOC to consume. This pattern could be holding true at lower levels even if there is more variability in nitrate levels. Additionally, observational studies in streams have shown that nitrate levels are higher when calcium carbonate (CaCO3) levels (indicated by Ca ions) are higher, likely due to an intermediate reaction whereby phosphate coprecipitates with CaCO3 (Corman et al. 2015).  This lack of phosphorus then limits organisms and subsequently reduces uptake of nitrate. My analysis will yield a ranked set of models that predict nitrate in lakes across the U.S. given predictor variables quantified in the 2017 NLA.  My principal hypothesis is that the model incorporating an interaction between DOC and phosphate will best predict nitrate values.  My alternative hypotheses of interest are that the interaction between phosphorus and calcium or potentially the effect of only each individual predictor variable are the best predictors of nitrate values. I also compare a suite of models that examine nitrate's reaction to the interaction between my three predictor variables as well as a null model including only an intercept value.
+
+Methods
+
+My study involves the use of the 2017 NLA water chemistry dataset.  A .csv file of this dataset is available for download on the EPA’s website.  The first order of business was to add a regular expression that allows me to filter my data and only include data recognized as numerical. Next I created separate columns for each analyte at each sampling location.  “Analytes” are the water chemistry-related variables measured by the EPA at each of their study sites.  For instance, nitrate, chloride, and pH are all analytes.  This separation was done with the pivot_wider function, which takes values that would normally extend down columns and instead places those data in new columns for each analyte.  From there, the new, wider dataframe can be used to model water chemistry variables against one another.  
+
+A quick review of the relationship between nitrate and DOC for all of my data (figure 1) demonstrated the high variation in nitrate levels at low DOC levels and lower variation at higher DOC levels described in my introduction.  It also revealed a seemingly non-linear trend in the interaction between nitrate and DOC and at least one outlier that was vetted.  To rectify the need to transform models, I simply added a small constant (1 ug/L so that values that were 0 on the untransformed scale would be 0 on the log scale) to nitrate values and log transformed nitrate for all of my models.  Next, I created a global model using DOC, phosphate, and calcium as well as all two and three way interactions contained therein to predict log(nitrate).  In order to determine whether I needed to exclude outliers, I created a residuals vs. fitted plot using this global model and filtered out one single outlier that had a substantially larger residual error than others.  Next, I checked assumptions on the global model and used the dredge function to create a ranked list based on AICc values to select the model that most effectively predicts nitrate. After this, I visualized data using the expand.grid function to be able to see how one of my predictor variables predicts nitrate when holding the other predictors constant.  
+
+Results
+
+The assumptions of normality and homogeneity of variance for my global model were not met as evidenced by my Q-Q plot which shows that residuals deviate from a normal distribution and my residuals vs. fitted values plot which shows a well-defined kink highlighting my heteroskedastic data (figure 2).  For publishable results, I would need to transform my data in a way that made the data used in this global model fit these assumptions better.  For the sake of this project though, I proceeded with my assumptions unmet to demonstrate other skills like model selection and visualization.
+
+My first step was creating a global model (output 1) that incorporates all three of my predictor variables of interest (DOC, phosphate, and calcium) and the interactions between each of these variables in order to predict log(nitrate).  Overall, the global model was very significant (p-value of 0.006918) but did not fit well (adjusted R-squared value of 0.01382).  With that said, I had yet to examine other models that could more effectively predict nitrate.  
+
+Because my data are observational, I used dredge, a model ranking function, to determine the best model(s) for my dataset based on AICc values as opposed to performing a backwards selection.  Several noteworthy observations can be drawn from the model selection output (output 2).  For instance, the best model according to the ranking (model 39) includes the additive effects of just DOC and phosphorus as well as the interaction between DOC and phosphorus. This model matches my principal hypothesis, that an interaction between DOC and phosphate best predicts nitrate levels of lakes in the NLA dataset. The next best model (model 7) includes only the additive effects of phosphorus and DOC, while the third best model (model 16) contains the additive effects of all three predictor variables along with an interaction between DOC and calcium.  Models matching my alternative hypotheses that nitrate levels were best predicted by individual predictors all ranked relatively low in my analysis.  Among these, phosphorus alone was the best predictor of nitrate while DOC and calcium were among the lowest ranked models. My null model and the model containing only the interaction between calcium and phosphorus were also among my lowest ranked models based on AICc values.
+
+Model y-intercepts are uniformly between 1.1 and 1.4.  Coefficients pointed in similar directions for each individual predictor variable between models.  Phosphorus and calcium (Figure 3b&c) always increased with log(nitrate) while DOC (figure 3a) decreased with log(nitrate) with the exception of the global model when it increased.  Interaction terms also have coefficeints pointing in uniform directions between models in all cases except for the calcium:phosphorus interaction which changes directions depending on the model.  Combining these coefficient directions to analyze my models shows that the best model (model 39) indicates an increase in nitrate values with higher phosphorus values and a decrease in nitrate values with increasing DOC values and increasing values of the DOC:phosphorus interaction term.  Interestingly, my third best model (model 16) contains a negative (albeit not statistically significant at the alpha = 0.1 level) correlation between the interaction term of DOC and calcium (output 3).
+
+After the model selection process, I examined both the summary output and assumptions of my best model (output 3).  Similar to my global model, model 39 was significant (p = 0.002688), but poorly fitting (Adjusted R-squared = 0.01238).  Again, like the global model, model 39 also did not meet assumptions of normality or homogeneity of variance (figure 4).  
+
+Finally, I visualized how levels of DOC impacted the trend between phosphorus and nitrate to better understand the interaction between those two predictor variables from my best model.  Using the expand.grid function, I examined how the fitted trend line between phosphorus and nitrate changed when presupposing different levels of DOC.  Figure 5 illustrates that higher DOC values are correlated with negative relationships between nitrate and phosphorus while lower DOC levels are correlated with increasingly positive relationships.
+
+Discussion
+
+The NLA data were difficult to coerce into a model without violating assumptions of normality and homoskedasticity. This project allowed me to better characterize the relationship between DOC and nitrate that is known to exist in lakes (Taylor and Townsend 2010); however, future analyses of these relationships necessitate the use of models that adequately meet their assumptions, which mine do not.  Perhaps analyzing more or different datasets would alleviate some of my issues, but different statistical analyses or transformations might be necessary.
+
+Regarding the results I did obtain from my tests, the directions of each of my individual predictor variables were similar to my expectations with the exception of phosphorus.  My data showed a positive correlation between phosphorus and nitrate which opposes my prediction that greater phosphorus levels should allow organisms to take up more nitrate.  One explanation for this unexpected positive trend is that the model was over-influenced by one point with both high phosphorus and nitrate values (see figure 3b).  Another possibility is that the lakes in my study are influenced more strongly by land use factors that subsidize lakes with both nitrate and phosphorus than they are by biotic processes that would allow lake biota to take up more nitrate as phosphorus values increase (Downing and McCauley 1992).  If this latter hypothesis is true, than it would make more sense to examine the nitrogen to phosphorus ratio to determine if nitrogen is decreasing relative to phosphorus as phosphorus increases.  
+
+My ranked list of models yielded a result that fit with my hypothesis: that the interaction between phosphorus and DOC can be used more effectively to predict nitrate levels than other parameters in my study.  Other hypothesized models, however,  were not among the best for predicting nitrate in lakes.  The model including the interaction between phosphorus and calcium alone for instance, as well as models of individual parameters all ranked low in my AICc comparison.  Of the models using singular predictor variables, only phosphorus had a significant relationship with log(nitrate) indicating that the my models provide little confidence that calcium or DOC have a reliable relationship with nitrate.  One surprising model that was ranked among my best was model 16 which included all three stand-alone predictors as well as an interaction between DOC and calcium.  This was unexpected seeing as my preliminary literature review did not give me any reason to predict that the interaction between calcium and DOC determine lake nitrate.  Further literature review revealed a study in which certain DOC compounds were shown to coprecipitate with calcium carbonate (Leenheer & Reddy 2008). This coprecipitation of DOC could mediate calcium's interaction with nitrates in lakes. This study provides a plausible explanation for the observed correlation between DOC:calcium and nitrate in my study.
+
+My findings related both to the interaction between DOC and phosphorus as well as to the interaction between DOC and calcium could guide future research directions.  In particular, it would be interesting to examine phosphorus levels in lakes as they relate to the nitrogen to phosphorus ratio.  This could reveal patterns that my simple comparison of nitrate to phosphorus did not.  Moreover, an empirical study to determine the impact of DOC:calcium on nitrate might be warranted given the general lack of literature on this interaction.  Another possible research direction would be to accumulate more lake data and determine if the patterns observed in the 2017 NLA are observed at different time or spatial scales.  The EPA has datasets from different years that could be folded into my analysis to give a broader answer to research question about the driver(s) of nitrate levels in lakes.
+
+Unlocking these mechanisms for nitrate removal in lakes could offer valuable insights for public health officials globally.  It could provide a better link between ecological processes that control nutrient levels in lakes.  These links could drive natural resource management policy that positively impacts human health.
+
+Citations
+
+Corman, J.R., Moody, E.R., & Elser, J.J. (2015). Stoichiometric impact of calcium carbonate deposition on nitrogen and phosphorus supplies in three montane streams.  Biogeochemistry 126: 285-300.
+
+Downing, J.A. & McCauley, E. (1992).  The nitrogen:phosphorus ratio in lakes.  Limnology and Oceanography 37(5): 936-945.
+
+Helton, A.M., Marcelo, A., & Bernhardt E.S. (2015). Thermodynamic constraints on the utility of ecological stoichiometry for explaining global biogeochemical patterns. Ecol Lett 18: 1049-1056.
+
+Leenheer, J.A. & Reddy M. M. (2008). CO-PRECIPITATION OF DISSOLVED ORGANIC MATTER BY CALCIUM CARBONATE IN PYRAMID LAKE, NEVADA. Annals of Environmental Science 2: 11-25.
+
+Mulholland, P.J. (2004). The Importance of in-stream uptake for regulating stream concentrations and outputs of N and P from a forested watershed: evidence from long-term chemistry records for Walker Branch Watershed.  Biochemistry 70: 403-426.
+
+Rastogi, R.P., Madamwar, D., & Icharoensakdi, R. (2015). Bloom dynamics of cyanobacteria and their toxins: Environmental health impacts and mitigation strategies. Front in Microbiol 6:1254.
+
+Schade, J.D., MacNeill, K., Thomas, S.A., McNeely, F.C., Welter, J.R., Hood, J., Goodrich, M., Power, M.E., & Finlay, J.C. (2010). The stoichiometry of nitrogen and phosphorus spiraling in heterotrophic and autotrophic streams. Fresh Biol 56:424-436.
+
+Taylor, P.G. & Townsend A.R. (2010). Stoichiometric control of organic carbon-nitrate relationships from soils to the sea. Nature 464: 1178-1181.
+
+
+```{r}
+#Clean Data Frame
+
+NLA_2017_prefilter <- read_csv("nla_2017_water_chemistry_chla-data.csv")
+#take out repeat samples
+NLA_2017 <- filter(NLA_2017_prefilter, VISIT_NO!="2")
+#remove superfluous info
+NLA_2017_almost_clean <- NLA_2017[,-(1:2)]
+NLA_2017_almost_clean2 <- NLA_2017_almost_clean[,-(13:21)]
+#Prepare results column so that it does not include blank or "NA" or spaces - use "https://...
+NLA_2017_clean <- filter(NLA_2017_almost_clean2,!str_detect(NLA_2017_almost_clean2$RESULT, "[^\\d\\s.-]+")) 
+demonstration <- filter(NLA_2017_almost_clean2,str_detect(NLA_2017_almost_clean2$RESULT, "[^\\d\\s.-]+")) 
+```
+
+```{r}
+#Create Columns for Each Analyte
+NLA_2017_analytes_pre1 <- pivot_wider(NLA_2017_clean, id_cols = c("SITE_ID","STATE"), names_from = "ANALYTE", values_from = "RESULT")
+NLA_2017_analytes_pre2 <- filter(NLA_2017_analytes_pre1, DOC != "NA", NITRATE_N != "NA", NITRITE_N != "NA", AMMONIA_N != "NA")
+NLA_2017_analytes_pre2$DIN <- with(NLA_2017_analytes_pre2, NITRATE_N + AMMONIA_N + NITRITE_N)
+#remove outliers - ask drew how to systematically do this - cook's distance?
+NLA_2017_analytes <- NLA_2017_analytes_pre2
+#Convert to ug so analytes are comparable for later analyses
+NLA_2017_analytes$NITRATE_N_nz <- with( NLA_2017_analytes, NITRATE_N+.001)
+NLA_2017_analytes$AMMONIA_N_nz <- with( NLA_2017_analytes, AMMONIA_N+.001)
+NLA_2017_analytes$NITRATE_N_ug <- with( NLA_2017_analytes, NITRATE_N_nz*1000)
+NLA_2017_analytes$AMMONIA_N_ug <- with( NLA_2017_analytes, AMMONIA_N_nz*1000)
+NLA_2017_analytes$CALCIUM_ug <- with( NLA_2017_analytes, CALCIUM*1000)
+NLA_2017_analytes$DOC_ug <- with( NLA_2017_analytes, DOC*1000)
+NLA_2017_analytes$PTL_ug <- with( NLA_2017_analytes, PTL)
+```
+
+```{r}
+#Figure 1: A comparison of nitrate and DOC. My exploratory plot shows a. the variability in NO3 values at low DOC values and b. one seemingly significant outlier
+all_DOC <- plot(NLA_2017_analytes$DOC_ug, NLA_2017_analytes$NITRATE_N_ug)
+```
+
+```{r}
+#This residual by fitted value plot confirms what I learned with the NO3 vs. DOC scatterplot: that the residual of 1 value dwarfs all others in my dataset.  It's an outlier.
+NO3.lm.global.log <- lm(log(NITRATE_N_ug)~DOC_ug*PTL_ug*CALCIUM_ug,data=NLA_2017_analytes)
+summary(NO3.lm.global.log)
+NO3.lm.global.log.assumptions <- augment(NO3.lm.global.log, data=NLA_2017_analytes)
+ggplot(NO3.lm.global.log.assumptions, aes(x = .fitted, y = .resid)) + 
+  geom_point(aes(color=STATE)) + 
+  geom_smooth()
+
+#I will therefore remove it
+outlier.removed.log <- filter(NO3.lm.global.log.assumptions, .resid<7)
+```
+
+
+```{r}
+#Figure 2: Graphical tests of my assumptions after removing my single outlier
+ggplot(outlier.removed.log, aes(x = .fitted, y = .resid)) + 
+  geom_point(aes(color=STATE)) + 
+  geom_smooth()
+
+y <- quantile(outlier.removed.log$.resid, c(0.25, 0.75))
+x <- qnorm(c(0.25, 0.75))
+slope <- diff(y)/diff(x)
+int <- y[1L] - slope * x[1L]
+
+ggplot(outlier.removed.log, aes(sample = .resid)) + 
+  stat_qq() + 
+  geom_abline(slope = slope, intercept = int)
+
+ggplot(outlier.removed.log, aes(x = .fitted, y = sqrt(abs(.std.resid)))) + 
+  geom_point() + 
+  geom_smooth() + 
+  geom_hline(yintercept = 1)
+
+ggplot(outlier.removed.log, aes(.hat, .std.resid)) +
+ geom_vline(size = 2, colour = "white", xintercept = 0) +
+  geom_hline(size = 2, colour = "white", yintercept = 0) +
+  geom_point(aes(size = .cooksd)) + geom_smooth(se = FALSE)
+```
+
+
+```{r}
+#Output 1: Global Model
+log.outlier_removed <- lm(log(NITRATE_N_ug)~DOC_ug*PTL_ug*CALCIUM_ug,data=outlier.removed.log)
+summary(log.outlier_removed)
+```
+
+
+
+```{r}
+#Output 2: Model selection using dredge
+dredge(log.outlier_removed, options(na.action = "na.fail"), rank = "AICc")
+```
+
+
+```{r}
+#Output 3 - Summary of the 3 best models
+model_39  <- lm(log(NITRATE_N_ug)~DOC_ug*PTL_ug, data=outlier.removed.log)
+summary(model_39)
+  
+model_7 <- lm(log(NITRATE_N_ug)~DOC_ug + PTL_ug, data=outlier.removed.log)
+summary(model_7)
+
+model_16 <- lm(log(NITRATE_N_ug)~DOC_ug*CALCIUM_ug + PTL_ug, data=outlier.removed.log)
+summary(model_16)
+```
+
+
+```{r}
+#Figure 3: Visualize Single Predictors
+#a
+logNO3DOC<- lm(log(NITRATE_N_ug)~DOC_ug,data=outlier.removed.log)
+summary(logNO3DOC)
+ggplot(outlier.removed.log, aes(x = DOC_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE)) + 
+  geom_smooth(method=lm)
+#b
+logNO3P<- lm(log(NITRATE_N_ug)~PTL_ug,data=outlier.removed.log)
+summary(logNO3P)
+ggplot(outlier.removed.log, aes(x = PTL_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE)) + 
+  geom_smooth(method=lm)
+#c
+logNO3Ca<- lm(log(NITRATE_N_ug)~CALCIUM_ug,data=outlier.removed.log)
+summary(logNO3Ca)
+ggplot(outlier.removed.log, aes(x = CALCIUM_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE)) + 
+  geom_smooth(method=lm)
+```
+
+
+```{r}
+#Figure 4: Model 39 Assumptions
+best_assumptions <- augment(model_39, data=outlier.removed.log)
+ggplot(best_assumptions, aes(x = .fitted, y = .resid)) + 
+  geom_point(aes(color=STATE)) + 
+  geom_smooth()
+
+y <- quantile(best_assumptions$.resid, c(0.25, 0.75))
+x <- qnorm(c(0.25, 0.75))
+slope <- diff(y)/diff(x)
+int <- y[1L] - slope * x[1L]
+
+ggplot(best_assumptions, aes(sample = .resid)) + 
+  stat_qq() + 
+  geom_abline(slope = slope, intercept = int)
+
+ggplot(best_assumptions, aes(x = .fitted, y = sqrt(abs(.std.resid)))) + 
+  geom_point() + 
+  geom_smooth() + 
+  geom_hline(yintercept = 1)
+
+ggplot(best_assumptions, aes(.hat, .std.resid)) +
+ geom_vline(size = 2, colour = "white", xintercept = 0) +
+  geom_hline(size = 2, colour = "white", yintercept = 0) +
+  geom_point(aes(size = .cooksd)) + geom_smooth(se = FALSE)
+```
+
+
+
+```{r}
+#Figure 5: Examining model 39's interaction term
+nd<- data.frame(outlier.removed.log$PTL_ug, outlier.removed.log$DOC_ug,outlier.removed.log$CALCIUM_ug, outlier.removed.log$NITRATE_N_ug)
+
+model_39  <- lm(log(NITRATE_N_ug)~DOC_ug*PTL_ug, data=outlier.removed.log)
+summary(model_39)
+model_39.plot <- ggplot(outlier.removed.log, aes(x = PTL_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE))
+model_39.plot
+
+nd = expand.grid(DOC_ug=c(270, 20000, 60000), PTL_ug=seq(10, 4000, 20))
+model_39.vis <- augment(model_39, newdata = nd)
+
+model_39.vis$DOC_Level <- as.character(model_39.vis$DOC_ug)
+
+ggplot(data=model_39.vis) + geom_point(data = outlier.removed.log, aes(y = log(NITRATE_N_ug), x = PTL_ug, alpha = 0.1)) + geom_line(aes(x = PTL_ug, y = .fitted, group = DOC_ug, color = DOC_Level)) + scale_color_manual(values =c("Tan","Blue", "Brown")) + xlab("Phosphorus (ug/L)") + ylab("log Nitrate (ug/L)") + ggtitle("Nitrate vs. Phosphorus")
+```
+
+#zombie code
+
+```{r}
+#expand.grid throw away plot - use this code if I need to remember how to do the facet wrap thing for 3+ predictors
+
+nd1<-data.frame(outlier.removed.log$PTL_ug, outlier.removed.log$DOC_ug,outlier.removed.log$CALCIUM_ug, outlier.removed.log$NITRATE_N_ug) 
+
+model.16 = lm(log(NITRATE_N_ug) ~ DOC_ug*CALCIUM_ug + PTL_ug, data = outlier.removed.log)
+summary(model.16)
+sample.plot <- ggplot(outlier.removed.log, aes(x = DOC_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE))
+sample.plot
+
+#sample of expand.grid method - need to flip it so that I'm making a plot checking out how calcium changes its influence on NO3 with different values of DOC
+nd1 = expand.grid(DOC_ug=seq(270, 160000, 2000), CALCIUM_ug=c(60,  200000, 500000), PTL_ug=c(10, 4000))
+sample.vis <- augment(model.16, newdata = nd1)
+
+sample.vis$facet.id <- as.character(sample.vis$PTL_ug)
+
+# reuse ggplot object from above. fix color to black or geom_line looks for fBeach. x aesthetic inherited from Richness_NAP
+sample.plot + geom_line(aes(y = .fitted, group = CALCIUM_ug), color = "black", data = sample.vis) 
+  #facet_wrap(~PTL_ug)
+
+ggplot(data=sample.vis) + geom_point(data = outlier.removed.log, aes(y = log(NITRATE_N_ug), x = DOC_ug )) + geom_line(aes(x = DOC_ug, y = .fitted, group = CALCIUM_ug), color = "black") + facet_wrap(~facet.id) 
+
+#use this 
+```
+
+
+
+#Things to do for real analysis of these data
+1. add other datasets
+2. Decide if log(transform) was the best transformation for NO3 (use drew's email suggestion (MASS::boxcox(fittedmodel)))
+3. See if I removed outliers correctly/remove for other datasets - like should I remove them for each individual predictor or should I remove them based on residual value compared to the fitted value of the global model?
+4. Try to massage data to meet assumptions
+5. Maybe see if a better style of model is better (glm if a better residual structure is available for data, mixed model if location or something else is better to add a random effect, gam if different effects are present at different portions of the DOC curve, etc.)
+6. For key, figure out how to better label "DOC_Level" column to like "low, med, high"
+7. try to use echo = false to hide code chunks when knitting
+8. Get regressions just for just diff DOC values.  But this seems as easy as "filter(DOC_ug = x)" then lm on that new dataframe
+
+
