@@ -123,6 +123,14 @@ ggplot(NO3.lm.global.log.assumptions, aes(x = .fitted, y = .resid)) +
 
 #I will therefore remove it
 outlier.removed.log <- filter(NO3.lm.global.log.assumptions, .resid<7)
+
+#Checking on one additional outlier for P - not removing that outlier because it does not meet drew's standard for outlier removal.  Ask Yawen
+logNO3P<- lm(log(NITRATE_N_ug)~PTL_ug,data=outlier.removed.log)
+summary(logNO3P)
+NO3.p.log.assumptions <- augment(logNO3P, data=outlier.removed.log)
+ggplot(NO3.p.log.assumptions, aes(x = .fitted, y = .resid)) + 
+  geom_point(aes(color=STATE)) + 
+  geom_smooth()
 ```
 
 
@@ -192,6 +200,8 @@ logNO3P<- lm(log(NITRATE_N_ug)~PTL_ug,data=outlier.removed.log)
 summary(logNO3P)
 ggplot(outlier.removed.log, aes(x = PTL_ug, y = log(NITRATE_N_ug))) + geom_point(aes(color=STATE)) + 
   geom_smooth(method=lm)
+
+
 #c
 logNO3Ca<- lm(log(NITRATE_N_ug)~CALCIUM_ug,data=outlier.removed.log)
 summary(logNO3Ca)
