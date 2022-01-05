@@ -1,6 +1,7 @@
 ##Run script to create master dataset
 
 library(tidyverse)
+library(lubridate)
 
 
 #call in the data & ensure it is ready to use#####
@@ -23,6 +24,10 @@ ALL_CNP <- rbind(EU, temp)
 rm(EU)
 rm(temp)
 
+ALL_CNP <- ALL_CNP %>%
+  filter(NO3.as.N >0,
+         TP > 0,
+         DOC >0 )
 
 #some information about the dataset
 number.sites <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%

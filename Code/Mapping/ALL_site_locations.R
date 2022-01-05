@@ -29,7 +29,7 @@ ggplot() +
        title = "All sites") +
   theme(legend.title = element_blank())
 
-#plot lake sites
+#plot river/stream sites
 ggplot() +
   geom_sf(world, mapping = aes(), fill = "white") +
   geom_point(All_sites %>% filter(ECO_TYPE != "Lake"), mapping = aes(LON, LAT)) +
@@ -39,7 +39,7 @@ ggplot() +
        title = "Rivers/Streams") +
   theme(legend.title = element_blank())
 
-#plot river/stream sites
+#plot lake sites
 ggplot() +
   geom_sf(world, mapping = aes(), fill = "white") +
   geom_point(All_sites %>% filter(ECO_TYPE == "Lake"), mapping = aes(LON, LAT)) +
@@ -48,3 +48,5 @@ ggplot() +
        y = "Latitude",
        title = "Lakes") +
   theme(legend.title = element_blank())
+
+

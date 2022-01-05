@@ -1,0 +1,213 @@
+---
+title: "Quantile_Categories"
+date: "January 5, 2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, inlcude = FALSE, warning = FALSE}
+
+library(tidyverse)
+library(MetBrewer)
+library(sf)
+library(ggspatial)
+library(raster)
+library(rnaturalearth)
+library(rgeos)
+
+```
+
+## Preparing the data, looking at a boxplot
+
+```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
+setwd("C:/Users/linne/OneDrive - University of Wyoming/PhD_code/STOICH.Aim1")
+source("Code/masterData.R")
+
+medians <- ALL_CNP %>%
+  group_by(SITE_ID, LAT, LON, ECO_TYPE) %>%
+  summarise(m.DOC = median(DOC),
+            m.NO3 = median(NO3.as.N),
+            m.TP = median(TP))
+
+
+##boxplot of data####
+medians.box <- medians %>%
+  rename(DOC = m.DOC,
+         NO3 = m.NO3,
+         TP = m.TP) %>%
+  pivot_longer(5:7, names_to = "Analyte", values_to = "Median")
+  
+
+ggplot(medians.box) +
+  geom_boxplot(aes(Analyte, Median)) +
+  scale_y_log10()
+
+```
+
+## Checking out the quantiles
+
+```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
+QN <- summary(medians$m.NO3)
+QP <- summary(medians$m.TP)
+QC <- summary(medians$m.DOC)
+
+QN
+QP
+QC
+
+```
+
+## Creating categories based on quantiles
+
+*very low == < 1st quantile 
+*low == between 1st and 3rd quantile
+*medium == between 3rd and 4th quantile
+*very high == greater than 4th quantile
+
+```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
+CNP_categories <- medians %>%
+  mutate(NO3_limit = NA,
+         TP_limit = NA,
+         DOC_limit = NA) %>%
+  mutate(NO3_limit = ifelse(m.NO3 < QN[2], "very low", 
+                            ifelse(between(m.NO3, QN[2], QN[3]), "low",
+                                   ifelse(between(m.NO3, QN[3], QN[4]), "medium", 
+                                   ifelse(m.NO3 > QN[4], "high", NO3_limit))))) %>%
+  mutate(TP_limit = ifelse(m.TP < QP[2], "very low", 
+                            ifelse(between(m.TP, QP[2], QP[3]), "low",
+                                   ifelse(between(m.TP, QP[3], QP[4]), "medium", 
+                                          ifelse(m.TP > QP[4], "high", TP_limit)))))%>%
+  mutate(DOC_limit = ifelse(m.DOC < QC[2], "very low", 
+                           ifelse(between(m.DOC, QC[2], QC[3]), "low",
+                                  ifelse(between(m.DOC, QC[3], QC[4]), "medium", 
+                                         ifelse(m.DOC > QC[4], "high", DOC_limit)))))
+
+#create factors so that thresholds are put into an order that makes sense on figures
+CNP_categories$NO3_limit <- factor(CNP_categories$NO3_limit,
+                                      levels = c("high", "medium", "low", "very low"))
+CNP_categories$TP_limit <- factor(CNP_categories$TP_limit,
+                                   levels = c("high", "medium", "low", "very low"))
+CNP_categories$DOC_limit <- factor(CNP_categories$DOC_limit,
+                                   levels = c("high", "medium", "low", "very low"))
+
+
+```
+
+## Plotting relationships
+
+#### Full set of data
+
+```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
+
+ggplot(CNP_categories) +
+  geom_point(aes(m.DOC, m.NO3, color = TP_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  geom_hline(yintercept = QN[2]) + #adding lines to the plot for NO3, DOC "limits"
+  geom_hline(yintercept = QN[3]) +
+  geom_hline(yintercept = QN[4]) +
+  geom_vline(xintercept = QC[2]) +
+  geom_vline(xintercept = QC[3]) +
+  geom_vline(xintercept = QC[4]) +
+  theme_bw() +
+  labs(x = "DOC"~mg~L^-1,
+       y = "Nitrate (N)"~mg~L^-1)
+
+```
+
+#### "Zooming in" on the above figure
+
+```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
+
+ggplot(CNP_categories) +
+  geom_point(aes(m.DOC, m.NO3, color = TP_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  geom_hline(yintercept = QN[2]) + #adding lines to the plot for NO3, DOC "limits"
+  geom_hline(yintercept = QN[3]) +
+  geom_hline(yintercept = QN[4]) +
+  geom_vline(xintercept = QC[2]) +
+  geom_vline(xintercept = QC[3]) +
+  geom_vline(xintercept = QC[4]) +
+  theme_bw() +
+  labs(x = "DOC"~mg~L^-1,
+       y = "Nitrate (N)"~mg~L^-1) +
+  xlim(0,30) + ylim(0,10)
+
+```
+
+
+#### NO3-TP, showing the nitrate thresholds
+
+```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
+
+ggplot(CNP_categories) +
+  geom_point(aes(m.TP, m.NO3, color = NO3_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "NO3 Limits") +
+  theme_bw() +
+  labs(x = "TP"~mg~L^-1,
+       y = "Nitrate (N)"~mg~L^-1)
+
+```
+
+
+#### NO3-TP, showing the phosphorus thresholds
+
+```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
+
+ggplot(CNP_categories) +
+  geom_point(aes(m.TP, m.NO3, color = TP_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  theme_bw() +
+  labs(x = "TP"~mg~L^-1,
+       y = "Nitrate (N)"~mg~L^-1)
+
+```
+
+## Mapping -- any spatial observations?
+
+```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
+world <- ne_countries(returnclass = "sf")
+
+#TP data
+tp <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(CNP_categories, mapping = aes(LON, LAT, color = TP_limit)) +
+  scale_color_manual(values = met.brewer("Egypt")) +
+  theme_bw() +
+  labs(x = "Longitude",
+       y = "Latitude",
+       title = "TP") +
+  theme(legend.title = element_blank()) +
+  coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
+
+
+#NO3 data
+no3 <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(CNP_categories, mapping = aes(LON, LAT, color = NO3_limit)) +
+  scale_color_manual(values = met.brewer("Egypt")) +
+  theme_bw() +
+  labs(x = "Longitude",
+       y = "Latitude",
+       title = "NO3") +
+  theme(legend.title = element_blank()) +
+  coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
+
+
+#DOC data
+doc <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(CNP_categories, mapping = aes(LON, LAT, color = DOC_limit)) +
+  scale_color_manual(values = met.brewer("Egypt")) +
+  theme_bw() +
+  labs(x = "Longitude",
+       y = "Latitude",
+       title = "DOC") +
+  theme(legend.title = element_blank()) +
+  coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
+
+tp
+no3
+doc
+
+```
