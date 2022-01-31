@@ -57,7 +57,7 @@ CNP_logN$NTransform <- (log(CNP_logN$NO3.as.N))
 CNP_logN_HighTP <- filter(CNP_logN, TP > 0.03)
 
 ggplot(CNP_logN %>% filter(ECO_TYPE != "Lake")) +
-  geom_point(aes(DOC, NTransform, color = TP * 1000)) +
+  geom_point(aes(DOC, NTransform, color = TP * 1000), alpha = .5) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
   theme_bw() +
   labs(title = "Rivers/Streams - all data",
