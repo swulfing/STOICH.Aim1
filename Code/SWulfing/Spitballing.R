@@ -11,6 +11,8 @@ source("Code/masterData.R")
 
 #plotting all the data#####
 
+# Graphing with different transformations ---------------------------------
+
 ggplot(ALL_CNP %>% filter(ECO_TYPE == "Lake")) +
   geom_point(aes(DOC, NO3.as.N, color = TP * 1000)) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
@@ -74,7 +76,8 @@ ggplot(CNP_logN_HighTP %>% filter(ECO_TYPE != "Lake")) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
 
-#Now to see if any one dataset can be of help
+# Separating Datasets -----------------------------------------------------
+
 #LAGOS
 LAGOS <- (read.csv("Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
@@ -171,7 +174,10 @@ ggplot(NRC %>% filter(ECO_TYPE != "Lake")) +
        x = "DOC"~(mg~L^-1)) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
-#LTER-Note: this one feels very scattered. look into further
+
+# LTER --------------------------------------------------------------------
+
+#Note: this one feels very scattered. look into further
 LTER <- (read.csv("Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   filter(year(DATE_COL) >= 2000)
