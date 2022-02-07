@@ -91,7 +91,8 @@ all_data <- lagos$epi_nutr |>
           UNIT = ifelse(VARIABLE %in% c('secchi'), 'm', UNIT),
           UNIT = ifelse(VARIABLE %in% c('dkn', 'nh4', 'no2', 'tdn', 'tkn', 'tn', 'ton'), 'ug/L as N', UNIT),
           UNIT = ifelse(VARIABLE %in% c('toc'), 'ug/L as C', UNIT),
-          UNIT = ifelse(VARIABLE %in% c('tdp', 'tp'), 'ug/L as P', UNIT))
+          UNIT = ifelse(VARIABLE %in% c('tdp', 'tp'), 'ug/L as P', UNIT)) |>
+   drop_na(RESULT) #get rid of any empty cells
 
  #just double check we have all the sites
  check.2 <- all_data2 |>
