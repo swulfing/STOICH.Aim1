@@ -2,75 +2,75 @@ library(tidyverse)
 library(lubridate)
 #LTER datasets
 
-#NTL LTER -- 
-a <- read.csv("C:/Users/lrock1/Downloads/chemphys.csv")
-a.1 <- a %>%
-  mutate(across(everything(),~replace(., .<0,NA))) %>%
-  rename_at(vars(doc:totpuf),~str_c("value_",.)) %>%
-  rename_at(vars(flagdoc:flagtotpuf),~str_c("error_",.)) %>%
-  rename_all(~str_replace_all(.,"flag","")) %>%
-  pivot_longer(-(lakeid:sampledate),names_to =c('.value','item'),names_sep ='_') %>%
-  filter(!is.na(value)&value>=0) %>%
-  filter(!str_detect(error,'A|K|L')|is.na(error)) # Remove suspect data
-# A sample suspect
-# L data and blind differ by more than 15%
-# K data suspect
-a.2 <-a.1 %>%
-  dplyr::select(-error) %>%
-  group_by(sampledate, lakeid, item) %>%
-  mutate(result = mean(value)) %>%
-  ungroup() %>%
-  dplyr::select(-value) %>%
-  distinct() %>%
-  pivot_wider(id_cols = c(sampledate, lakeid), names_from = item, values_from = result) %>%
-  drop_na() %>%
-  mutate(no3no2 = no3no2 / 1000,
-         totpuf =  totpuf / 1000) %>%
-  mutate(UNITS = "mg/L",
-         sampledate = as.Date(sampledate),
-         ECO_TYPE = "Lake") %>%
-  rename(DATE_COL = sampledate, 
-         `NO3 as N` = no3no2,
-         DOC = doc,
-         TP = totpuf) %>%
-  dplyr::select(-totpf) %>%
-  filter(DATE_COL >= "2012-01-01") #avoid overlap with LAGOS
-
-#NTL lakes need to have same site id as LAGOS lakes becuase data prior to 2012 is in LAGOS
-library(LAGOSNE)
-#lagosne_get()
-lagos <- lagosne_load()
-LTER_sites <- lagos$lakes_limno %>%
-  filter(meandepthsource == "WI_LTER_SECCHI") %>%
-  dplyr::select(lagoslakeid, nhd_lat, nhd_long, lagosname1) %>%
-  mutate(SITE_ID = paste("LAGOS_",lagoslakeid, sep = "")) %>%
-  rename(LAT = nhd_lat,
-         LON = nhd_long) %>%
-  mutate(lakeid = NA,
-         lakeid = ifelse(lagoslakeid == 4625, "AL",
-                         ifelse(lagoslakeid == 5248, "BM",
-                                ifelse(lagoslakeid == 4664, "TR",
-                                       ifelse(lagoslakeid == 906, "SP",
-                                              ifelse(lagoslakeid == 827, "WI",
-                                                     ifelse(lagoslakeid == 5371, "ME",
-                                                            ifelse(lagoslakeid == 120948, "TB", 
-                                                                   ifelse(lagoslakeid == 4559, "MO",
-                                                                          ifelse(lagoslakeid == 2746, "FI",
-                                                                                 ifelse(lagoslakeid == 4722, "CR", lakeid)))))))))))
-#final for this one
-a.3 <- left_join(a.2, LTER_sites) %>%
-  drop_na() %>%
-  dplyr::select(-lakeid, -lagoslakeid, -lagosname1)
-
-
-
+# #NTL LTER -- no phosphate 
+# a <- read.csv("Data/LTER_data_raw/chemphys.csv")
+# a.1 <- a %>%
+#   mutate(across(everything(),~replace(., .<0,NA))) %>%
+#   rename_at(vars(ph:drp_sloh),~str_c("value_",.)) %>%
+#   rename_at(vars(flagph:flagdrp_sloh),~str_c("error_",.)) %>%
+#   rename_all(~str_replace_all(.,"flag","")) %>%
+#   pivot_longer(-(lakeid:sampledate),names_to =c('.value','item'),names_sep ='_') %>%
+#   filter(!is.na(value)&value>=0) %>%
+#   filter(!str_detect(error,'A|K|L')|is.na(error)) # Remove suspect data
+# # A sample suspect
+# # L data and blind differ by more than 15%
+# # K data suspect
+# a.2 <-a.1 %>%
+#   dplyr::select(-error) %>%
+#   group_by(sampledate, lakeid, item) %>%
+#   mutate(result = mean(value)) %>%
+#   ungroup() %>%
+#   dplyr::select(-value) %>%
+#   distinct() %>%
+#   pivot_wider(id_cols = c(sampledate, lakeid), names_from = item, values_from = result) %>%
+#   drop_na() %>%
+#   mutate(`NO3 as N` = no3no2 / 1000,
+#          `PO4 as P` =  totpuf / 1000) %>%
+#   mutate(UNITS = "mg/L",
+#          sampledate = as.Date(sampledate),
+#          ECO_TYPE = "Lake") %>%
+#   rename(DATE_COL = sampledate, 
+#          `NO3 as N` = no3no2,
+#          DOC = doc,
+#          TP = totpuf) %>%
+#   dplyr::select(-totpf) %>%
+#   filter(DATE_COL >= "2012-01-01") #avoid overlap with LAGOS
+# 
+# #NTL lakes need to have same site id as LAGOS lakes becuase data prior to 2012 is in LAGOS
+# library(LAGOSNE)
+# #lagosne_get()
+# lagos <- lagosne_load()
+# LTER_sites <- lagos$lakes_limno %>%
+#   filter(meandepthsource == "WI_LTER_SECCHI") %>%
+#   dplyr::select(lagoslakeid, nhd_lat, nhd_long, lagosname1) %>%
+#   mutate(SITE_ID = paste("LAGOS_",lagoslakeid, sep = "")) %>%
+#   rename(LAT = nhd_lat,
+#          LON = nhd_long) %>%
+#   mutate(lakeid = NA,
+#          lakeid = #ifelse(#lagoslakeid == 4625, "AL",
+#                          #ifelse(lagoslakeid == 5248, "BM",
+#                                 #ifelse(lagoslakeid == 4664, "TR",
+#                                        #ifelse(lagoslakeid == 906, "SP",
+#                                               ifelse(lagoslakeid == 827, "WI",
+#                                                      ifelse(lagoslakeid == 5371, "ME",
+#                                                            # ifelse(lagoslakeid == 120948, "TB", 
+#                                                                    ifelse(lagoslakeid == 4559, "MO",
+#                                                                           ifelse(lagoslakeid == 2746, "FI",lakeid)))))
+#                                                                                 # ifelse(lagoslakeid == 4722, "CR", lakeid)))))))))))
+# #final for this one
+# a.3 <- left_join(a.2, LTER_sites) %>%
+#   drop_na() %>%
+#   dplyr::select(-lakeid, -lagoslakeid, -lagosname1)
+# 
 
 
-b <- read.csv("C:/Users/lrock1/Downloads/knb-lter-nwt.213.1/soddsolu.mw.data.csv")
+
+
+b <- read.csv("Data/LTER_data_raw/knb-lter-nwt.213.1/soddsolu.mw.data.csv")
 b.1 <- b %>%
-  dplyr::select(LTER_site, samp_loc, date, NO3., TP, DOC) %>%
+  dplyr::select(LTER_site, samp_loc, date, NO3., PO4..., DOC) %>%
   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
-  mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
+  mutate(PO4... = as.numeric(PO4...) * (94.9714/1000) * 0.3261) %>% #ueq PO4/L to mg P/L
   mutate(DOC = as.numeric(DOC)) %>%
   drop_na() %>%
   mutate(UNITS = "mg/L",
@@ -84,34 +84,35 @@ b.1 <- b %>%
   group_by(DATE_COL) %>%
   mutate(`NO3 as N` = mean(NO3.),
          DOC = mean(DOC),
-         TP = mean(TP)) %>%
+         `PO4 as P` = mean(PO4...)) %>%
   ungroup() %>%
-  dplyr::select(-NO3.) %>%
+  dplyr::select(-NO3., - PO4...) %>%
   distinct()
 
-c <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.110.7/inlesolu.nc.data.csv")
-c.1 <- c %>%
-  dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
-  mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
-  mutate(TP = as.numeric(TP) * 123.88/1000) %>% #umol/L to mg/L
-  mutate(DOC = as.numeric(DOC)) %>%
-  drop_na() %>%
-  mutate(UNITS = "mg/L",
-         SITE_ID = "NWT_Albion_Inlet",
-         ECO_TYPE = "River/Stream",
-         LAT = 40.047178,
-         LON = -105.607123) %>%
-  dplyr::select(-LTER_site) %>%
-  rename(DATE_COL = date) %>%
-  mutate(DATE_COL = as.Date(DATE_COL)) %>%
-  group_by(DATE_COL) %>%
-  mutate(`NO3 as N` = mean(NO3.),
-         DOC = mean(DOC),
-         TP = mean(TP)) %>%
-  ungroup() %>%
-  dplyr::select(-NO3.) %>%
-  distinct() %>%
-  filter(year(DATE_COL) >= 2000)
+# NO phosphate
+#c <- read.csv("Data/LTER_data_raw/knb-lter-nwt.110.7/inlesolu.nc.data.csv")
+# c.1 <- c %>%
+#   dplyr::select(LTER_site, date, NO3., TP, DOC) %>%
+#   mutate(NO3. = as.numeric(NO3.) * (62.0049/1000) * 0.2259) %>% #ueq NO3/L to mg N/L
+#   mutate(PO4... = as.numeric(PO4...) * (94.9714/1000) * 0.3261) %>% #ueq PO4/L to mg P/L
+#   mutate(DOC = as.numeric(DOC)) %>%
+#   drop_na() %>%
+#   mutate(UNITS = "mg/L",
+#          SITE_ID = "NWT_Albion_Inlet",
+#          ECO_TYPE = "River/Stream",
+#          LAT = 40.047178,
+#          LON = -105.607123) %>%
+#   dplyr::select(-LTER_site) %>%
+#   rename(DATE_COL = date) %>%
+#   mutate(DATE_COL = as.Date(DATE_COL)) %>%
+#   group_by(DATE_COL) %>%
+#   mutate(`NO3 as N` = mean(NO3.),
+#          DOC = mean(DOC),
+#          `PO4 as P` = mean(PO4...)) %>%
+#   ungroup() %>%
+#   dplyr::select(-NO3., - PO4...) %>%
+#   distinct() %>%
+#   filter(year(DATE_COL) >= 2000)
 
 d <- read.csv("C:/Users/linne/OneDrive/Desktop/done_lter/knb-lter-nwt.9.4/sad007solu.mw.data.csv")
 d.1 <- d %>%
