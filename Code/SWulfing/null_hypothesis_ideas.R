@@ -23,14 +23,25 @@ model_2013 <- lm(NITRATE_N_RESULT~DOC_RESULT, data = test_data)
 summary(model_2013)
 
 ggplot(test_data) +
-  geom_point(aes(DOC_RESULT, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
+  geom_point(aes(log(PTL_RESULT), NITRATE_N_RESULT, color = DOC_RESULT * 1000)) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
   theme_bw() +
   labs(title = "NRSA 2013",
        x = "DOC"~(mg~L^-1)) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
-
+#Graphing against phosporus shows htat high vals of ptl do dictate some pattern of Nitrate
+#hist(test_data$NITRATE_N_RESULT) Definitely not normal. poisson but continuous?
+#glm model and then mess with distributions
 ggplotRegression(lm( NITRATE_N_RESULT ~ DOC_RESULT, data = test_data))
+
+model1 <- lm( NITRATE_N_RESULT ~ DOC_RESULT + PTL_RESULT, data = test_data)
+summary(model1)
+cor(test_data$DOC_RESULT, test_data$PTL_RESULT)
+plot(model1) #This will give you residtuals. A good thing to understand. Seeing patterns in residuals is bad. Confirms we need different error dist and then do model selection
+
+#Try a bunch of chemistry with this to make sure not significant (make sure that they're not correlated with eachother)
+#Model selection next to penalize number of params in model (AIC)
+
 
 #Taking Log of Data
 test_dataLOGS <- test_data %>%
