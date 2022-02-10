@@ -21,21 +21,21 @@ library(rgeos)
 ## Preparing the data, looking at a boxplot
 
 ```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
-setwd("C:/Users/linne/OneDrive - University of Wyoming/PhD_code/STOICH.Aim1")
+setwd("C:/Users/linne/OneDrive - University of Wyoming/PhD_code/STOICH_Aim1")
 source("Code/masterData.R")
 
 medians <- ALL_CNP %>%
   group_by(SITE_ID, LAT, LON, ECO_TYPE) %>%
   summarise(m.DOC = median(DOC),
             m.NO3 = median(NO3.as.N),
-            m.TP = median(TP))
+            m.PO4.as.P = median(PO4.as.P))
 
 
 ##boxplot of data####
 medians.box <- medians %>%
   rename(DOC = m.DOC,
          NO3 = m.NO3,
-         TP = m.TP) %>%
+         PO4.as.P = m.PO4.as.P) %>%
   pivot_longer(5:7, names_to = "Analyte", values_to = "Median")
   
 
@@ -49,7 +49,7 @@ ggplot(medians.box) +
 
 ```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
 QN <- summary(medians$m.NO3)
-QP <- summary(medians$m.TP)
+QP <- summary(medians$m.PO4.as.P)
 QC <- summary(medians$m.DOC)
 
 QN
@@ -68,16 +68,16 @@ QC
 ```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
 CNP_categories <- medians %>%
   mutate(NO3_limit = NA,
-         TP_limit = NA,
+         PO4.as.P_limit = NA,
          DOC_limit = NA) %>%
   mutate(NO3_limit = ifelse(m.NO3 < QN[2], "very low", 
                             ifelse(between(m.NO3, QN[2], QN[3]), "low",
                                    ifelse(between(m.NO3, QN[3], QN[4]), "medium", 
                                    ifelse(m.NO3 > QN[4], "high", NO3_limit))))) %>%
-  mutate(TP_limit = ifelse(m.TP < QP[2], "very low", 
-                            ifelse(between(m.TP, QP[2], QP[3]), "low",
-                                   ifelse(between(m.TP, QP[3], QP[4]), "medium", 
-                                          ifelse(m.TP > QP[4], "high", TP_limit)))))%>%
+  mutate(PO4.as.P_limit = ifelse(m.PO4.as.P < QP[2], "very low", 
+                            ifelse(between(m.PO4.as.P, QP[2], QP[3]), "low",
+                                   ifelse(between(m.PO4.as.P, QP[3], QP[4]), "medium", 
+                                          ifelse(m.PO4.as.P > QP[4], "high", PO4.as.P_limit)))))%>%
   mutate(DOC_limit = ifelse(m.DOC < QC[2], "very low", 
                            ifelse(between(m.DOC, QC[2], QC[3]), "low",
                                   ifelse(between(m.DOC, QC[3], QC[4]), "medium", 
@@ -86,7 +86,7 @@ CNP_categories <- medians %>%
 #create factors so that thresholds are put into an order that makes sense on figures
 CNP_categories$NO3_limit <- factor(CNP_categories$NO3_limit,
                                       levels = c("high", "medium", "low", "very low"))
-CNP_categories$TP_limit <- factor(CNP_categories$TP_limit,
+CNP_categories$PO4.as.P_limit <- factor(CNP_categories$PO4.as.P_limit,
                                    levels = c("high", "medium", "low", "very low"))
 CNP_categories$DOC_limit <- factor(CNP_categories$DOC_limit,
                                    levels = c("high", "medium", "low", "very low"))
@@ -101,8 +101,8 @@ CNP_categories$DOC_limit <- factor(CNP_categories$DOC_limit,
 ```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
 
 ggplot(CNP_categories) +
-  geom_point(aes(m.DOC, m.NO3, color = TP_limit)) +
-  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  geom_point(aes(m.DOC, m.NO3, color = PO4.as.P_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "PO4.as.P Limits") +
   geom_hline(yintercept = QN[2]) + #adding lines to the plot for NO3, DOC "limits"
   geom_hline(yintercept = QN[3]) +
   geom_hline(yintercept = QN[4]) +
@@ -120,8 +120,8 @@ ggplot(CNP_categories) +
 ```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
 
 ggplot(CNP_categories) +
-  geom_point(aes(m.DOC, m.NO3, color = TP_limit)) +
-  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  geom_point(aes(m.DOC, m.NO3, color = PO4.as.P_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "PO4.as.P Limits") +
   geom_hline(yintercept = QN[2]) + #adding lines to the plot for NO3, DOC "limits"
   geom_hline(yintercept = QN[3]) +
   geom_hline(yintercept = QN[4]) +
@@ -136,29 +136,29 @@ ggplot(CNP_categories) +
 ```
 
 
-#### NO3-TP, showing the nitrate thresholds
+#### NO3-PO4.as.P, showing the nitrate thresholds
 
 ```{r, warning = F, message = F, fig.width = 6.25, fig.height = 4.25}
 
 ggplot(CNP_categories) +
-  geom_point(aes(m.TP, m.NO3, color = NO3_limit)) +
+  geom_point(aes(m.PO4.as.P, m.NO3, color = NO3_limit)) +
   scale_color_manual(values = met.brewer("Egypt"), "NO3 Limits") +
   theme_bw() +
-  labs(x = "TP"~mg~L^-1,
+  labs(x = "PO4.as.P"~mg~L^-1,
        y = "Nitrate (N)"~mg~L^-1)
 
 ```
 
 
-#### NO3-TP, showing the phosphorus thresholds
+#### NO3-PO4.as.P, showing the phosphorus thresholds
 
 ```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
 
 ggplot(CNP_categories) +
-  geom_point(aes(m.TP, m.NO3, color = TP_limit)) +
-  scale_color_manual(values = met.brewer("Egypt"), "TP Limits") +
+  geom_point(aes(m.PO4.as.P, m.NO3, color = PO4.as.P_limit)) +
+  scale_color_manual(values = met.brewer("Egypt"), "PO4.as.P Limits") +
   theme_bw() +
-  labs(x = "TP"~mg~L^-1,
+  labs(x = "PO4.as.P"~mg~L^-1,
        y = "Nitrate (N)"~mg~L^-1)
 
 ```
@@ -168,15 +168,15 @@ ggplot(CNP_categories) +
 ```{r, warning = F, message = F,  fig.width = 6.25, fig.height = 4.25}
 world <- ne_countries(returnclass = "sf")
 
-#TP data
-tp <- ggplot() +
+#PO4.as.P data
+PO4.as.P <- ggplot() +
   geom_sf(world, mapping = aes(), fill = "white") +
-  geom_point(CNP_categories, mapping = aes(LON, LAT, color = TP_limit)) +
+  geom_point(CNP_categories, mapping = aes(LON, LAT, color = PO4.as.P_limit)) +
   scale_color_manual(values = met.brewer("Egypt")) +
   theme_bw() +
   labs(x = "Longitude",
        y = "Latitude",
-       title = "TP") +
+       title = "PO4.as.P") +
   theme(legend.title = element_blank()) +
   coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
 
@@ -206,7 +206,7 @@ doc <- ggplot() +
   theme(legend.title = element_blank()) +
   coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
 
-tp
+PO4.as.P
 no3
 doc
 
