@@ -1,0 +1,84 @@
+---
+title: "Null Hypothesis"
+author: "Sophie Wulfing"
+date: "2/12/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(tidyverse)
+
+setwd("~/STOICH.Aim1/Code/SWulfing")
+
+
+ggplotRegression <- function (fit) {
+  
+  require(ggplot2)
+  
+  ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    geom_point() +
+    stat_smooth(method = "lm", col = "red") +
+    labs(title = paste("Adj R2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       "Intercept =",signif(fit$coef[[1]],5 ),
+                       " Slope =",signif(fit$coef[[2]], 5),
+                       " P =",signif(summary(fit)$coef[2,4], 5)))
+}
+
+test_data <- data.frame(read.csv("ChemData_NLArs2013.csv"))
+```
+
+## Note
+
+This is what I've come up with regarding how to tackle the null hypothesis. I know we've taken NLA data out of circulation but I'm going to continue to use it here only because I was using it earlier as an exampel set and I wanted to get feedback from you all about the methods and learn a little more about the changes to data before I applied it to other datasets.
+
+```{r data}
+model_2013 <- lm(NITRATE_N_RESULT~DOC_RESULT, data = test_data)
+summary(model_2013)
+
+test_dataLOGS <- test_data %>%
+  mutate(log_Nitrate = log(NITRATE_N_RESULT)) %>%
+  mutate(log_TP = log(PTL_RESULT)) %>%
+  mutate(log_DOC = log(DOC_RESULT))
+                                   # Duplicate data
+test_dataLOGS$log_Nitrate[is.na(test_dataLOGS$log_Nitrate) | test_dataLOGS$log_Nitrate == "-Inf"] <- NA
+
+quantile(test_dataLOGS$DOC_RESULT)
+
+q4 <- quantile(test_data$DOC_RESULT)[4]
+q5 <- quantile(test_data$DOC_RESULT)[5]
+
+lowDOC_data <- test_data %>%
+  filter(DOC_RESULT < quantile(test_data$DOC_RESULT)[4])
+
+par(mfrow = c(1,2))
+p <- ggplot(test_dataLOGS) +
+  geom_point(aes(DOC_RESULT, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
+  scale_color_viridis_c("TP"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "NRSA 2013",
+       x = "DOC", y = "NITRATE")
+p + geom_vline(aes(xintercept = q4)) + geom_vline(aes(xintercept = q5))
+
+
+ggplot(lowDOC_data) +
+  geom_point(aes(DOC_RESULT, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
+  scale_color_viridis_c("TP"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "NRSA 2013",
+       x = "DOC", y = "NITRATE")
+```
+
+## Note:
+For now I am using the 4the quantile of this specific dataset. I realize that will change both where the quantile is/where we choose to cut off data
+
+
+```{r to log or not to log, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
