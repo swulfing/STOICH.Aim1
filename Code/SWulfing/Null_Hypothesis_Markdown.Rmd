@@ -34,12 +34,11 @@ test_data <- data.frame(read.csv("ChemData_NLArs2013.csv"))
 
 ## Note
 
-This is what I've come up with regarding how to tackle the null hypothesis. I know we've taken NLA data out of circulation but I'm going to continue to use it here only because I was using it earlier as an exampel set and I wanted to get feedback from you all about the methods and learn a little more about the changes to data before I applied it to other datasets.
+This is what I've come up with regarding how to tackle the null hypothesis. I know we've taken NLA data out of circulation but I'm going to continue to use it here only because I was using it earlier as an example set and I wanted to get feedback from you all about the methods and learn a little more about the changes to data before I applied it to other datasets.
+
+Basically what I plan on doing is trying to linearize data to fit a model to it (I know we've talked about that beore). Once we talk about data, I was going to add other aspects of the water quality as covariates and see what would be the most relevant. I'm pretty new to all this stuff (finally taking a class on it this semester) so I'm open to critiques!
 
 ```{r data}
-model_2013 <- lm(NITRATE_N_RESULT~DOC_RESULT, data = test_data)
-summary(model_2013)
-
 test_dataLOGS <- test_data %>%
   mutate(log_Nitrate = log(NITRATE_N_RESULT)) %>%
   mutate(log_TP = log(PTL_RESULT)) %>%
@@ -49,18 +48,18 @@ test_dataLOGS$log_Nitrate[is.na(test_dataLOGS$log_Nitrate) | test_dataLOGS$log_N
 
 quantile(test_dataLOGS$DOC_RESULT)
 
-q4 <- quantile(test_data$DOC_RESULT)[4]
-q5 <- quantile(test_data$DOC_RESULT)[5]
+q4 <- quantile(test_dataLOGS$DOC_RESULT)[4]
+q5 <- quantile(test_dataLOGS$DOC_RESULT)[5]
 
-lowDOC_data <- test_data %>%
+lowDOC_data <- test_dataLOGS %>%
   filter(DOC_RESULT < quantile(test_data$DOC_RESULT)[4])
 
 par(mfrow = c(1,2))
-p <- ggplot(test_dataLOGS) +
+p <- ggplot(test_data) +
   geom_point(aes(DOC_RESULT, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
   theme_bw() +
-  labs(title = "NRSA 2013",
+  labs(title = "NRSA 2013-all",
        x = "DOC", y = "NITRATE")
 p + geom_vline(aes(xintercept = q4)) + geom_vline(aes(xintercept = q5))
 
@@ -69,7 +68,7 @@ ggplot(lowDOC_data) +
   geom_point(aes(DOC_RESULT, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
   theme_bw() +
-  labs(title = "NRSA 2013",
+  labs(title = "NRSA 2013-low DOC only",
        x = "DOC", y = "NITRATE")
 ```
 
@@ -78,7 +77,45 @@ For now I am using the 4the quantile of this specific dataset. I realize that wi
 
 
 ```{r to log or not to log, echo=FALSE}
-plot(pressure)
+ggplot(lowDOC_data) +
+  geom_point(aes(log_DOC, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
+  scale_color_viridis_c("TP"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-log DOC",
+       x = "DOC", y = "NITRATE")
+
+ggplot(lowDOC_data) +
+  geom_point(aes(DOC_RESULT, log_Nitrate, color = PTL_RESULT * 1000)) +
+  scale_color_viridis_c("TP"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-log Nitrate",
+       x = "DOC", y = "NITRATE")
+
+ggplot(lowDOC_data) +
+  geom_point(aes(log_DOC, log_Nitrate, color = PTL_RESULT * 1000)) +
+  scale_color_viridis_c("TP"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-log both",
+       x = "DOC", y = "NITRATE")
+
+model_2013 <- lm(NITRATE_N_RESULT~DOC_RESULT, data = lowDOC_data)
+summary(model_2013)
+plot(model_2013)
+
+model_DOClog <- lm(NITRATE_N_RESULT~log_DOC, data = lowDOC_data)
+summary(model_DOClog)
+plot(model_DOClog)
+
+model_Nitratelog <- lm(log_Nitrate~DOC_RESULT, data = lowDOC_data)
+summary(model_DOClog)
+plot(model_DOClog)
+
+model_logs <- lm(NITRATE_N_RESULT~log_DOC, data = lowDOC_data)
+summary(model_DOClog)
+plot(model_DOClog)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+

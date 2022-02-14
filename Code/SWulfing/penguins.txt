@@ -1,0 +1,21 @@
+
+    model {
+    
+    # Priors
+    beta0 ~ dnorm(0,0.01)		# precision inverse of variance
+    beta1 ~ dnorm(0,0.01)
+    precision <- 1 / variance	
+    variance <- sigma^2
+    sigma ~ dunif(0,15)
+    
+    
+    # Likelihood
+    for(i in 1:nobs){
+    penguins[i] ~ dnorm(mew[i], precision)
+    
+    mew[i] <- beta0 + beta1 * krill[i]
+    
+    } # i loop
+    
+    } # end of the model
+    
