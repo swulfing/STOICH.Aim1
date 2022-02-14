@@ -53,8 +53,5 @@ Soranno, P.A., L.C. Bacon, M. Beauchene, K.E. Bednar, E.G. Bissell, C.K. Boudrea
 Stachelek J., Oliver S. 2019. LAGOSNE: Interface to the Lake Multi-scaled Geospatial and Temporal Database. R package version 2.0.1.
 https://cran.r-project.org/package=LAGOSNE
 
-U.S. Environmental Protection Agency. 2006-2020. National Aquatic Resource Surveys. National Aquatic Resource Surveys. (data and metadata files). Available from U.S. EPA web page: https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys. Date accessed: YYYY-MM-DD.
- 
 Williams, M. 2021. Stream water chemistry data for Saddle stream (007), 1994 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/d8a48465249f41936816a5d0d1d22e87 (Accessed 2021-12-13).
-  
   
