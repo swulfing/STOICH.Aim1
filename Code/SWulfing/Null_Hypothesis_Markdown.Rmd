@@ -45,6 +45,7 @@ test_dataLOGS <- test_data %>%
   mutate(log_DOC = log(DOC_RESULT))
                                    # Duplicate data
 test_dataLOGS$log_Nitrate[is.na(test_dataLOGS$log_Nitrate) | test_dataLOGS$log_Nitrate == "-Inf"] <- NA
+test_dataLOGS$log_TP[is.na(test_dataLOGS$log_TP) | test_dataLOGS$log_TP == "-Inf"] <- NA
 
 quantile(test_dataLOGS$DOC_RESULT)
 
@@ -76,7 +77,7 @@ ggplot(lowDOC_data) +
 For now I am using the 4the quantile of this specific dataset. I realize that will change both where the quantile is/where we choose to cut off data
 
 
-```{r to log or not to log, echo=FALSE}
+```{r to log or not to log, echo=FALSE, eval = FALSE}
 ggplot(lowDOC_data) +
   geom_point(aes(log_DOC, NITRATE_N_RESULT, color = PTL_RESULT * 1000)) +
   scale_color_viridis_c("TP"~(mu~g~L^-1)) +
@@ -119,7 +120,53 @@ summary(model_logs)
 plot(model_logs)
 ```
 
+```{r wait do it again with ptl lol, echo=FALSE}
 
+ggplot(lowDOC_data) +
+  geom_point(aes(NITRATE_N_RESULT,  PTL_RESULT)) +
+  theme_bw() +
+  labs(title = "NRSA 2013",
+       x = "NITRATE", y = "PTL")
+
+ggplot(lowDOC_data) +
+  geom_point(aes(log_Nitrate,  PTL_RESULT)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-Log Nitrate",
+       x = "NITRATE", y = "PTL")
+
+ggplot(lowDOC_data) +
+  geom_point(aes(NITRATE_N_RESULT,  log_TP)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-log TP",
+       x = "NITRATE", y = "PTL")
+
+ggplot(lowDOC_data) +
+  geom_point(aes(log_Nitrate,  log_TP)) +
+  theme_bw() +
+  labs(title = "NRSA 2013-both Logs",
+       x = "NITRATE", y = "PTL")
+
+
+par(mfrow=c(2,2))
+model_2013 <- lm(PTL_RESULT~NITRATE_N_RESULT, data = lowDOC_data)
+summary(model_2013)
+plot(model_2013)
+
+par(mfrow=c(2,2))
+model_Nitratelog <- lm(PTL_RESULT~log_Nitrate, data = lowDOC_data)
+summary(model_Nitratelog)
+plot(model_Nitratelog)
+
+par(mfrow=c(2,2))
+model_TPlog <- lm(log_TP~NITRATE_N_RESULT, data = lowDOC_data)
+summary(model_TPlog)
+plot(model_TPlog)
+
+par(mfrow=c(2,2))
+model_logs <- lm(log_TP~log_Nitrate, data = lowDOC_data)
+summary(model_logs)
+plot(model_logs)
+```
 
 
 
