@@ -15,8 +15,6 @@ Brooks, C.N., A.M. Marcarelli, C.J. Huckins, and A. Grimm. 2021. Water chemistry
  
 Caine, T. 2019. Stream water chemistry data for Lake Albion inlet, 1984 - 2004. ver 7. Environmental Data Initiative. https://doi.org/10.6073/pasta/9f5908f3c9853be7aa48a3ea8971d301 (Accessed 2021-12-13).
 
-Caine, T. 2019. Stream water chemistry data for Lake Albion spillway, 1984 - 2004. ver 6. Environmental Data Initiative. https://doi.org/10.6073/pasta/389359d3111475da818bfec5b7b925a2 (Accessed 2021-12-13).
-
 Caine, T. 2019. Stream water chemistry data for Watershed Flume site, 2005 - ongoing. ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/7624d220c8ab0e7caca719320fe7f36f (Accessed 2021-12-13).
      
 Caine, T. 2021. Stream water chemistry data for Albion site, 1982 - ongoing. ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/59396e2b8d291badcfb140425e1b3a38 (Accessed 2021-12-13).
@@ -40,8 +38,6 @@ Government of Canada: National Long-term Water Quality Monitoring Data (https://
 National Ecological Observatory Network. 2021. Data Product DP1.20093.001, Chemical properties of surface water. Provisional data downloaded from https://data.neonscience.org on October 26, 2021. Battelle, Boulder, CO, USA NEON. 2021.
 
 Niwot Ridge LTER and N. Caine. 2018. Stream water chemistry data for Green Lake 1, 1985 - 2010. ver 10. Environmental Data Initiative. https://doi.org/10.6073/pasta/ea17637406c07cd69b8de8ca263799ca (Accessed 2021-12-13).
- 
-N. Lead PI, J. Magnuson, S. Carpenter, and E. Stanley. 2020. North Temperate Lakes LTER: Chemical Limnology of Primary Study Lakes: Nutrients, pH and Carbon 1981 - current ver 52. Environmental Data Initiative. https://doi.org/10.6073/pasta/8359d27bbd91028f222d923a7936077d (Accessed 2021-12-13). **data after 2012 to not overlap with LAGOS**
 
 Powers, S. and E. Stanley. 2014. River Nutrient Uptake and Transport at North Temperate Lakes LTER (2005-2011) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/16d2a519bcb283fedb7efc605512e870 (Accessed 2021-12-13).
   
@@ -57,14 +53,7 @@ Stachelek J., Oliver S. 2019. LAGOSNE: Interface to the Lake Multi-scaled Geospa
 https://cran.r-project.org/package=LAGOSNE
 
 U.S. Environmental Protection Agency. 2006-2020. National Aquatic Resource Surveys. National Aquatic Resource Surveys. (data and metadata files). Available from U.S. EPA web page: https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys. Date accessed: YYYY-MM-DD.
-
-Williams, M. 2019. Stream water chemistry data for Soddie stream, 1999-2013. ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/49ace263067caf02c0b27c8b6a877683 (Accessed 2021-12-13).
  
 Williams, M. 2021. Stream water chemistry data for Saddle stream (007), 1994 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/d8a48465249f41936816a5d0d1d22e87 (Accessed 2021-12-13).
   
   
-**Data that may not be used**
-
-Richey, J.E., R.L. Victoria, J.I. Hedges, T. Dunne, L.A. Martinelli, L. Mertes, and J. Adams. 2008. Pre-LBA Carbon in the Amazon River Experiment (CAMREX) Data. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/904 -- data is from 80s & 90s
-
-WQP data -- lots of uncertainty, lots of overlap with sources alreayd found
