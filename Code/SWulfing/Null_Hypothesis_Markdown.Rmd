@@ -98,21 +98,25 @@ ggplot(lowDOC_data) +
   labs(title = "NRSA 2013-log both",
        x = "DOC", y = "NITRATE")
 
+par(mfrow=c(2,2))
 model_2013 <- lm(NITRATE_N_RESULT~DOC_RESULT, data = lowDOC_data)
 summary(model_2013)
 plot(model_2013)
 
+par(mfrow=c(2,2))
 model_DOClog <- lm(NITRATE_N_RESULT~log_DOC, data = lowDOC_data)
 summary(model_DOClog)
 plot(model_DOClog)
 
+par(mfrow=c(2,2))
 model_Nitratelog <- lm(log_Nitrate~DOC_RESULT, data = lowDOC_data)
-summary(model_DOClog)
-plot(model_DOClog)
+summary(model_Nitratelog)
+plot(model_Nitratelog)
 
-model_logs <- lm(NITRATE_N_RESULT~log_DOC, data = lowDOC_data)
-summary(model_DOClog)
-plot(model_DOClog)
+par(mfrow=c(2,2))
+model_logs <- lm(log_Nitrate~log_DOC, data = lowDOC_data)
+summary(model_logs)
+plot(model_logs)
 ```
 
 
