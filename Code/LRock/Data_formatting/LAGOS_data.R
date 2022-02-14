@@ -65,6 +65,9 @@ check.1 <- combine |>
  sources <- lagos$lagos_source_program
  
  
+ 
+ 
+ ################################################################################
  ################################################################################
  #create dataset with all variables but renamed DOC, PO4 as P, and NO3 as N
 all_data <- lagos$epi_nutr |>
