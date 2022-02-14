@@ -41,7 +41,8 @@ Niwot Ridge LTER and N. Caine. 2018. Stream water chemistry data for Green Lake 
 
 Powers, S. and E. Stanley. 2014. River Nutrient Uptake and Transport at North Temperate Lakes LTER (2005-2011) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/16d2a519bcb283fedb7efc605512e870 (Accessed 2021-12-13).
   
-++be careful with LAGOS data, check sources to ensure we don't have redundancy++
+++be careful with LAGOS data, check sources to ensure we don't have redundancy++ && update when new data information is released 
+
 Soranno, P.A., E.G. Bissell, K.S. Cheruvelil, S.T. Christel, S.M. Collins, C.E. Fergus, C.T. Filstrup, J.F. Lapierre, N.R. Lottig, S.K. Oliver, C.E. Scott, N.J. Smith, S. Stopyak, S. Yuan, M.T. Bremigan, J.A. Downing, C. Gries, E.N. Henry, N.K. Skaff, E.H. Stanley, C.A. Stow, P.-N. Tan, T. Wagner, K.E. Webster. 2015. Building a multi-scaled geospatial temporal ecology database from disparate data sources: Fostering open science and data reuse. GigaScience 4:28  https://doi.org/10.1186/s13742-015-0067-4
 
 Soranno P., K. Cheruvelil. 2019. LAGOS-NE-LIMNO v1.087.3: A module for LAGOS-NE, a multi-scaled geospatial and temporal database of lake ecological context and water quality for thousands of U.S. Lakes: 1925-2013. Environmental Data Initiative.
