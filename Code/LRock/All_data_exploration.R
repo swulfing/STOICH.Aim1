@@ -6,6 +6,28 @@ library(lubridate)
 #call in data:
 source("Code/masterData.R")
 
+#N:P ratio 
+library(biogas)
+Pmol <- molMass("P") #g/mol
+Nmol <- molMass("N") #g/mol
+
+ratio <- ALL_CNP |>
+  mutate(Ng = NO3.as.N/1000,
+         Pg = PO4.as.P/1000) |>
+  mutate(N_mol = Ng/Nmol,
+         P_mol = Pg/Pmol) |>
+  mutate(ratio = N_mol/P_mol)
+
+
+ggplot(ratio) +
+  geom_point(aes(P_mol, N_mol)) +
+  geom_abline(slope = 16, intercept = 0)
+
+ggplot(ratio) +
+  geom_point(aes(DOC, ratio))
+
+
+
 PO4_categories <- ALL_CNP |>
   mutate(PO4.as.P_limit = NA) |>
   mutate(PO4.as.P_limit = ifelse(PO4.as.P < 0.05, "natural", 
@@ -72,11 +94,11 @@ ggplot(ALL_CNP) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
 ggplot(ALL_CNP) +
-  geom_point(aes(DOC, NO3.as.N, color = PO4.as.P), shape = 1) +
+  geom_point(aes(DOC, NO3.as.N), shape = 1) +
   #scale_color_viridis_d() +
-  scale_color_viridis_c("PO4"~(mu~g~L^-1)) +
+  #scale_color_viridis_c("PO4"~(mu~g~L^-1)) +
   theme_bw() +
-  labs(title = "All data") +
+ # labs(title = "All data") +
   labs(x = "DOC"~(mg~L^-1)) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
