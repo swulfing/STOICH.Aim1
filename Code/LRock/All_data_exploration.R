@@ -23,6 +23,17 @@ ggplot(PO4_categories) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))+
   scale_y_log10()
 
+ggplot(PO4_categories |>
+         filter(DOC < 20)) +
+  geom_point(aes(PO4.as.P, NO3.as.N, color = PO4.as.P_limit)) +
+  scale_color_viridis_d() +
+  #scale_color_viridis_c("PO4"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "All data") +
+  xlab(expression(Phosphorus - PO[4]~(mg~L^-1))) +
+  ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
+
+
 #plotting all the data#####
 ggplot(ALL_CNP) +
   geom_point(aes(DOC, NO3.as.N, color = PO4.as.P)) +
@@ -51,9 +62,25 @@ ggplot(ALL_CNP %>% filter(ECO_TYPE != "Lake")) +
        x = "DOC"~(mg~L^-1)) +
   ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
+ggplot(ALL_CNP) +
+  geom_point(aes(PO4.as.P, NO3.as.N), shape = 1) +
+  #scale_color_viridis_d() +
+  #scale_color_viridis_c("PO4"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "All data") +
+  xlab(expression(Phosphorus - PO[4]~(mg~L^-1))) +
+  ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
+ggplot(ALL_CNP) +
+  geom_point(aes(DOC, NO3.as.N, color = PO4.as.P), shape = 1) +
+  #scale_color_viridis_d() +
+  scale_color_viridis_c("PO4"~(mu~g~L^-1)) +
+  theme_bw() +
+  labs(title = "All data") +
+  labs(x = "DOC"~(mg~L^-1)) +
+  ylab(expression(Nitrogen - NO[3]~(mg~L^-1)))
 
-#medians per year#####
+ #medians per year#####
 
 by_year <- ALL_CNP %>%
   group_by(SITE_ID, year(DATE_COL), ECO_TYPE) %>%

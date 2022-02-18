@@ -68,6 +68,11 @@ chems_dataset1 <- chems_dataset %>%
 #simplifying location data
 sites <- site_dataset %>%
   select(domainID, siteID, namedLocation, decimalLatitude, decimalLongitude, elevation, aquaticSiteType) %>%
+  mutate(siteID = ifelse(namedLocation == "TOOK.AOS.outlet", "TOOK.outlet", siteID),
+         siteID = ifelse(namedLocation == "TOOK.AOS.inlet", "TOOK.inlet", siteID),
+         siteID = ifelse(namedLocation == "TOOK.AOS.buoy.c1" |
+                           namedLocation == "TOOK.AOS.buoy.c2" |
+                           namedLocation == "TOOK.AOS.buoy.c0", "TOOK.buoy", siteID)) %>%
   distinct()
 
 
@@ -119,7 +124,7 @@ sites.a <-sites %>%
 combine <- left_join(NEON.2, sites.a)
 
 check <- combine |>
-  select(SITE_ID) |>
+  select(SITE_ID, LAT, LON, ECO_TYPE) |>
   distinct()
 
 write.csv(combine, "Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")
