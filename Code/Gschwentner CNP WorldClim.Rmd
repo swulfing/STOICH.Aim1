@@ -1,0 +1,148 @@
+---
+title: "CNP_Climate"
+author: "Daniel Gschwenter"
+date: "2/28/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Code to compile master C, N and P data set, download prelim. climate and elevation data and look for relationships.
+
+```{r Setup, include = F, message = F, warning=F}
+
+lapply(c("tidyverse", "lubridate", "sf", "raster"), require, character.only = T)
+
+```
+
+```{r Load data, include=F}
+
+# Using Linnea's Code create master data set.
+# https://github.com/swulfing/STOICH.Aim1/blob/main/Code/masterData.R
+
+##Run script to create master dataset
+
+# Gott change url to source from Github...
+#call in the data & ensure it is ready to use#####
+temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NRC.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")) %>%
+  mutate(DATE_COL = as.Date(DATE_COL)) %>%
+  filter(year(DATE_COL) >= 2000) #get rid of any data pre 2000
+
+
+EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
+  mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
+  mutate(DATE_COL = as.Date(DATE_COL))
+
+ALL_CNP <- rbind(EU, temp) 
+#This dataset contains all concurrently collected DOC, nitrate as N, and phosphate as P data. units of everything are mg/L
+
+rm(EU)
+rm(temp)
+
+ALL_CNP <- ALL_CNP %>%
+  filter(NO3.as.N >0,
+         PO4.as.P > 0,
+         DOC >0 ) %>%
+  dplyr::select(-X) # Remove extra column Github or Excel adds in by default...
+
+
+# Filter to remove obs wo. lon and lat.
+ALL_CNP <- ALL_CNP[!is.na(ALL_CNP$LAT), ]
+
+# Create CRS object, assuming that lat lon is WGS84.
+all_cnp_sf <- st_as_sf(ALL_CNP, coords = c("LON", "LAT"), crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# Check to see if CRS is approx. ok.
+all_cnp_sf %>%
+  ggplot() + 
+  geom_sf() # Seems alright to me...
+
+```
+
+
+```{r Load climate data, include=F}
+
+# Download master climate set.
+# Info on data is here: https://worldclim.org/data/worldclim21.html
+
+climate_dat <- getData("worldclim", var = "bio", res = 2.5)
+# Subset for following vars: annual mean  temp, annual temp range, annual precip, precip seasonality as coef of var.
+climate_sub <- unlist(climate_dat[[c(1,7,12,15)]])
+
+# Change the names of the raster layers.
+names(climate_sub) <- c("AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")
+
+# Create quick overview map.
+plot(climate_sub) #hmmm, temperature data seems wonky. 
+
+# Grab elevation.
+#srtm90m <- getData("SRTM") leeave for now, needs some manipulation to download all tiles.
+
+```
+
+
+```{r Extract data from sampling locations, include=F}
+
+# Check CRS.
+crs(climate_sub)
+crs(all_cnp_sf)
+# No need to reproject.
+
+# Extract values.
+extracted_vals <- as_tibble(raster::extract(climate_sub, all_cnp_sf))
+
+# Can just bind them to the data set (as SHOULD be in correct order)
+all_cnp_clim <- cbind(all_cnp_sf, extracted_vals)
+
+# Back to df for easier handling.
+all_cnp_clim  <- all_cnp_clim %>% st_drop_geometry() %>% as_tibble()
+
+```
+
+
+```{r Some quick manipulations, include=F}
+
+# Create stoich ratios, select and plot.
+cnp_mutate <- all_cnp_clim %>%
+  mutate("C_N" = DOC/NO3.as.N, "C_P"= DOC/PO4.as.P, "N_P" = NO3.as.N/PO4.as.P) %>%
+  dplyr::select(DOC, NO3.as.N, PO4.as.P, "C_N", "C_P", "N_P", "AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")
+
+# Pivot long for later/
+cnp_mutate_long <- cnp_mutate %>%
+  gather("key", "value", -AnnMeanT, -AnnTRange, -AnnPrecip, -AnnPrecipCV) %>%
+  gather("climkey", "climval", -key, -value)
+
+# Plot data as scatter plot.
+(ratios_clim <- cnp_mutate_long %>%
+  ggplot(aes(climval, value)) + 
+  geom_point() + 
+  facet_wrap(key~climkey, scales = "free")
+  ) # Strangely takes 4eva 2 plot but for no reason? Should be an easy plot....
+
+
+```
+
+
+```{r Checking for linear relationships, include=F}
+
+# Run linear models between the vars.
+mods <- list()
+# Loop.
+for(x in c("AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")){
+  for(y in c("DOC", "NO3.as.N", "PO4.as.P", "C_N", "C_P", "N_P")){
+    # Model formula.
+    form <- as.formula(paste0("log10(",y, "+1)", " ~ ", "log10(",x,"+1)"))
+    # Fir models.
+    mods[[paste0("log10(",y, "+1)", " ~ ", "log10(",x,"+1)")]] <- lm(form, data = cnp_mutate)
+  }
+}
+# Summaries.
+lapply(mods, summary)
+
+```
+
+
