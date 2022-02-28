@@ -1,0 +1,6 @@
+I can't find a downloadable metadata document from NEON. 
+
+Information within the dataset is very clear and you likely do not need a separate metadata doc. 
+
+More can be found here: https://data.neonscience.org/data-products/DP1.20093.001/RELEASE-2021
+and https://data.neonscience.org/data-products/DP1.20288.001/RELEASE-2021

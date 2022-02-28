@@ -1,0 +1,8 @@
+You should be able to determine everyting you need from the dataset because they are good at reporting units. For example,
+units that are written as mg{NH3}/L means this result is reported as as ammonia rather than as nitrogen. 
+
+If you need more info, the metadata is located in online tables:
+ ----units info: http://dd.eionet.europa.eu/vocabulary/wise/Uom/view?page=2#vocabularyConceptResults
+ ----parameters info: http://dd.eionet.europa.eu/vocabulary/wise/ObservedProperty/
+
+See the spreadsheet for more links. But the two above should be everything you need.

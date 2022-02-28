@@ -1,0 +1,41 @@
+﻿Element name,Element definition,Value definitions
+monitoringSiteIdentifier,Unique international identifier of the monitoring site in which the data were obtained.,
+monitoringSiteIdentifierScheme,Specification of whether the monitoring site is a WFD monitoring site ('euMonitoringSiteCode') or not ('eionetMonitoringSiteCode').,"eionetMonitoringSiteCode: EIONET identifier;
+euMonitoringSiteCode: WFD identifier "
+parameterWaterBodyCategory,"Water body category code, as defined in the codelist.",http://dd.eionet.europa.eu/vocabulary/wise/WFDWaterBodyCategory/
+observedPropertyDeterminandCode,"Unique code of the determinand monitored, as defined in the codelist.",http://dd.eionet.europa.eu/vocabulary/wise/ObservedProperty/
+observedPropertyDeterminandLabel,Name of the determinand.,
+procedureAnalysedMatrix,Matrix where the measurement has been made.,http://dd.eionet.europa.eu/vocabulary/wise/Matrix
+resultUom,Unit of measure for the reported values.,http://dd.eionet.europa.eu/vocabulary/wise/uom/
+phenomenonTimeSamplingDate,Date in which the sample was taken.,
+sampleIdentifier,Unique sample identifier.,
+resultObservedValue,Observed value (e.g. concentration) of the determinand in the sample.,
+resultQualityObservedValueBelowLOQ,Flag to indicate whether the sample value was below the analytical limit of quantification (LOQ).,"0: false;
+1: true"
+procedureLOQValue,The smallest concentration that can be distinguished from the analytical blank at a chosen level of statistical confidence (usually 95%).,
+parameterSampleDepth,Depth at which sample was taken in meter below water surface.,
+parameterSedimentDepthSampled,"Depth of the collected sample of sediment, measured as a range, in centimeters, starting at the seafloor surface.",
+parameterSpecies,Species monitored.,http://dd.eionet.europa.eu/dataelements/latest/parameterSpecies
+resultMoisture,Percent moisture of the tissue.,
+resultFat,Fat content as percentage of total wet matter.,
+resultExtractableLipid,Extractable Lipid Percent.,
+resultLipid,Lipid Weight Percent.,
+resultObservationStatus,"Status of the observed value in terms of its availability, relevancy, correctness or specifics of its source category.","A: Record is confirmed as correct;
+L: Missing observed value, the data were not collected;
+M: Missing observed value, the data can not exist;
+N: Missing observed value, observed value is not relevant or not significant;
+O: Missing observed value, no further information is available or record reported in the past should be deleted;
+W: Missing observed value, data are included in another source category;
+X: Reported value includes data from another source category (categories);
+Y: The source category does not exactly match the standard definition"
+Remarks,"Remarks, comments or explanatory notes.",
+metadata_versionId,Unique metadata identifier of version of the feature or record. Url that points either to the source of the reported data or to a page providing information on the data origin.,
+metadata_beginLifeSpanVersion,Timestamp when the feature or record was created. In case of reported data it's the release date and time of the respective CDR envelope.,
+metadata_statusCode,Status of the feature or record regarding its registration.,"valid: accepted and valid reported feature or record;
+stable: accepted and valid reported record, confirmed by the reporter as correct;
+experimental: derived feature or record, e.g. legacy record converted to the new structure by EEA or records with updated spatial identifiers "
+metadata_observationStatus,Status of the record regarding its reliability.,"A: Normal record;
+U: Record with lower reliability;
+V: Unvalidated record"
+metadata_statements,Aditional information or statements regarding the reliability of the feature or record.,
+UID,Unique identifier of the record in the EEA WISE_SOE database.,
