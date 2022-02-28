@@ -111,17 +111,34 @@ cnp_mutate <- all_cnp_clim %>%
   mutate("C_N" = DOC/NO3.as.N, "C_P"= DOC/PO4.as.P, "N_P" = NO3.as.N/PO4.as.P) %>%
   dplyr::select(DOC, NO3.as.N, PO4.as.P, "C_N", "C_P", "N_P", "AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")
 
-# Pivot long for later/
-cnp_mutate_long <- cnp_mutate %>%
-  gather("key", "value", -AnnMeanT, -AnnTRange, -AnnPrecip, -AnnPrecipCV) %>%
-  gather("climkey", "climval", -key, -value)
+# # Pivot long for later/
+# cnp_mutate_long <- cnp_mutate %>%
+#   gather("key", "value", -AnnMeanT, -AnnTRange, -AnnPrecip, -AnnPrecipCV) %>%
+#   gather("climkey", "climval", -key, -value)
 
-# Plot data as scatter plot.
-(ratios_clim <- cnp_mutate_long %>%
-  ggplot(aes(climval, value)) + 
-  geom_point() + 
-  facet_wrap(key~climkey, scales = "free")
-  ) # Strangely takes 4eva 2 plot but for no reason? Should be an easy plot....
+# Create plots.
+plt_ls <- list()
+for(x in c("AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")){
+  for(y in c("DOC", "NO3.as.N", "PO4.as.P", "C_N", "C_P", "N_P")){
+    plt <- cnp_mutate %>%
+      ggplot(aes_string(x, y)) + 
+      geom_point()
+    plt_ls[[paste0(y,"X",x)]] <- plt
+  }}
+
+# log 10.
+plt_ls_lg10 <- list()
+for(x in c("AnnMeanT", "AnnTRange", "AnnPrecip", "AnnPrecipCV")){
+  for(y in c("DOC", "NO3.as.N", "PO4.as.P", "C_N", "C_P", "N_P")){
+    plt <- cnp_mutate %>%
+      ggplot(aes_string(paste0("log10(",x, "+1)"), paste0("log10(", y, "+1)"))) + 
+      geom_point()
+    plt_ls_lg10[[paste0("lg10_", y,"X",x)]] <- plt
+  }}
+    
+    
+plt_ls
+plt_ls_lg10
 
 
 ```
