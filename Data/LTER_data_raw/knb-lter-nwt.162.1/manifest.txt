@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.162.1-4c9184f37cff01bcdc32dc486ec36961.zip created on Mon Sep 21 12:25:06 MDT 2020
+flumesolu.nc.data.csv (118516 bytes)
+knb-lter-nwt.162.1.xml (58196 bytes)
+knb-lter-nwt.162.1.txt (28979 bytes)
+knb-lter-nwt.162.1.report.xml (33171 bytes)

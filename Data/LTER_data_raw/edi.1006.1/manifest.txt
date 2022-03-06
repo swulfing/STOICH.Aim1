@@ -1,0 +1,12 @@
+Manifest file for edi.1006.1-4c9184f37cff01bcdc32dc486ec36961.zip created on Mon Dec 13 14:14:55 MST 2021
+Light.csv (10604 bytes)
+Plant Names Used.csv (2427 bytes)
+Site_locations.csv (428 bytes)
+SONDE.csv (11348 bytes)
+Veg toss.csv (80298 bytes)
+Veg twist.csv (65045 bytes)
+Visual Estimates.csv (42046 bytes)
+Waterchem.csv (20696 bytes)
+edi.1006.1.xml (253870 bytes)
+edi.1006.1.txt (121771 bytes)
+edi.1006.1.report.xml (168933 bytes)

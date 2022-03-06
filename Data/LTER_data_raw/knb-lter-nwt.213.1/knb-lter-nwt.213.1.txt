@@ -1,0 +1,1211 @@
+
+  
+    
+      uid=nwt,o=LTER,dc=ecoinformatics,dc=org
+      read
+      write
+    
+    
+      public
+      read
+    
+  
+  
+    doi:10.6073/pasta/49ace263067caf02c0b27c8b6a877683
+    Stream water chemistry data for Soddie stream, 1999-2013.
+    
+      Mark Williams
+      mark.williams@colorado.edu
+    
+    
+      Mark Williams
+      mark.williams@colorado.edu
+      principalInvestigator
+    
+    2019-09-17
+    English
+    This is a summary of major ion concentrations for stream water samples collected at the outflow of the Soddie stream.
+    
+      solute concentrations
+      stream water quality
+      surface water quality
+      inorganic_nutrients
+      pH
+      specific conductance
+      cation sum
+      anion sum
+      charge balance
+      particulate nitrogen
+      total dissolved phosphorus
+      particulate phosphorus
+      dissolved organic phosphorus
+      inorganic phosphorus
+      delta oxygen-18
+      delta deuterium
+      deuterium excess
+      Green Lakes Valley
+      Niwot Ridge LTER
+      NWT
+    
+    
+      hydrology
+      water chemistry
+      biogeochemistry
+      hydrogen ions
+      ammonium
+      calcium
+      magnesium
+      sodium
+      potassium
+      chloride
+      nitrate
+      sulfate
+      phosphate
+      silicon
+      total nitrogen
+      total dissolved nitrogen
+      dissolved organic nitrogen
+      inorganic nitrogen
+      total phosphorus
+      dissolved organic carbon
+      long term
+      LTER controlled vocabulary
+    
+    
+      
+  This information is released under the Creative Commons license -
+  Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/).
+  The consumer of these data (“Data User” herein) is required to cite it
+  appropriately in any publication that results from its use. The Data
+  User should realize that these data may be actively used by others for
+  ongoing research and that coordination may be necessary to prevent
+  duplicate publication. The Data User is urged to contact the authors
+  of these data if any questions about methodology or results occur.
+  Where appropriate, the Data User is encouraged to consider
+  collaboration or co-authorship with the authors. The Data User should
+  realize that misinterpretation of data may occur if used out of
+  context of the original study. While substantial efforts are made to
+  ensure the accuracy of data and associated documentation, complete
+  accuracy of data sets cannot be guaranteed. All data are made
+  available "as is." The Data User should be aware, however,
+  that data are updated periodically and it is the responsibility of the
+  Data User to check for new versions of the data. The data authors and
+  the repository where these data were obtained shall not be liable for
+  damages resulting from any use or misinterpretation of the data. Thank
+  you.
+
+    
+    
+      
+        Sampling location was the outflow of the Soddie stream near the Soddie site at the Niwot Ridge LTER.
+        
+          -105.570833
+          -105.570833
+          40.047778
+          40.047778
+        
+      
+      
+        
+          
+            1999-06-04
+          
+          
+            2013-10-15
+          
+        
+      
+    
+    
+      This data set was compiled by Anna Wright from raw data provided by Hope Humphries and the Arikaree lab manager. Metadata was created based off of similar mw water chem datasets (sad007) [ATW 3 September 2019]. Niwot metadata converted via script to EML[ATW 2019-09-17]
+    
+    
+      Niwot Ridge LTER
+      Information Manager
+      			4001 Discovery Drive, UCB 450
+			University of Colorado
+			Boulder, CO 80303  United States
+      lternwt@colorado.edu
+      https://nwt.lternet.edu/
+    
+    
+      
+        
+          The Soddie stream is located in the headwaters of the Como creek drainage, a tributary stream draining the SE Of Niwot Ridge. The sampling site for surface waters at the head of Como Creek is about 300 m down-gradient from the Soddie experimental site. Water samples were collected in polyethylene bottles (following the protocol of Campbell et al. 2000), soaked with deionized water overnight, and then rinsed copiously five times; bottles were further rinsed three times with sample water at the time of collection. Samples were collected ~10 cm below the water surface in turbulent areas where the water column was well mixed. All water samples were transported the same day as collection to our wet chemistry laboratory (Arikaree lab) and treated the same as melted snow samples. Samples for dissolved organic carbon (DOC) were collected using precombusted, amber-colored glass bottles with Teflon-lined caps. All analyses were conducted at the Arikaree lab.
+          Data were provided by the Arikaree lab manager as Excel spreadsheets.
+          The charge balance was calculated as (cation sum - anion sum)/(cation sum + anion sum).
+          The missing value indicator is one of the following codes:
+          DNS=Data Not Submitted
+          EQCL=Exceeds Quality Control Limits
+          N/A=Not Applicable
+          NP=Not Performed
+          NSS=No Sample Submitted
+          NV=Not Valid
+          QNS=Quantity Not Sufficient
+          The following variables were not measured, but were included for consistency with other data sets:
+          acidity, alkalinity, tritium, and standard deviation of tritium
+        
+      
+    
+    
+      The Niwot Ridge Long-Term Ecological Research Program 2011-2016: Tipping Points in High-Elevation Ecosystems in Response to Changes in Climate and Atmospheric Deposition
+      
+        Niwot Ridge LTER
+        pointOfContact
+      
+      National Science Foundation:1027341
+    
+    
+      soddsolu.mw.data.csv
+      Stream water chemistry data for Soddie stream, 1999 - 2013.
+      
+        soddsolu.mw.data.csv
+        105713
+        a560aa927601cca5d736cd5db2b47c26
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/knb-lter-nwt/213/1/191b29ee0884b9c5848fe3c6db329a63
+          
+        
+      
+      
+        
+          LTER_site
+          LTER_site
+          Niwot Ridge LTER site
+          string
+          
+            
+              
+                
+                  any text
+                
+              
+            
+          
+        
+        
+          samp_loc
+          samp_loc
+          sample location
+          string
+          
+            
+              
+                
+                  any text
+                
+              
+            
+          
+        
+        
+          year
+          year
+          year (yyyy)
+          dateTime
+          
+            
+              YYYY
+              
+                
+                  1994
+                
+              
+            
+          
+        
+        
+          date
+          date
+          date (yyyy-mm-dd)
+          dateTime
+          
+            
+              YYYY-MM-DD
+              
+                
+                  1994-05-17
+                
+              
+            
+          
+        
+        
+          time
+          time
+          time collected (hhmm(MST)); DNS-data not submitted
+          dateTime
+          
+            
+              hhmm
+              
+                
+                  0000
+                  2400
+                
+              
+            
+          
+          
+            DNS
+            data not submitted
+          
+        
+        
+          pH
+          pH
+          ph; NP-not performed
+          float
+          
+            
+              
+                pH
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          cond
+          cond
+          conductance
+          float
+          
+            
+              
+                microsiemensPerCentimeter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          ANC
+          ANC
+          acid neutralizing capacity; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          acid
+          acid
+          acidity; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          alkal
+          alkal
+          alkalinity; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          H+
+          H+
+          H+; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          NH4+
+          NH4+
+          NH4+; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.50
+            less than 0.50
+          
+          
+            u
+            under method detection limit
+          
+          
+            trace
+            trace
+          
+        
+        
+          Ca++
+          Ca++
+          Ca++; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          Mg++
+          Mg++
+          Mg++; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          Na+
+          Na+
+          Na+; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          K+
+          K+
+          K+; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          Cl-
+          Cl-
+          Cl-; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          NO3-
+          NO3-
+          NO3-; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.02
+            less than 0.02
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          SO4--
+          SO4--
+          SO4—; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          PO4---
+          PO4---
+          NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.06
+            less than 0.06
+          
+          
+            u
+            under method detection limit
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          Si
+          Si
+          Si; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          cat_sum
+          cat_sum
+          cation sum; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          an_sum
+          an_sum
+          anion sum; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          chg_bal
+          chg_bal
+          charge balance; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          TN
+          TN
+          total N; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          TDN
+          TDN
+          total dissolved N; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          PN
+          PN
+          particulate N; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          DON
+          DON
+          dissolved organic N; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          IN
+          IN
+          inorganic N; NP-not performed
+          float
+          
+            
+              
+                microequivalentPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+          
+            trace
+            trace
+          
+        
+        
+          TP
+          TP
+          total P; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.03
+            less than 0.03
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          TDP
+          TDP
+          total dissolved P; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.03
+            less than 0.03
+          
+          
+            <0.04
+            less than 0.04
+          
+          
+            u
+            under method detection limit
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          PP
+          PP
+          particulate P; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          DOP
+          DOP
+          dissolved organic P; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          IP
+          IP
+          inorganic P; NP-not performed
+          float
+          
+            
+              
+                micromolePerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            <0.02
+            less than 0.02
+          
+          
+            u
+            under method detection limit
+          
+          
+            QNS
+            Quantity Not Sufficient
+          
+        
+        
+          d18O
+          d18O
+          delta 18O; NP-not performed
+          float
+          
+            
+              
+                partsPerThousand
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          d18O_sdev
+          d18O_sdev
+          standard deviation delta 18O; NP-not performed
+          float
+          
+            
+              
+                partsPerThousand
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          dDeut
+          dDeut
+          delta Deuterium; NP-not performed
+          float
+          
+            
+              
+                partsPerThousand
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          dD_sdev
+          dD_sdev
+          standard deviation delta Deuterium; NP-not performed
+          float
+          
+            
+              
+                partsPerThousand
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          D_excess
+          D_excess
+          Deuterium excess; NP-not performed
+          float
+          
+            
+              
+                partsPerThousand
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          Trit
+          Trit
+          tritium; NP-not performed
+          float
+          
+            
+              
+                tritiumUnit
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          T_sdev
+          T_sdev
+          standard deviation tritium; NP-not performed
+          float
+          
+            
+              
+                tritiumUnit
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          TOC
+          TOC
+          total organic C; NP-not performed
+          float
+          
+            
+              
+                milligramPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          DOC
+          DOC
+          dissolved organic C; NP-not performed
+          float
+          
+            
+              
+                milligramPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+        
+        
+          POC
+          POC
+          particulate organic C; NP-not performed
+          float
+          
+            
+              
+                milligramPerLiter
+              
+              
+                real
+              
+            
+          
+          
+            NP
+            not performed
+          
+          
+            u
+            under method detection limit
+          
+        
+        
+          comments
+          comments
+          comments
+          string
+          
+            
+              
+                
+                  any text
+                
+              
+            
+          
+        
+      
+      167
+    
+  
+  
+    
+      
+        
+          measure of hydrogen ion concentration
+        
+        
+          microsiemens per centimeter; used for concentration of ionized dissoved solids
+        
+        
+          concentration of charge (on dissolved ions). A single ultiplier to SI is not possible; since conversion includes valence of ion; which can vary
+        
+        
+          commonly used for concentration of some chemical constituents of natural water bodies; e.g.; nutrients. It has the same magnitude as micromolar; but micromolar can only be used for a dissolved constituent
+        
+        
+          ratio of two quantities as parts per thousand (1:1000)
+        
+        
+          Tritium unit; 1 tritium unit= 3.22 picocuries per liter
+        
+        
+          concentration unit; sometimes used for pigments in natural waters
+        
+      
+    
+  

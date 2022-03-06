@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.213.1-4c9184f37cff01bcdc32dc486ec36961.zip created on Tue Jun 09 15:56:50 MDT 2020
+soddsolu.mw.data.csv (105713 bytes)
+knb-lter-nwt.213.1.xml (48770 bytes)
+knb-lter-nwt.213.1.txt (23754 bytes)
+knb-lter-nwt.213.1.report.xml (35334 bytes)

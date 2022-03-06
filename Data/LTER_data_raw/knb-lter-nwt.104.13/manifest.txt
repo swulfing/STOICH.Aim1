@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.104.13-4c9184f37cff01bcdc32dc486ec36961.zip created on Mon Dec 13 14:15:42 MST 2021
+ariksolu.nc.data.csv (140168 bytes)
+knb-lter-nwt.104.13.xml (59181 bytes)
+knb-lter-nwt.104.13.txt (32199 bytes)
+knb-lter-nwt.104.13.report.xml (33515 bytes)

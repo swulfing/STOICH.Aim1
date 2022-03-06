@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.160.3-4c9184f37cff01bcdc32dc486ec36961.zip created on Thu Jun 03 20:18:04 MDT 2021
+saddsolu.nc.data.csv (208156 bytes)
+knb-lter-nwt.160.3.xml (58050 bytes)
+knb-lter-nwt.160.3.txt (28368 bytes)
+knb-lter-nwt.160.3.report.xml (33689 bytes)

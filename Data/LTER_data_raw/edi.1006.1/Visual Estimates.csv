@@ -1,0 +1,680 @@
+﻿Site Label,Collection Site or Zone,Plot,Point,Date,Plant,% Cover,Depth from Surface
+Court 2,Court Dock,NA,1,2016-07-15,Open water,0.15,NA
+Court 2,Court Dock,NA,1,2016-07-15,Algal-leaved Pondweed,0.7,nr
+Court 2,Court Dock,NA,1,2016-07-15,Curly-leaf Pondweed,0.01,nr
+Court 2,Court Dock,NA,1,2016-07-15,Elodea,0.02,nr
+Court 2,Court Dock,NA,1,2016-07-15,Eurasian Watermilfoil,0.1,nr
+Court 2,Court Dock,NA,1,2016-07-15,Flatstem Pondweed,0.02,nr
+Court 3,Court Dock,NA,1,2016-07-15,Open water,0.06,NA
+Court 3,Court Dock,NA,1,2016-07-15,Algal-leaved Pondweed,0.9,nr
+Court 3,Court Dock,NA,1,2016-07-15,Coontail,0.01,nr
+Court 3,Court Dock,NA,1,2016-07-15,Curly-leaf Pondweed,0.01,nr
+Court 3,Court Dock,NA,1,2016-07-15,Elodea,0.01,nr
+Court 3,Court Dock,NA,1,2016-07-15,Eurasian Watermilfoil,0.01,nr
+Court East,Court East,NA,1,2016-07-15,Clasping-leaf Pondweed,0.01,nr
+Court East,Court East,NA,1,2016-07-15,Elodea,0.08,nr
+Court East,Court East,NA,1,2016-07-15,Eurasian Watermilfoil,0.9,nr
+FDS1-1,FDS,1,1,2016-07-15,Open water,0.5,NA
+FDS1-1,FDS,1,1,2016-07-15,Eurasian Watermilfoil,0.5,nr
+FDS2,FDS,2,1,2016-07-15,Elodea,0.49,nr
+FDS2,FDS,2,1,2016-07-15,Eurasian Watermilfoil,0.01,nr
+FDS2,FDS,2,1,2016-07-15,Water Stargrass,0.5,nr
+FDS2-1,FDS,2,1,2016-07-15,Elodea,0.49,nr
+FDS2-1,FDS,2,1,2016-07-15,Water Stargrass,0.5,nr
+FDS8,FDS,8,1,2016-07-15,Open Water,0.99,NA
+FDS8,FDS,8,1,2016-07-15,Eurasian Watermilfoil,0.01,nr
+FDS8-1,FDS,8,1,2016-07-15,Open water,0.99,NA
+FDS8-1,FDS,8,1,2016-07-15,Eurasian Watermilfoil,0.01,nr
+FDS9,FDS,9,1,2016-07-15,Open Water,0.68,NA
+FDS9,FDS,9,1,2016-07-15,Eurasian Watermilfoil,0.3,nr
+FDS9,FDS,9,1,2016-07-15,Water Marigold,0.01,nr
+FDS9,FDS,9,1,2016-07-15,Water Stargrass,0.01,nr
+FDS9-1,FDS,9,1,2016-07-15,Open water,0.68,NA
+FDS9-1,FDS,9,1,2016-07-15,Eurasian Watermilfoil,0.3,nr
+FDS9-1,FDS,9,1,2016-07-15,Water Marigold,0.01,nr
+FDS9-1,FDS,9,1,2016-07-15,Water Stargrass,0.01,nr
+Court East,Court East,NA,1,2016-08-26,Open water,0.5,NA
+Court East,Court East,NA,1,2016-08-26,Eel Grass/Water Celery,0.05,nr
+Court East,Court East,NA,1,2016-08-26,Eurasian Watermilfoil,0.3,nr
+Court East,Court East,NA,1,2016-08-26,Flatstem Pondweed,0.1,nr
+Court East,Court East,NA,1,2016-08-26,Spatterdock,0.05,nr
+Howell Dock,Howells Dock,NA,1,2016-08-26,Open water,0.4,NA
+Howell Dock,Howells Dock,NA,1,2016-08-26,Eel Grass/Water Celery,0.2,nr
+Howell Dock,Howells Dock,NA,1,2016-08-26,Eurasian Watermilfoil,0.4,nr
+CourtE-Bouy1,Court East,1,A,2017-06-20,Coontail,0.02,0
+CourtE-Bouy1,Court East,1,A,2017-06-20,Curly-leaf Pondweed,0.03,0
+CourtE-Bouy1,Court East,1,A,2017-06-20,Eurasian Watermilfoil,0.55,0
+CourtE-Bouy1,Court East,1,A,2017-06-20,Small Pondweed,0.35,0
+CourtE-Bouy1,Court East,1,A,2017-06-20,Elodea,0.05,0.1
+CourtE-Bouy2,Court East,2,C,2017-06-20,Clasping-leaf Pondweed,0.05,0
+CourtE-Bouy2,Court East,2,A,2017-06-20,Curly-leaf Pondweed,floating,0
+CourtE-Bouy2,Court East,2,B,2017-06-20,Curly-leaf Pondweed,0.1,0
+CourtE-Bouy2,Court East,2,C,2017-06-20,Curly-leaf Pondweed,0.025,0
+CourtE-Bouy2,Court East,2,B,2017-06-20,Elodea,0.3,0
+CourtE-Bouy2,Court East,2,A,2017-06-20,Eurasian Watermilfoil,0.59,0
+CourtE-Bouy2,Court East,2,B,2017-06-20,Eurasian Watermilfoil,0.4,0
+CourtE-Bouy2,Court East,2,C,2017-06-20,Eurasian Watermilfoil,0.6,0
+CourtE-Bouy2,Court East,2,C,2017-06-20,Elodea,0.3,0.1
+CourtE-Bouy2,Court East,2,B,2017-06-20,Small Pondweed,0.2,0.1
+CourtE-Bouy2,Court East,2,A,2017-06-20,Coontail,0.1,0.5
+CourtE-Bouy2,Court East,2,A,2017-06-20,Elodea,0.3,0.5
+CourtE-Bouy2,Court East,2,A,2017-06-20,Flatstem Pondweed,0.01,nr
+CourtE-Bouy2,Court East,2,C,2017-06-20,Small Pondweed,0.025,nr
+CourtE-Bouy3,Court East,3,A,2017-06-20,Algal-leaved Pondweed,0.12,0
+CourtE-Bouy3,Court East,3,A,2017-06-20,Coontail,0.06,0
+CourtE-Bouy3,Court East,3,B,2017-06-20,Coontail,0.05,0
+CourtE-Bouy3,Court East,3,C,2017-06-20,Coontail,0.05,0
+CourtE-Bouy3,Court East,3,C,2017-06-20,Curly-leaf Pondweed,0.05,0
+CourtE-Bouy3,Court East,3,A,2017-06-20,Eurasian Watermilfoil,0.6,0
+CourtE-Bouy3,Court East,3,B,2017-06-20,Eurasian Watermilfoil,0.4,0
+CourtE-Bouy3,Court East,3,C,2017-06-20,Eurasian Watermilfoil,0.5,0
+CourtE-Bouy3,Court East,3,B,2017-06-20,Small Pondweed,0.5,0
+CourtE-Bouy3,Court East,3,C,2017-06-20,Small Pondweed,0.3,0
+CourtE-Bouy3,Court East,3,A,2017-06-20,Elodea,0.12,0.1
+CourtE-Bouy3,Court East,3,B,2017-06-20,Elodea,0.05,0.1
+CourtE-Bouy3,Court East,3,C,2017-06-20,Elodea,0.1,0.1
+CourtE-Bouy3,Court East,3,A,2017-06-20,Open water,0.1,NA
+Chappell-Bouy1,Chappell,1,A,2017-06-21,Eurasian Watermilfoil,0.05,nr
+Chappell-Bouy1,Chappell,1,B,2017-06-21,Eurasian Watermilfoil,0.1,nr
+Chappell-Bouy1,Chappell,1,C,2017-06-21,Eurasian Watermilfoil,0.05,nr
+Chappell-Bouy1,Chappell,1,A,2017-06-21,Lake Bottom,0.5,nr
+Chappell-Bouy1,Chappell,1,B,2017-06-21,Lake Bottom,0.9,nr
+Chappell-Bouy1,Chappell,1,C,2017-06-21,Lake Bottom,0.35,nr
+Chappell-Bouy1,Chappell,1,A,2017-06-21,Other Veg,0.45,nr
+Chappell-Bouy1,Chappell,1,C,2017-06-21,Other Veg,0.6,nr
+Chappell-Bouy2,Chappell,2,C,2017-06-21,Open water,0.6,NA
+Chappell-Bouy2,Chappell,2,A,2017-06-21,Eurasian Watermilfoil,0.2,nr
+Chappell-Bouy2,Chappell,2,B,2017-06-21,Eurasian Watermilfoil,0.7,nr
+Chappell-Bouy2,Chappell,2,C,2017-06-21,Eurasian Watermilfoil,0.4,nr
+Chappell-Bouy2,Chappell,2,A,2017-06-21,Lake Bottom,0.8,nr
+Chappell-Bouy2,Chappell,2,B,2017-06-21,Lake Bottom,0.3,nr
+HowellsDock-Bouy1,Howells Dock,1,A,2017-06-21,Eurasian Watermilfoil,0.03,1.4
+HowellsDock-Bouy1,Howells Dock,1,A,2017-06-21,Low veg - can't ID,0.97,2
+HowellsDock-Bouy1,Howells Dock,1,B,2017-06-21,NA,NA,NA
+HowellsDock-Bouy1,Howells Dock,1,C,2017-06-21,NA,NA,NA
+HowellsDock-Bouy2,Howells Dock,2,A,2017-06-21,Eurasian Watermilfoil,0.02,2
+HowellsDock-Bouy2,Howells Dock,2,A,2017-06-21,Low veg - can't ID,0.98,2.3
+HowellsDock-Bouy2,Howells Dock,2,B,2017-06-21,NA,NA,NA
+HowellsDock-Bouy2,Howells Dock,2,C,2017-06-21,NA,NA,NA
+HowellsDock-Bouy3,Howells Dock,3,A,2017-06-21,Eurasian Watermilfoil,0.02,1.5
+HowellsDock-Bouy3,Howells Dock,3,A,2017-06-21,Low veg - can't ID,0.98,2
+HowellsDock-Bouy3,Howells Dock,3,B,2017-06-21,NA,NA,NA
+HowellsDock-Bouy3,Howells Dock,3,C,2017-06-21,NA,NA,NA
+FDS2-pt1,FDS,1,A,2017-06-22,Curly-leaf Pondweed,0.1,0
+FDS2-pt1,FDS,1,A,2017-06-22,Small Pondweed,0.05,0.3
+FDS2-pt1,FDS,1,A,2017-06-22,Flatstem Pondweed,0.1,0.8
+FDS2-pt1,FDS,1,A,2017-06-22,Eurasian Watermilfoil,0.01,1
+FDS2-pt1,FDS,1,A,2017-06-22,Leafy Pondweed,0.1,1
+FDS2-pt1,FDS,1,A,2017-06-22,Low veg - can't ID,0.64,1
+FDS2-pt1,FDS,1,B,2017-06-22,Curly-leaf Pondweed,0.02,nr
+FDS2-pt1,FDS,1,C,2017-06-22,Curly-leaf Pondweed,0.1,nr
+FDS2-pt1,FDS,1,B,2017-06-22,Elodea,0.6,nr
+FDS2-pt1,FDS,1,C,2017-06-22,Elodea,0.3,nr
+FDS2-pt1,FDS,1,B,2017-06-22,Flatstem Pondweed,0.1,nr
+FDS2-pt1,FDS,1,C,2017-06-22,Flatstem Pondweed,0.2,nr
+FDS2-pt1,FDS,1,B,2017-06-22,Leafy Pondweed,0.05,nr
+FDS2-pt1,FDS,1,B,2017-06-22,Low veg - can't ID,0.23,nr
+FDS2-pt1,FDS,1,C,2017-06-22,Low veg - can't ID,0.4,nr
+FDS2-pt2,FDS,2,A,2017-06-22,Curly-leaf Pondweed,0.1,1.5
+FDS2-pt2,FDS,2,A,2017-06-22,Low veg - can't ID,0.9,1.7
+FDS2-pt2,FDS,2,B,2017-06-22,Curly-leaf Pondweed,0.1,nr
+FDS2-pt2,FDS,2,C,2017-06-22,Eurasian Watermilfoil,2,nr
+FDS2-pt2,FDS,2,B,2017-06-22,Leafy Pondweed,0.05,nr
+FDS2-pt2,FDS,2,C,2017-06-22,Leafy Pondweed,1,nr
+FDS2-pt2,FDS,2,B,2017-06-22,Low veg - can't ID,0.85,nr
+FDS2-pt2,FDS,2,C,2017-06-22,Low veg - can't ID,96,nr
+FDS2-pt2,FDS,2,C,2017-06-22,Water Stargrass,1,nr
+FDS4-pt1,FDS,1,A,2017-06-22,Open Water,29,NA
+FDS4-pt1,FDS,1,B,2017-06-22,Open Water,9,NA
+FDS4-pt1,FDS,1,C,2017-06-22,Open Water,10,NA
+FDS4-pt1,FDS,1,A,2017-06-22,Curly-leaf Pondweed,50,nr
+FDS4-pt1,FDS,1,B,2017-06-22,Curly-leaf Pondweed,50,nr
+FDS4-pt1,FDS,1,C,2017-06-22,Curly-leaf Pondweed,80,nr
+FDS4-pt1,FDS,1,A,2017-06-22,Eurasian Watermilfoil,20,nr
+FDS4-pt1,FDS,1,B,2017-06-22,Eurasian Watermilfoil,40,nr
+FDS4-pt1,FDS,1,C,2017-06-22,Eurasian Watermilfoil,10,nr
+FDS4-pt1,FDS,1,A,2017-06-22,Flatstem Pondweed,1,nr
+FDS4-pt1,FDS,1,B,2017-06-22,Flatstem Pondweed,1,nr
+FDS4-pt1,FDS,1,A,2017-06-22,Small Pondweed,1,nr
+FDS4-pt2,FDS,2,B,2017-06-22,Curly-leaf Pondweed,1,0
+FDS4-pt2,FDS,2,A,2017-06-22,Eurasian Watermilfoil,40,0.7
+FDS4-pt2,FDS,2,B,2017-06-22,Leafy Pondweed,2,0.7
+FDS4-pt2,FDS,2,A,2017-06-22,Elodea,5,1.5
+FDS4-pt2,FDS,2,A,2017-06-22,Flatstem Pondweed,10,1.5
+FDS4-pt2,FDS,2,A,2017-06-22,Open Water,45,NA
+FDS4-pt2,FDS,2,B,2017-06-22,Open Water,22,NA
+FDS4-pt2,FDS,2,C,2017-06-22,Open Water,19,NA
+FDS4-pt2,FDS,2,C,2017-06-22,Curly-leaf Pondweed,1,nr
+FDS4-pt2,FDS,2,B,2017-06-22,Eurasian Watermilfoil,50,nr
+FDS4-pt2,FDS,2,C,2017-06-22,Eurasian Watermilfoil,80,nr
+FDS4-pt2,FDS,2,B,2017-06-22,Flatstem Pondweed,25,nr
+FDS4-pt3,FDS,3,A,2017-06-22,Open Water,15,NA
+FDS4-pt3,FDS,3,B,2017-06-22,Open Water,20,NA
+FDS4-pt3,FDS,3,A,2017-06-22,Curly-leaf Pondweed,10,nr
+FDS4-pt3,FDS,3,B,2017-06-22,Curly-leaf Pondweed,30,nr
+FDS4-pt3,FDS,3,C,2017-06-22,Curly-leaf Pondweed,70,nr
+FDS4-pt3,FDS,3,A,2017-06-22,Eurasian Watermilfoil,75,nr
+FDS4-pt3,FDS,3,B,2017-06-22,Eurasian Watermilfoil,50,nr
+FDS4-pt3,FDS,3,C,2017-06-22,Eurasian Watermilfoil,30,nr
+Neil-Buoy1,Neil,1,B,2017-06-23,Eurasian Watermilfoil,4,1.8
+Neil-Buoy1,Neil,1,C,2017-06-23,Eurasian Watermilfoil,4,1.8
+Neil-Buoy1,Neil,1,A,2017-06-23,Chara spp.,100,1.9
+Neil-Buoy1,Neil,1,B,2017-06-23,Chara spp.,96,1.9
+Neil-Buoy1,Neil,1,C,2017-06-23,Chara spp.,96,1.9
+Neil-Buoy1,Neil,1,A,2017-06-23,Sand,40,nr
+Neil-Buoy1,Neil,1,B,2017-06-23,Sand,40,nr
+Neil-Buoy1,Neil,1,C,2017-06-23,Sand,40,nr
+Neil-Buoy2,Neil,2,A,2017-06-23,Eurasian Watermilfoil,5,1.4
+Neil-Buoy2,Neil,2,A,2017-06-23,Chara spp.,75,1.7
+Neil-Buoy2,Neil,2,B,2017-06-23,Chara spp.,80,1.7
+Neil-Buoy2,Neil,2,C,2017-06-23,Eurasian Watermilfoil,30,nr
+Neil-Buoy2,Neil,2,A,2017-06-23,Sand,20,nr
+Neil-Buoy2,Neil,2,B,2017-06-23,Sand,20,nr
+Neil-Buoy2,Neil,2,C,2017-06-23,Sand,50,nr
+Neil-Buoy3,Neil,3,A,2017-06-23,Eurasian Watermilfoil,70,1.7
+Neil-Buoy3,Neil,3,A,2017-06-23,Chara spp.,20,2.1
+Neil-Buoy3,Neil,3,A,2017-06-23,Busted Pipe,2,nr
+Neil-Buoy3,Neil,3,B,2017-06-23,Chara spp.,40,nr
+Neil-Buoy3,Neil,3,C,2017-06-23,Chara spp.,40,nr
+Neil-Buoy3,Neil,3,B,2017-06-23,Eurasian Watermilfoil,30,nr
+Neil-Buoy3,Neil,3,C,2017-06-23,Eurasian Watermilfoil,40,nr
+Neil-Buoy3,Neil,3,A,2017-06-23,Sand,8,nr
+Neil-Buoy3,Neil,3,B,2017-06-23,Sand,30,nr
+Neil-Buoy3,Neil,3,C,2017-06-23,Sand,20,nr
+FDS-Aug1.1,FDS,1,A,2017-07-18,Eurasian Watermilfoil,5,0-1
+FDS-Aug1.1,FDS,1,B,2017-07-18,Eurasian Watermilfoil,30,0-1
+FDS-Aug1.1,FDS,1,C,2017-07-18,Eurasian Watermilfoil,10,0-1
+FDS-Aug1.1,FDS,1,A,2017-07-18,Open Water,95,NA
+FDS-Aug1.1,FDS,1,B,2017-07-18,Open Water,70,NA
+FDS-Aug1.1,FDS,1,C,2017-07-18,Open Water,90,NA
+FDS-Aug1.2,FDS,2,C,2017-07-18,Elodea,2,0
+FDS-Aug1.2,FDS,2,A,2017-07-18,Small Pondweed,5,1
+FDS-Aug1.2,FDS,2,A,2017-07-18,Elodea,2,1.5
+FDS-Aug1.2,FDS,2,A,2017-07-18,Water Stargrass,10,.25-1
+FDS-Aug1.2,FDS,2,B,2017-07-18,Water Stargrass,20,.5-1
+FDS-Aug1.2,FDS,2,C,2017-07-18,Coontail,5,0-.5
+FDS-Aug1.2,FDS,2,B,2017-07-18,Coontail,10,0-1
+FDS-Aug1.2,FDS,2,C,2017-07-18,Eurasian Watermilfoil,30,0-1
+FDS-Aug1.2,FDS,2,A,2017-07-18,Eurasian Watermilfoil,30,0-1.25
+FDS-Aug1.2,FDS,2,B,2017-07-18,Eurasian Watermilfoil,20,0-1.5
+FDS-Aug1.2,FDS,2,B,2017-07-18,Elodea,5,1-1.5
+FDS-Aug1.2,FDS,2,A,2017-07-18,Open Bottom,53,nr
+FDS-Aug1.2,FDS,2,B,2017-07-18,Open Bottom,45,nr
+FDS-Aug1.2,FDS,2,C,2017-07-18,Open Bottom,63,nr
+FDS-Aug2.1,FDS,1,C,2017-07-18,Eurasian Watermilfoil,5,1
+FDS-Aug2.1,FDS,1,B,2017-07-18,Flatstem Pondweed,5,1.5
+FDS-Aug2.1,FDS,1,C,2017-07-18,Water Stargrass,5,1.75
+FDS-Aug2.1,FDS,1,A,2017-07-18,Water Stargrass,10,1.5-2
+FDS-Aug2.1,FDS,1,A,2017-07-18,Eurasian Watermilfoil,10,1-1.5
+FDS-Aug2.1,FDS,1,B,2017-07-18,Eurasian Watermilfoil,20,1-1.5
+FDS-Aug2.1,FDS,1,A,2017-07-18,Open Bottom,80,nr
+FDS-Aug2.1,FDS,1,B,2017-07-18,Open Bottom,75,nr
+FDS-Aug2.1,FDS,1,C,2017-07-18,Open Bottom,90,nr
+BreezeN1.1,Breezeswept North,1,C,2017-07-19,Flatstem Pondweed,10,0
+BreezeN1.1,Breezeswept North,1,A,2017-07-19,Variable Pondweed,5,0
+BreezeN1.1,Breezeswept North,1,A,2017-07-19,Coontail,5,0.25
+BreezeN1.1,Breezeswept North,1,A,2017-07-19,Elodea,60,0.5
+BreezeN1.1,Breezeswept North,1,B,2017-07-19,Elodea,40,0.5
+BreezeN1.1,Breezeswept North,1,C,2017-07-19,Elodea,50,0.5
+BreezeN1.1,Breezeswept North,1,A,2017-07-19,Eurasian Watermilfoil,10,.25-.5
+BreezeN1.1,Breezeswept North,1,B,2017-07-19,Curly-leaf Pondweed,5,0-.5
+BreezeN1.1,Breezeswept North,1,B,2017-07-19,Eurasian Watermilfoil,30,0-.5
+BreezeN1.1,Breezeswept North,1,C,2017-07-19,Eurasian Watermilfoil,30,0-.5
+BreezeN1.1,Breezeswept North,1,A,2017-07-19,Flatstem Pondweed,20,0-.5
+BreezeN1.1,Breezeswept North,1,B,2017-07-19,Flatstem Pondweed,20,0-.5
+BreezeN1.1,Breezeswept North,1,B,2017-07-19,Small Pondweed,5,0-.5
+BreezeN1.1,Breezeswept North,1,C,2017-07-19,Open Water,10,NA
+BreezeN1.2,Breezeswept North,2,A,2017-07-19,Clasping-leaf Pondweed,1,0
+BreezeN1.2,Breezeswept North,2,A,2017-07-19,Coontail,5,0
+BreezeN1.2,Breezeswept North,2,A,2017-07-19,Eurasian Watermilfoil,10,0
+BreezeN1.2,Breezeswept North,2,B,2017-07-19,Eurasian Watermilfoil,10,0
+BreezeN1.2,Breezeswept North,2,C,2017-07-19,Eurasian Watermilfoil,10,0
+BreezeN1.2,Breezeswept North,2,A,2017-07-19,Flatstem Pondweed,50,0
+BreezeN1.2,Breezeswept North,2,C,2017-07-19,Flatstem Pondweed,30,0
+BreezeN1.2,Breezeswept North,2,C,2017-07-19,Variable Pondweed,5,0
+BreezeN1.2,Breezeswept North,2,B,2017-07-19,Clasping-leaf Pondweed,2,0.25
+BreezeN1.2,Breezeswept North,2,C,2017-07-19,Small Pondweed,5,0.25
+BreezeN1.2,Breezeswept North,2,A,2017-07-19,Elodea,34,0.5
+BreezeN1.2,Breezeswept North,2,B,2017-07-19,Flatstem Pondweed,30,0.5
+BreezeN1.2,Breezeswept North,2,B,2017-07-19,Small Pondweed,10,0.5
+BreezeN1.2,Breezeswept North,2,B,2017-07-19,Elodea,48,0.75
+BreezeN1.2,Breezeswept North,2,C,2017-07-19,Elodea,50,0.75
+CourtE-Buoy1,Court East,1,C,2017-07-19,Coontail,1,0.5
+CourtE-Buoy1,Court East,1,C,2017-07-19,Small Pondweed,2,0.5
+CourtE-Buoy1,Court East,1,B,2017-07-19,Elodea,90,0.75
+CourtE-Buoy1,Court East,1,C,2017-07-19,Elodea,47,0.75
+CourtE-Buoy1,Court East,1,A,2017-07-19,Elodea,93,.75-1
+CourtE-Buoy1,Court East,1,A,2017-07-19,Eurasian Watermilfoil,5,.75-1
+CourtE-Buoy1,Court East,1,B,2017-07-19,Eurasian Watermilfoil,10,.75-1
+CourtE-Buoy1,Court East,1,C,2017-07-19,Eurasian Watermilfoil,50,0.75-1
+CourtE-Buoy1,Court East,1,A,2017-07-19,Flatstem Pondweed,2,nr
+FDS-Control1.1,FDS,1,A,2017-07-19,Elodea,1,1
+FDS-Control1.1,FDS,1,B,2017-07-19,Elodea,1,1
+FDS-Control1.1,FDS,1,A,2017-07-19,Open Water,99,NA
+FDS-Control1.1,FDS,1,B,2017-07-19,Open Water,99,NA
+FDS-Control1.1,FDS,1,C,2017-07-19,Open Water,100,NA
+FDS-Control1.2,FDS,2,B,2017-07-19,Small Pondweed,2,0.5
+FDS-Control1.2,FDS,2,A,2017-07-19,Elodea,10,1
+FDS-Control1.2,FDS,2,B,2017-07-19,Elodea,30,1
+FDS-Control1.2,FDS,2,C,2017-07-19,Elodea,30,1
+FDS-Control1.2,FDS,2,A,2017-07-19,Flatstem Pondweed,10,0-.5
+FDS-Control1.2,FDS,2,B,2017-07-19,Flatstem Pondweed,30,0-.5
+FDS-Control1.2,FDS,2,B,2017-07-19,Eurasian Watermilfoil,30,0-1
+FDS-Control1.2,FDS,2,C,2017-07-19,Eurasian Watermilfoil,10,0-1
+FDS-Control1.2,FDS,2,A,2017-07-19,Open Water,80,NA
+FDS-Control1.2,FDS,2,B,2017-07-19,Open Water,8,NA
+FDS-Control1.2,FDS,2,C,2017-07-19,Open Water,60,NA
+FDS-Control1.3,FDS,3,A,2017-07-19,Coontail,1,0.1
+FDS-Control1.3,FDS,3,A,2017-07-19,Flatstem Pondweed,1,0.5
+FDS-Control1.3,FDS,3,B,2017-07-19,Flatstem Pondweed,2,0.5
+FDS-Control1.3,FDS,3,C,2017-07-19,Flatstem Pondweed,10,0.5
+FDS-Control1.3,FDS,3,A,2017-07-19,Elodea,20,1
+FDS-Control1.3,FDS,3,C,2017-07-19,Elodea,10,1
+FDS-Control1.3,FDS,3,A,2017-07-19,Open Water,16,1
+FDS-Control1.3,FDS,3,A,2017-07-19,Water Stargrass,1,1
+FDS-Control1.3,FDS,3,B,2017-07-19,Small Pondweed,5,0.2-1
+FDS-Control1.3,FDS,3,A,2017-07-19,Small Pondweed,1,0.5-1
+FDS-Control1.3,FDS,3,A,2017-07-19,Eurasian Watermilfoil,50,0-1
+FDS-Control1.3,FDS,3,B,2017-07-19,Eurasian Watermilfoil,30,0-1
+FDS-Control1.3,FDS,3,C,2017-07-19,Eurasian Watermilfoil,2,0-1
+FDS-Control1.3,FDS,3,B,2017-07-19,Open Water,61,NA
+FDS-Control1.3,FDS,3,C,2017-07-19,Open Water,78,NA
+FDS-Control1.3,FDS,3,B,2017-07-19,Elodea,2,nr
+BreezeN1.3,Breezeswept North,3,1,2017-07-20,Eurasian Watermilfoil,5,0
+BreezeN1.3,Breezeswept North,3,1,2017-07-20,Variable Pondweed,10,0
+BreezeN1.3,Breezeswept North,3,1,2017-07-20,Flatstem Pondweed,5,0.5
+BreezeN1.3,Breezeswept North,3,1,2017-07-20,Elodea,50,0-0.5
+BreezeN1.3,Breezeswept North,3,1,2017-07-20,Whorled milfoil,5,nr
+BreezeN1.4,Breezeswept North,4,1,2017-07-20,Eurasian Watermilfoil,40,0-0.5
+BreezeN1.4,Breezeswept North,4,1,2017-07-20,Open Water,48,NA
+BreezeN1.4,Breezeswept North,4,1,2017-07-20,Small Pondweed,10,nr
+BreezeN1.4,Breezeswept North,4,1,2017-07-20,Variable Pondweed,2,nr
+BreezeN1.5,Breezeswept North,5,1,2017-07-20,Variable Pondweed,10,0
+BreezeN1.5,Breezeswept North,5,1,2017-07-20,Flatstem Pondweed,10,0.25
+BreezeN1.5,Breezeswept North,5,1,2017-07-20,Small Pondweed,5,.25-.5
+BreezeN1.5,Breezeswept North,5,1,2017-07-20,Eurasian Watermilfoil,20,0-0.5
+BreezeN1.5,Breezeswept North,5,1,2017-07-20,Open Water,55,NA
+BreezeS1.1,Breezeswept South,1,A,2017-07-20,Open Water,100,NA
+BreezeS1.1,Breezeswept South,1,B,2017-07-20,Open Water,85,NA
+BreezeS1.1,Breezeswept South,1,C,2017-07-20,Open Water,98,NA
+BreezeS1.1,Breezeswept South,1,B,2017-07-20,Eurasian Watermilfoil,10,nr
+BreezeS1.1,Breezeswept South,1,B,2017-07-20,Flatstem Pondweed,5,nr
+BreezeS1.1,Breezeswept South,1,C,2017-07-20,Flatstem Pondweed,1,nr
+BreezeS1.1,Breezeswept South,1,C,2017-07-20,Water Crowfoot,1,nr
+BreezeS1.2,Breezeswept South,2,1,2017-07-20,Small Pondweed,10,0.5
+BreezeS1.2,Breezeswept South,2,1,2017-07-20,Eurasian Watermilfoil,10,0-0.5
+BreezeS1.2,Breezeswept South,2,1,2017-07-20,Open Water,80,NA
+BreezeS1.3,Breezeswept South,3,1,2017-07-20,Eurasian Watermilfoil,10,0-0.5
+BreezeS1.3,Breezeswept South,3,1,2017-07-20,Flatstem Pondweed,20,0-0.5
+BreezeS1.3,Breezeswept South,3,1,2017-07-20,Open Water,70,NA
+CourtW1.1,Court West,1,A,2017-07-20,Coontail,,0.5
+CourtW1.1,Court West,1,A,2017-07-20,Small Pondweed,90,0.5
+CourtW1.1,Court West,1,A,2017-07-20,Elodea,5,0.75
+CourtW1.1,Court West,1,C,2017-07-20,Elodea,30,0.75
+CourtW1.1,Court West,1,C,2017-07-20,Eurasian Watermilfoil,10,0.75
+CourtW1.1,Court West,1,C,2017-07-20,Small Pondweed,60,0.75
+CourtW1.1,Court West,1,A,2017-07-20,Eurasian Watermilfoil,5,.1-.5
+CourtW1.1,Court West,1,B,2017-07-20,Elodea,30,.25-.75
+CourtW1.1,Court West,1,B,2017-07-20,Eurasian Watermilfoil,20,.25-.75
+CourtW1.1,Court West,1,B,2017-07-20,Small Pondweed,20,.25-.75
+CourtW1.1,Court West,1,B,2017-07-20,Bottom Sediment,30,nr
+CourtW-Buoy3,Court West,3,C,2017-07-20,Coontail,10,0.5
+CourtW-Buoy3,Court West,3,B,2017-07-20,Elodea,15,0.75
+CourtW-Buoy3,Court West,3,A,2017-07-20,Eurasian Watermilfoil,30,.1-.7
+CourtW-Buoy3,Court West,3,C,2017-07-20,Eurasian Watermilfoil,5,.1-.7
+CourtW-Buoy3,Court West,3,A,2017-07-20,Small Pondweed,50,.1-.7
+CourtW-Buoy3,Court West,3,B,2017-07-20,Small Pondweed,80,.1-.7
+CourtW-Buoy3,Court West,3,C,2017-07-20,Small Pondweed,80,.1-.7
+CourtW-Buoy3,Court West,3,A,2017-07-20,Open Water,20,NA
+CourtW-Buoy3,Court West,3,B,2017-07-20,Open Water,5,NA
+FDSAug1.4,FDS,4,1,2017-07-20,Eurasian Watermilfoil,30,0.1
+FDSAug1.4,FDS,4,1,2017-07-20,Elodea,10,1
+FDSAug1.4,FDS,4,1,2017-07-20,Water Stargrass,10,1
+FDSAug1.4,FDS,4,1,2017-07-20,Open Water,50,1.5
+FDSAug1.5,FDS,5,1,2017-07-20,Eurasian Watermilfoil,10,0
+FDSAug1.5,FDS,5,1,2017-07-20,Open Water,88,0.2
+FDSAug1.5,FDS,5,1,2017-07-20,Elodea,2,1.5
+FDSAug2.2,FDS,2,1,2017-07-20,Eurasian Watermilfoil,60,1.5
+FDSAug2.2,FDS,2,1,2017-07-20,Open Water,40,NA
+FDScontrol1.4,FDS,4,1,2017-07-20,Eurasian Watermilfoil,5,1
+FDScontrol1.4,FDS,4,1,2017-07-20,Flatstem Pondweed,5,1
+FDScontrol1.4,FDS,4,1,2017-07-20,Elodea,80,1.5
+FDScontrol1.4,FDS,4,1,2017-07-20,Water Stargrass,10,1.5
+FDScontrol1.5,FDS,5,1,2017-07-20,Elodea,85,1.5
+FDScontrol1.5,FDS,5,1,2017-07-20,Eurasian Watermilfoil,5,.5-1.5
+FDScontrol1.5,FDS,5,1,2017-07-20,Coontail,10,1-1.5
+Hesselcontrol1.1,Neil,1,A,2017-07-20,Eurasian Watermilfoil,50,1.75
+Hesselcontrol1.1,Neil,1,B,2017-07-20,Eurasian Watermilfoil,100,1.75
+Hesselcontrol1.1,Neil,1,C,2017-07-20,Eurasian Watermilfoil,50,1.75
+Hesselcontrol1.1,Neil,1,A,2017-07-20,Open Bottom,50,nr
+Hesselcontrol1.1,Neil,1,C,2017-07-20,Open Bottom,50,nr
+Hesselcontrol1.2,Neil,2,A,2017-07-20,Chara,20,2.4
+Hesselcontrol1.2,Neil,2,B,2017-07-20,Chara,50,nr
+Hesselcontrol1.2,Neil,2,C,2017-07-20,Chara,30,nr
+Hesselcontrol1.2,Neil,2,A,2017-07-20,Sand,80,nr
+Hesselcontrol1.2,Neil,2,B,2017-07-20,Sand,50,nr
+Hesselcontrol1.2,Neil,2,C,2017-07-20,Sand,70,nr
+Hesselcontrol1.3,Neil,3,A,2017-07-20,Eurasian Watermilfoil,20,1.5
+Hesselcontrol1.3,Neil,3,B,2017-07-20,Low Vegetation,50,1.75
+Hesselcontrol1.3,Neil,3,A,2017-07-20,Low Vegetation,80,nr
+Hesselcontrol1.3,Neil,3,B,2017-07-20,Sand,50,nr
+HesselMarina1.1,Hessel Marina,1,B,2017-07-20,Curly-leaf Pondweed,30,1
+HesselMarina1.1,Hessel Marina,1,C,2017-07-20,Curly-leaf Pondweed,20,1
+HesselMarina1.1,Hessel Marina,,A,2017-07-20,Eurasian Watermilfoil,10,1
+HesselMarina1.1,Hessel Marina,1,B,2017-07-20,Eurasian Watermilfoil,20,1
+HesselMarina1.1,Hessel Marina,1,C,2017-07-20,Eurasian Watermilfoil,50,1
+HesselMarina1.1,Hessel Marina,1,A,2017-07-20,Bottom,90,nr
+HesselMarina1.1,Hessel Marina,1,B,2017-07-20,Bottom,50,nr
+HesselMarina1.1,Hessel Marina,1,C,2017-07-20,Bottom,30,nr
+HesselMarina1.2,Hessel Marina,2,A,2017-07-20,Curly-leaf Pondweed,10,2-Jan
+HesselMarina1.2,Hessel Marina,2,A,2017-07-20,Eurasian Watermilfoil,40,2-Jan
+HesselMarina1.2,Hessel Marina,2,A,2017-07-20,Flatstem Pondweed,5,2-Jan
+HesselMarina1.2,Hessel Marina,2,B,2017-07-20,Curly-leaf Pondweed,20,nr
+HesselMarina1.2,Hessel Marina,2,C,2017-07-20,Elodea,20,nr
+HesselMarina1.2,Hessel Marina,2,B,2017-07-20,Eurasian Watermilfoil,20,nr
+HesselMarina1.2,Hessel Marina,2,C,2017-07-20,Eurasian Watermilfoil,30,nr
+HesselMarina1.2,Hessel Marina,2,C,2017-07-20,Flatstem Pondweed,10,nr
+HesselMarina1.2,Hessel Marina,2,A,2017-07-20,Low Vegetation,45,nr
+HesselMarina1.2,Hessel Marina,2,B,2017-07-20,Low Vegetation,60,nr
+HesselMarina1.2,Hessel Marina,2,C,2017-07-20,Low Vegetation,40,nr
+HesselMarina1.3,Hessel Marina,3,1,2017-07-20,Eurasian Watermilfoil,20,1.5
+HesselMarina1.3,Hessel Marina,3,1,2017-07-20,Flatstem Pondweed,10,1.5
+HesselMarina1.3,Hessel Marina,3,1,2017-07-20,Low Vegetation,70,nr
+FDS4-virtualbuoy1,FDS,1,A,2017-08-22,Eurasian Watermilfoil,40,0
+FDS4-virtualbuoy1,FDS,1,B,2017-08-22,Eurasian Watermilfoil,70,0
+FDS4-virtualbuoy1,FDS,1,C,2017-08-22,Eurasian Watermilfoil,25,0
+FDS4-virtualbuoy1,FDS,1,A,2017-08-22,Water Stargrass,10,0.2
+FDS4-virtualbuoy1,FDS,1,C,2017-08-22,Water Stargrass,40,0.2
+FDS4-virtualbuoy1,FDS,1,B,2017-08-22,Water Stargrass,20,.2-0
+FDS4-virtualbuoy1,FDS,1,A,2017-08-22,Open Water,50,NA
+FDS4-virtualbuoy1,FDS,1,B,2017-08-22,Open Water,10,NA
+FDS4-virtualbuoy1,FDS,1,C,2017-08-22,Open Water,35,NA
+FDS4-virtualbuoy2,FDS,2,C,2017-08-22,Cut up floating veg,5,0
+FDS4-virtualbuoy2,FDS,,A,2017-08-22,Eurasian Watermilfoil,75,0
+FDS4-virtualbuoy2,FDS,2,B,2017-08-22,Eurasian Watermilfoil,95,0
+FDS4-virtualbuoy2,FDS,2,C,2017-08-22,Eurasian Watermilfoil,90,0
+FDS4-virtualbuoy2,FDS,2,B,2017-08-22,Water Stargrass,1,0.2
+FDS4-virtualbuoy2,FDS,2,A,2017-08-22,Open Water,25,NA
+FDS4-virtualbuoy2,FDS,2,B,2017-08-22,Open Water,4,NA
+FDS4-virtualbuoy2,FDS,2,C,2017-08-22,Open Water,5,NA
+FDScontrol-1,FDS,1,C,2017-08-22,Eurasian Watermilfoil,50,0
+FDScontrol-1,FDS,1,A,2017-08-22,Water Stargrass,1,0.1
+FDScontrol-1,FDS,1,B,2017-08-22,Elodea,10,1
+FDScontrol-1,FDS,1,C,2017-08-22,Elodea,30,1
+FDScontrol-1,FDS,1,A,2017-08-22,Flatstem Pondweed,20,.75-.1
+FDScontrol-1,FDS,1,C,2017-08-22,Flatstem Pondweed,5,.75-.5
+FDScontrol-1,FDS,1,A,2017-08-22,Eurasian Watermilfoil,50,.75-0
+FDScontrol-1,FDS,1,B,2017-08-22,Eurasian Watermilfoil,80,.75-0
+FDScontrol-1,FDS,1,A,2017-08-22,Open Water,29,NA
+FDScontrol-1,FDS,1,B,2017-08-22,Open Water,10,NA
+FDScontrol-1,FDS,1,C,2017-08-22,Open water,15,NA
+FDScontrol-2,FDS,2,A,2017-08-22,Coontail,2,0.5
+FDScontrol-2,FDS,2,A,2017-08-22,Flatstem Pondweed,5,0.5
+FDScontrol-2,FDS,2,B,2017-08-22,Flatstem Pondweed,20,0.5
+FDScontrol-2,FDS,2,C,2017-08-22,Flatstem Pondweed,20,0.5
+FDScontrol-2,FDS,2,A,2017-08-22,Water Stargrass,2,0.5
+FDScontrol-2,FDS,2,A,2017-08-22,Eurasian Watermilfoil,20,.75-0
+FDScontrol-2,FDS,2,B,2017-08-22,Eurasian Watermilfoil,40,.75-0
+FDScontrol-2,FDS,2,C,2017-08-22,Eurasian Watermilfoil,10,.75-0
+FDScontrol-2,FDS,2,A,2017-08-22,Elodea,71,1-.75
+FDScontrol-2,FDS,2,B,2017-08-22,Elodea,20,1-.75
+FDScontrol-2,FDS,2,C,2017-08-22,Elodea,70,1-.75
+FDScontrol-2,FDS,2,A,2017-08-22,Open Water,2,NA
+FDScontrol-2,FDS,2,B,2017-08-22,Open water,20,NA
+CourtE-Buoy1,Court East,1,C,2017-08-23,Eurasian Watermilfoil,10,0.5
+CourtE-Buoy1,Court East,1,A,2017-08-23,Elodea,30,0.75
+CourtE-Buoy1,Court East,1,C,2017-08-23,Elodea,20,.5-1.5
+CourtE-Buoy1,Court East,1,B,2017-08-23,Eurasian Watermilfoil,75,.75-0
+CourtE-Buoy1,Court East,1,A,2017-08-23,Eurasian Watermilfoil,40,0-.5
+CourtE-Buoy1,Court East,1,A,2017-08-23,Open Water,30,NA
+CourtE-Buoy1,Court East,1,B,2017-08-23,Open Water,25,NA
+CourtE-Buoy1,Court East,1,C,2017-08-23,Open Water,70,NA
+CourtE-Buoy2,Court East,2,B,2017-08-23,Water Stargrass,5,.5-.25
+CourtE-Buoy2,Court East,2,A,2017-08-23,Water Stargrass,5,.75-.25
+CourtE-Buoy2,Court East,2,A,2017-08-23,Eurasian Watermilfoil,50,.75-0
+CourtE-Buoy2,Court East,2,C,2017-08-23,Eurasian Watermilfoil,75,.75-0
+CourtE-Buoy2,Court East,2,A,2017-08-23,Flatstem Pondweed,5,.75-0
+CourtE-Buoy2,Court East,2,B,2017-08-23,Eurasian Watermilfoil,75,0-.5
+CourtE-Buoy2,Court East,2,A,2017-08-23,Open Water,40,NA
+CourtE-Buoy2,Court East,2,B,2017-08-23,Open Water,20,NA
+CourtE-Buoy2,Court East,2,C,2017-08-23,Open Water,25,NA
+CourtE-Buoy4,Court East,4,1,2017-08-23,Elodea,80,0.75
+CourtE-Buoy4,Court East,4,1,2017-08-23,Eurasian Watermilfoil,20,.75-.25
+CourtW-buoy3,Court West,3,B,2017-08-23,Clasping-leaf Pondweed,2,.75-.25
+CourtW-buoy3,Court West,3,A,2017-08-23,Flatstem Pondweed,5,.75-.25
+CourtW-buoy3,Court West,3,B,2017-08-23,Flatstem Pondweed,5,.75-.25
+CourtW-buoy3,Court West,3,C,2017-08-23,Clasping-leaf Pondweed,10,.75-0
+CourtW-buoy3,Court West,3,A,2017-08-23,Eurasian Watermilfoil,20,.75-0
+CourtW-buoy3,Court West,3,B,2017-08-23,Eurasian Watermilfoil,50,.75-0
+CourtW-buoy3,Court West,3,C,2017-08-23,Eurasian Watermilfoil,10,.75-0
+CourtW-buoy3,Court West,3,A,2017-08-23,Open water,75,na
+CourtW-buoy3,Court West,3,B,2017-08-23,Open Water,43,NA
+CourtW-buoy3,Court West,3,C,2017-08-23,Open Water,80,NA
+CourtW-buoy5,Court West,5,1,2017-08-23,Coontail,1,0.5
+CourtW-buoy5,Court West,5,1,2017-08-23,Water Stargrass,2,.75-.25
+CourtW-buoy5,Court West,5,1,2017-08-23,Eurasian Watermilfoil,40,.75-0
+CourtW-buoy5,Court West,5,1,2017-08-23,Open Water,57,NA
+BreezesweptS-pt1,Breezeswept South,1,C,2017-08-24,Clasping-leaf Pondweed,1,0.5
+BreezesweptS-pt1,Breezeswept South,1,C,2017-08-24,Eurasian Watermilfoil,60,0.5
+BreezesweptS-pt1,Breezeswept South,1,C,2017-08-24,Small Pondweed,1,0.5
+BreezesweptS-pt1,Breezeswept South,1,C,2017-08-24,Water stargrass or Water Marigold,2,0.5
+BreezesweptS-pt1,Breezeswept South,1,A,2017-08-24,Eurasian Watermilfoil,40,0-.5
+BreezesweptS-pt1,Breezeswept South,1,B,2017-08-24,Eurasian Watermilfoil,50,0-.5
+BreezesweptS-pt1,Breezeswept South,1,A,2017-08-24,Floating Bur-reed,1,0-.5
+BreezesweptS-pt1,Breezeswept South,1,A,2017-08-24,Open Water,59,NA
+BreezesweptS-pt1,Breezeswept South,1,B,2017-08-24,Open Water,50,NA
+BreezesweptS-pt1,Breezeswept South,1,C,2017-08-24,Open Water,36,NA
+BreezesweptS-pt2,Breezeswept South,2,C,2017-08-24,Eurasian Watermilfoil,10,0.25
+BreezesweptS-pt2,Breezeswept South,2,C,2017-08-24,Puffball Chara,5,0.25
+BreezesweptS-pt2,Breezeswept South,2,B,2017-08-24,Flatstem Pondweed,2,0.5
+BreezesweptS-pt2,Breezeswept South,2,A,2017-08-24,Puffball Chara,5,0.5
+BreezesweptS-pt2,Breezeswept South,2,B,2017-08-24,Puffball Chara,20,0.5
+BreezesweptS-pt2,Breezeswept South,2,B,2017-08-24,Various-leaved Milfoil,10,0.5
+BreezesweptS-pt2,Breezeswept South,2,A,2017-08-24,Water Stargrass,5,.5-.75
+BreezesweptS-pt2,Breezeswept South,2,A,2017-08-24,Eurasian Watermilfoil,60,0-.75
+BreezesweptS-pt2,Breezeswept South,2,B,2017-08-24,Eurasian Watermilfoil,20,0-.75
+BreezesweptS-pt2,Breezeswept South,2,A,2017-08-24,Floating Bur-reed,1,0-.75
+BreezesweptS-pt2,Breezeswept South,2,A,2017-08-24,Open Water,29,NA
+BreezesweptS-pt2,Breezeswept South,2,B,2017-08-24,Open Water,48,NA
+BreezesweptS-pt2,Breezeswept South,2,C,2017-08-24,Open Water,85,NA
+Chappel-buoy3,Chappell,3,C,2017-08-24,Flatstem Pondweed,2,1.5
+Chappel-buoy3,Chappell,3,A,2017-08-24,Eurasian Watermilfoil,100,.5-2
+Chappel-buoy3,Chappell,3,B,2017-08-24,Eurasian Watermilfoil,100,.5-2
+Chappel-buoy3,Chappell,3,C,2017-08-24,Eurasian Watermilfoil,95,.5-2
+Chappel-buoy4,Chappell,4,C,2017-08-24,Eurasian Watermilfoil,100,.25-1.5
+Chappel-buoy4,Chappell,4,B,2017-08-24,Eurasian Watermilfoil,100,.5-1.5
+Chappel-buoy4,Chappell,4,A,2017-08-24,Eurasian Watermilfoil,80,1.5-.25
+Chappel-buoy4,Chappell,4,A,2017-08-24,Open Water,20,NA
+Chappel-buoy5,Chappell,5,B,2017-08-24,Naiad,20,1.75
+Chappel-buoy5,Chappell,5,C,2017-08-24,Naiad,25,1.75
+Chappel-buoy5,Chappell,5,A,2017-08-24,Naiad,55,1.8
+Chappel-buoy5,Chappell,5,C,2017-08-24,Eurasian Watermilfoil,70,.25-1.25
+Chappel-buoy5,Chappell,5,B,2017-08-24,Eurasian Watermilfoil,70,.5-1.25
+Chappel-buoy5,Chappell,5,B,2017-08-24,Clasping-leaf Pondweed,10,1-1.25
+Chappel-buoy5,Chappell,5,C,2017-08-24,Clasping-leaf Pondweed,5,1-1.25
+Chappel-buoy5,Chappell,5,A,2017-08-24,Clasping-leaf Pondweed,20,1-1.9
+Chappel-buoy5,Chappell,5,A,2017-08-24,Eurasian Watermilfoil,20,1-1.9
+Chappel-buoy5,Chappell,5,A,2017-08-24,Open Water,5,NA
+HesselMarina-pt7,Hessel Marina,7,A,2017-08-24,Coontail,70,2.5
+HesselMarina-pt7,Hessel Marina,7,A,2017-08-24,Eurasian Watermilfoil,5,0-2.5
+HesselMarina-pt7,Hessel Marina,7,A,2017-08-24,Water Stargrass,3,1.5-2
+HesselMarina-pt7,Hessel Marina,7,B,2017-08-24,Eurasian Watermilfoil,20,nr
+HesselMarina-pt7,Hessel Marina,7,C,2017-08-24,Eurasian Watermilfoil,40,nr
+HesselMarina-pt7,Hessel Marina,7,A,2017-08-24,Open Bottom,22,nr
+HesselMarina-pt7,Hessel Marina,7,B,2017-08-24,Open Bottom,40,nr
+HesselMarina-pt7,Hessel Marina,7,C,2017-08-24,Open Bottom,50,nr
+HesselMarina-pt7,Hessel Marina,7,B,2017-08-24,Water Stargrass,20,nr
+HesselMarina-pt7,Hessel Marina,7,C,2017-08-24,Water Stargrass,10,nr
+HesselMarina-pt8,Hessel Marina,8,B,2017-08-24,Clasping-leaf Pondweed,10,1.25-1.75
+HesselMarina-pt8,Hessel Marina,8,C,2017-08-24,Clasping-leaf Pondweed,2,1.25-1.75
+HesselMarina-pt8,Hessel Marina,8,C,2017-08-24,Eurasian Watermilfoil,40,1.75-.1
+HesselMarina-pt8,Hessel Marina,8,B,2017-08-24,Eurasian Watermilfoil,10,1.75-.25
+HesselMarina-pt8,Hessel Marina,8,A,2017-08-24,Eurasian Watermilfoil,50,1.75-0
+HesselMarina-pt8,Hessel Marina,8,A,2017-08-24,Clasping-leaf Pondweed,5,1.75-75
+HesselMarina-pt8,Hessel Marina,8,A,2017-08-24,Open Water,45,NA
+HesselMarina-pt8,Hessel Marina,8,B,2017-08-24,Open Water,80,NA
+HesselMarina-pt8,Hessel Marina,8,C,2017-08-24,Open Water,58,NA
+HesselMarina-pt9,Hessel Marina,9,B,2017-08-24,Eurasian Watermilfoil,30,Feb-00
+HesselMarina-pt9,Hessel Marina,9,A,2017-08-24,Eurasian Watermilfoil,40,2-.25
+HesselMarina-pt9,Hessel Marina,9,C,2017-08-24,Eurasian Watermilfoil,20,2-.5
+HesselMarina-pt9,Hessel Marina,9,A,2017-08-24,Open Water,60,NA
+HesselMarina-pt9,Hessel Marina,9,B,2017-08-24,Open Water,70,NA
+HesselMarina-pt9,Hessel Marina,9,C,2017-08-24,Open Water,80,NA
+Neils-buoy1south,Neil,1,A,2017-08-24,Eurasian Watermilfoil,80,1
+Neils-buoy1south,Neil,1,B,2017-08-24,Eurasian Watermilfoil,95,1
+Neils-buoy1south,Neil,1,C,2017-08-24,Eurasian Watermilfoil,100,1
+Neils-buoy1south,Neil,1,B,2017-08-24,Open Water,5,NA
+Neils-buoy1south,Neil,1,A,2017-08-24,Chara,10,nr
+Neils-buoy1south,Neil,1,A,2017-08-24,Naiad,10,nr
+Neils-buoy2north,Neil,2,B,2017-08-24,Eurasian Watermilfoil,50,1
+Neils-buoy2north,Neil,2,C,2017-08-24,Eurasian Watermilfoil,90,1
+Neils-buoy2north,Neil,2,C,2017-08-24,Eel Grass/Water Celery,1,1.25
+Neils-buoy2north,Neil,2,B,2017-08-24,Water Stargrass,2,1.25
+Neils-buoy2north,Neil,2,C,2017-08-24,Water Stargrass,5,1.25
+Neils-buoy2north,Neil,2,A,2017-08-24,Eurasian Watermilfoil,80,.25-1.25
+Neils-buoy2north,Neil,2,B,2017-08-24,Elodea,48,1-1.25
+Neils-buoy2north,Neil,2,A,2017-08-24,Open Water,17,NA
+Neils-buoy2north,Neil,2,B,2017-08-24,Open Water,48,NA
+Neils-buoy2north,Neil,2,C,2017-08-24,open Water,4,NA
+Neils-buoy2north,Neil,2,A,2017-08-24,Eel Grass/Water Celery,1,nr
+Neils-buoy2north,Neil,2,A,2017-08-24,Water Stargrass,2,nr
+BreezesweptN-site1,Breezeswept North,1,A,2017-08-25,Eurasian Watermilfoil,50,.1-.5
+BreezesweptN-site1,Breezeswept North,1,B,2017-08-25,Eurasian Watermilfoil,75,.1-.75
+BreezesweptN-site1,Breezeswept North,1,A,2017-08-25,Coontail,5,.4-.5
+BreezesweptN-site1,Breezeswept North,1,C,2017-08-25,Flatstem Pondweed,10,0-.5
+BreezesweptN-site1,Breezeswept North,1,A,2017-08-25,Variable Pondweed,5,0-.5
+BreezesweptN-site1,Breezeswept North,1,C,2017-08-25,Variable Pondweed,5,0-.5
+BreezesweptN-site1,Breezeswept North,1,C,2017-08-25,Eurasian Watermilfoil,75,0-.6
+BreezesweptN-site1,Breezeswept North,1,A,2017-08-25,Open Water,40,NA
+BreezesweptN-site1,Breezeswept North,1,B,2017-08-25,Open Water,25,NA
+BreezesweptN-site1,Breezeswept North,1,C,2017-08-25,Open Water,10,NA
+BreezesweptN-site2,Breezeswept North,2,A,2017-08-25,Elodea,10,.1-.5
+BreezesweptN-site2,Breezeswept North,2,A,2017-08-25,Eurasian Watermilfoil,5,.1-.5
+BreezesweptN-site2,Breezeswept North,2,A,2017-08-25,Flatstem Pondweed,60,.1-.5
+BreezesweptN-site2,Breezeswept North,2,B,2017-08-25,Elodea,30,.3-.5
+BreezesweptN-site2,Breezeswept North,2,C,2017-08-25,Elodea,10,.3-.5
+BreezesweptN-site2,Breezeswept North,2,B,2017-08-25,Eurasian Watermilfoil,10,0-.5
+BreezesweptN-site2,Breezeswept North,2,C,2017-08-25,Eurasian Watermilfoil,50,0-.5
+BreezesweptN-site2,Breezeswept North,2,B,2017-08-25,Flatstem Pondweed,50,0-.5
+BreezesweptN-site2,Breezeswept North,2,C,2017-08-25,Flatstem Pondweed,30,0-.5
+BreezesweptN-site2,Breezeswept North,2,B,2017-08-25,Variable Pondweed,5,0-.5
+BreezesweptN-site2,Breezeswept North,2,A,2017-08-25,Open Water,25,NA
+BreezesweptN-site2,Breezeswept North,2,B,2017-08-25,Open Water,5,NA
+BreezesweptN-site2,Breezeswept North,2,C,2017-08-25,Open Water,10,NA
+BreezesweptN-site3,Breezeswept North,3,A,2017-08-25,Open Water,,NA
+BreezesweptN-site3,Breezeswept North,3,B,2017-08-25,Open Water,,NA
+BreezesweptN-site3,Breezeswept North,3,C,2017-08-25,Open Water,,NA
+BreezesweptN-site3,Breezeswept North,3,C,2017-08-25,Coontail,,nr
+BreezesweptN-site3,Breezeswept North,3,A,2017-08-25,Epiphytic Algae,0-.5,nr
+BreezesweptN-site3,Breezeswept North,3,B,2017-08-25,Epiphytic Algae,.2-.5,nr
+BreezesweptN-site3,Breezeswept North,3,C,2017-08-25,Epiphytic Algae,.1-.5,nr
+BreezesweptN-site3,Breezeswept North,3,A,2017-08-25,Eurasian Watermilfoil,0.5,nr
+BreezesweptN-site3,Breezeswept North,3,B,2017-08-25,Eurasian Watermilfoil,.2-.5,nr
+BreezesweptN-site3,Breezeswept North,3,C,2017-08-25,Eurasian Watermilfoil,0.1-0.5,nr
+BreezesweptN-site3,Breezeswept North,3,A,2017-08-25,Flatstem Pondweed,0-.5,nr
+BreezesweptN-site3,Breezeswept North,3,B,2017-08-25,Flatstem Pondweed,0.4,nr
+HowellsDock-2,Howells Dock,2,C,2017-08-25,Eurasian Watermilfoil,30,1.25
+HowellsDock-2,Howells Dock,2,A,2017-08-25,Eurasian Watermilfoil,90,1.5
+HowellsDock-2,Howells Dock,2,B,2017-08-25,Eurasian Watermilfoil,80,1.5
+HowellsDock-2,Howells Dock,2,A,2017-08-25,Eel Grass/Water Celery,5,0-1.5
+HowellsDock-2,Howells Dock,2,B,2017-08-25,Eel Grass/Water Celery,15,0-1.5
+HowellsDock-2,Howells Dock,2,C,2017-08-25,Eel Grass/Water Celery,50,0-1.5
+HowellsDock-2,Howells Dock,2,A,2017-08-25,Open Water,5,NA
+HowellsDock-2,Howells Dock,2,B,2017-08-25,Open Water,5,NA
+HowellsDock-2,Howells Dock,2,C,2017-08-25,Open Water,20,NA
+HowellsDock-3,Howells Dock,1,C,2017-08-25,Eurasian Watermilfoil,30,1.5
+HowellsDock-3,Howells Dock,3,A,2017-08-25,Eurasian Watermilfoil,50,2-Jan
+HowellsDock-3,Howells Dock,3,B,2017-08-25,Eurasian Watermilfoil,50,2-Jan
+HowellsDock-3,Howells Dock,3,C,2017-08-25,Eurasian Watermilfoil,40,2-Jan
+HowellsDock-3,Howells Dock,1,B,2017-08-25,Eurasian Watermilfoil,40,0.75-1.75
+HowellsDock-3,Howells Dock,3,C,2017-08-25,Eel Grass/Water Celery,10,0-1.75
+HowellsDock-3,Howells Dock,1,A,2017-08-25,Eel Grass/Water Celery,10,0-1.75
+HowellsDock-3,Howells Dock,1,B,2017-08-25,Eel Grass/Water Celery,30,0-1.75
+HowellsDock-3,Howells Dock,1,C,2017-08-25,Eel Grass/Water Celery,60,0-1.75
+HowellsDock-3,Howells Dock,1,A,2017-08-25,Eurasian Watermilfoil,80,1-1.75
+HowellsDock-3,Howells Dock,1,C,2017-08-25,Open,10,NA
+HowellsDock-3,Howells Dock,3,A,2017-08-25,Open Water,50,NA
+HowellsDock-3,Howells Dock,3,B,2017-08-25,Open Water,50,NA
+HowellsDock-3,Howells Dock,3,C,2017-08-25,Open Water,50,NA
+HowellsDock-3,Howells Dock,1,B,2017-08-25,Open (log),30,nr
+HowellsDock-3,Howells Dock,1,A,2017-08-25,Open (rock),10,nr
+CRAMP-1,CRAMP,1,A,2018-08-20,Eurasian Watermilfoil,60,0-0.5
+CRAMP-1,CRAMP,1,B,2018-08-20,Eurasian Watermilfoil,40,0-0.5
+CRAMP-1,CRAMP,1,C,2018-08-20,Eurasian Watermilfoil,10,0-0.5
+CRAMP-1,CRAMP,1,A,2018-08-20,Flatstem Pondweed,1,0-0.5
+CRAMP-1,CRAMP,1,B,2018-08-20,Flatstem Pondweed,5,0-0.5
+CRAMP-1,CRAMP,1,C,2018-08-20,Flatstem Pondweed,50,0-0.5
+CRAMP-1,CRAMP,1,A,2018-08-20,Open Water,39,NA
+CRAMP-1,CRAMP,1,B,2018-08-20,Open Water,55,NA
+CRAMP-1,CRAMP,1,C,2018-08-20,Open Water,40,NA
+CRAMP-2,CRAMP,2,B,2018-08-20,Eurasian Watermilfoil,1,0
+CRAMP-2,CRAMP,2,C,2018-08-20,Eurasian Watermilfoil,20,0.5-0
+CRAMP-2,CRAMP,2,C,2018-08-20,Flatstem Pondweed,2,0.5-0
+CRAMP-2,CRAMP,2,A,2018-08-20,Open Water,100,NA
+CRAMP-2,CRAMP,2,B,2018-08-20,Open Water,99,NA
+CRAMP-2,CRAMP,2,C,2018-08-20,Open Water,78,NA
+CRAMP-3,CRAMP,3,B,2018-08-20,Eurasian Watermilfoil,5,0
+CRAMP-3,CRAMP,3,B,2018-08-20,Flatstem Pondweed,5,0
+CRAMP-3,CRAMP,3,A,2018-08-20,Coontail,5,0.5
+CRAMP-3,CRAMP,3,A,2018-08-20,Eurasian Watermilfoil,1,0.5
+CRAMP-3,CRAMP,3,A,2018-08-20,Open Water,94,NA
+CRAMP-3,CRAMP,3,B,2018-08-20,Open Water,90,NA
+CRAMP-3,CRAMP,3,C,2018-08-20,Open Water,100,NA
+Howells Dock-1,Howells Dock,1,B,2018-08-22,Eurasian Watermilfoil,80,0.75
+Howells Dock-1,Howells Dock,1,A,2018-08-22,Eurasian Watermilfoil,10,1.5
+Howells Dock-1,Howells Dock,1,C,2018-08-22,Eurasian Watermilfoil,10,1.5
+Howells Dock-1,Howells Dock,1,A,2018-08-22,Open Water,90,NA
+Howells Dock-1,Howells Dock,1,B,2018-08-22,Open Water,20,NA
+Howells Dock-1,Howells Dock,1,C,2018-08-22,Open Water,90,NA
+Howells Dock-2,Howells Dock,2,A,2018-08-22,Eurasian Watermilfoil,50,0.5
+Howells Dock-2,Howells Dock,2,B,2018-08-22,Eurasian Watermilfoil,80,0.5
+Howells Dock-2,Howells Dock,2,C,2018-08-22,Flatstem Pondweed,2,0.5
+Howells Dock-2,Howells Dock,2,C,2018-08-22,Eurasian Watermilfoil,75,0.75
+Howells Dock-2,Howells Dock,2,A,2018-08-22,Bottom,50,2.4
+Howells Dock-2,Howells Dock,2,B,2018-08-22,Eel Grass/Water Celery,2,0-0.5
+Howells Dock-2,Howells Dock,2,B,2018-08-22,Open Water,18,NA
+Howells Dock-2,Howells Dock,2,C,2018-08-22,Open Water,23,NA
+Howells Dock-3,Howells Dock,3,A,2018-08-22,Flatstem Pondweed,2,1
+Howells Dock-3,Howells Dock,3,C,2018-08-22,Eurasian Watermilfoil,90,0.25-1
+Howells Dock-3,Howells Dock,3,A,2018-08-22,Eurasian Watermilfoil,75,0.5-1
+Howells Dock-3,Howells Dock,3,B,2018-08-22,Eurasian Watermilfoil,80,0.5-1
+Howells Dock-3,Howells Dock,3,A,2018-08-22,Open Water,23,NA
+Howells Dock-3,Howells Dock,3,B,2018-08-22,Open Water,20,NA
+Howells Dock-3,Howells Dock,3,C,2018-08-22,Open Water,10,NA
+Urie Point,Urie Point,1,A,2018-08-22,Eurasian Watermilfoil,30,1
+Urie Point,Urie Point,1,B,2018-08-22,Eurasian Watermilfoil,60,1.25
+Urie Point,Urie Point,1,A,2018-08-22,Open Water,70,NA
+Urie Point,Urie Point,1,B,2018-08-22,Open Water,40,NA
+Urie Point,Urie Point,1,C,2018-08-22,Open Water,100,NA
+Hessel Marina-1,Hessel Marina,1,B,2018-08-23,Elodea,2,0.5-0.75
+Hessel Marina-1,Hessel Marina,1,A,2018-08-23,Eurasian Watermilfoil,20,0.5-0.75
+Hessel Marina-1,Hessel Marina,1,B,2018-08-23,Eurasian Watermilfoil,20,0.5-0.75
+Hessel Marina-1,Hessel Marina,1,C,2018-08-23,Eurasian Watermilfoil,40,0.5-0.75
+Hessel Marina-1,Hessel Marina,1,A,2018-08-23,Bare Substrate,80,nr
+Hessel Marina-1,Hessel Marina,1,B,2018-08-23,Bare Substrate,78,nr
+Hessel Marina-1,Hessel Marina,1,C,2018-08-23,Bare Substrate,60,nr
+Hessel Marina-2,Hessel Marina,2,A,2018-08-23,Clasping-leaf Pondweed,5,1
+Hessel Marina-2,Hessel Marina,2,A,2018-08-23,Eurasian Watermilfoil,30,1
+Hessel Marina-2,Hessel Marina,2,B,2018-08-23,Eurasian Watermilfoil,20,1
+Hessel Marina-2,Hessel Marina,2,C,2018-08-23,Eurasian Watermilfoil,40,1
+Hessel Marina-2,Hessel Marina,2,A,2018-08-23,Open Water,65,NA
+Hessel Marina-2,Hessel Marina,2,B,2018-08-23,Open Water,80,NA
+Hessel Marina-2,Hessel Marina,2,C,2018-08-23,Open Water,60,NA
+Hessel Marina-3,Hessel Marina,3,B,2018-08-23,Eel Grass/Water Celery,1,1
+Hessel Marina-3,Hessel Marina,3,A,2018-08-23,Eurasian Watermilfoil,50,1
+Hessel Marina-3,Hessel Marina,3,B,2018-08-23,Eurasian Watermilfoil,50,1
+Hessel Marina-3,Hessel Marina,3,A,2018-08-23,Open Water,50,NA
+Hessel Marina-3,Hessel Marina,3,B,2018-08-23,Open Water,49,NA
+Hessel Marina-3,Hessel Marina,3,C,2018-08-23,Open Water,100,NA
+Neils Dock-1,Neil,1,A,2018-08-23,Eurasian Watermilfoil,100,1.25
+Neils Dock-1,Neil,1,B,2018-08-23,Eurasian Watermilfoil,80,1.25
+Neils Dock-1,Neil,1,C,2018-08-23,Eurasian Watermilfoil,100,1.25
+Neils Dock-1,Neil,1,B,2018-08-23,Bottom,20,nr
+Neils Dock-2,Neil,2,A,2018-08-23,Open Water,20,NA
+Neils Dock-2,Neil,2,B,2018-08-23,Open Water,20,NA
+Neils Dock-2,Neil,2,A,2018-08-23,Eurasian Watermilfoil,20,nr
+Neils Dock-2,Neil,2,B,2018-08-23,Eurasian Watermilfoil,5,nr
+Neils Dock-2,Neil,2,C,2018-08-23,Eurasian Watermilfoil,30,nr
+Neils Dock-2,Neil,2,A,2018-08-23,Low Vegetation,60,nr
+Neils Dock-2,Neil,2,B,2018-08-23,Low Vegetation,75,nr
+Neils Dock-2,Neil,2,C,2018-08-23,Low Vegetation,70,nr

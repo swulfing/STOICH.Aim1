@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.103.14-4c9184f37cff01bcdc32dc486ec36961.zip created on Thu Jun 03 20:14:36 MDT 2021
+albisolu.nc.data.csv (316148 bytes)
+knb-lter-nwt.103.14.xml (62653 bytes)
+knb-lter-nwt.103.14.txt (34310 bytes)
+knb-lter-nwt.103.14.report.xml (33518 bytes)

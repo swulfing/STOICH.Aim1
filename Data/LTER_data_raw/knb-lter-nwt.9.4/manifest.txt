@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.9.4-4c9184f37cff01bcdc32dc486ec36961.zip created on Thu Jun 03 20:08:29 MDT 2021
+sad007solu.mw.data.csv (82195 bytes)
+knb-lter-nwt.9.4.xml (54259 bytes)
+knb-lter-nwt.9.4.txt (26473 bytes)
+knb-lter-nwt.9.4.report.xml (33520 bytes)

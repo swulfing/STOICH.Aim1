@@ -1,0 +1,1456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml packageId="knb-lter-nwt.160.3"
+  system="https://pasta.edirepository.org"
+  xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0"
+  xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ecoinformatics.org/eml-2.2.0  https://nis.lternet.edu/schemas/EML/eml-2.2.0/xsd/eml.xsd">
+  <access
+    authSystem="https://pasta.edirepository.org/authentication"
+    order="allowFirst" scope="document"
+      system="https://pasta.edirepository.org">
+    <allow>
+      <principal>uid=nwt,o=EDI,dc=ecoinformatics,dc=org</principal>
+      <permission>read</permission>
+      <permission>write</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <alternateIdentifier
+        system="https://doi.org">doi:10.6073/pasta/9173009d00ed4602fcda5a529ee4a603</alternateIdentifier><title>Stream water chemistry data for Saddle Stream site, 1994 - ongoing.</title>
+    <creator>
+      <individualName>
+        <givenName>T. Nelson (Nel)</givenName>
+        <surName>Caine</surName>
+      </individualName>
+      <electronicMailAddress>cainen@colorado.edu</electronicMailAddress>
+      <userId
+        directory="https://orcid.org">https://orcid.org/orcid.org/0000-0001-7979-2335</userId>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>T. Nelson (Nel)</givenName>
+        <surName>Caine</surName>
+      </individualName>
+      <electronicMailAddress>cainen@colorado.edu</electronicMailAddress>
+      <userId
+          directory="https://orcid.org">https://orcid.org/orcid.org/0000-0001-7979-2335</userId>
+      <role>principalInvestigator</role>
+    </associatedParty>
+    <pubDate>2021-03-11</pubDate>
+    <language>English</language>
+    <abstract>This is a summary of major ion concentrations for stream water samples collected at the Saddle Stream site, at the outflow of the Saddle Stream below Niwot Ridge.</abstract>
+    <keywordSet>
+      <keyword>solute concentrations</keyword>
+      <keyword>stream water quality</keyword>
+      <keyword>surface water quality</keyword>
+      <keyword>inorganic_nutrients</keyword>
+      <keyword>pH</keyword>
+      <keyword>specific conductance</keyword>
+      <keyword>cation sum</keyword>
+      <keyword>anion sum</keyword>
+      <keyword>charge balance</keyword>
+      <keyword>particulate nitrogen</keyword>
+      <keyword>total dissolved phosphorus</keyword>
+      <keyword>particulate phosphorus</keyword>
+      <keyword>dissolved organic phosphorus</keyword>
+      <keyword>inorganic phosphorus</keyword>
+      <keyword>delta oxygen-18</keyword>
+      <keyword>delta deuterium</keyword>
+      <keyword>deuterium excess</keyword>
+      <keyword>Green Lakes Valley</keyword>
+      <keyword>Albion camp</keyword>
+      <keyword>Niwot Ridge LTER</keyword>
+      <keyword>NWT</keyword>
+      <keyword>NWT signature dataset</keyword>
+    </keywordSet>
+    <keywordSet>
+      <keyword>hydrology</keyword>
+      <keyword>water chemistry</keyword>
+      <keyword>biogeochemistry</keyword>
+      <keyword>hydrogen ions</keyword>
+      <keyword>ammonium</keyword>
+      <keyword>calcium</keyword>
+      <keyword>magnesium</keyword>
+      <keyword>sodium</keyword>
+      <keyword>potassium</keyword>
+      <keyword>chloride</keyword>
+      <keyword>nitrate</keyword>
+      <keyword>sulfate</keyword>
+      <keyword>phosphate</keyword>
+      <keyword>silicon</keyword>
+      <keyword>total nitrogen</keyword>
+      <keyword>total dissolved nitrogen</keyword>
+      <keyword>dissolved organic nitrogen</keyword>
+      <keyword>inorganic nitrogen</keyword>
+      <keyword>total phosphorus</keyword>
+      <keyword>dissolved organic carbon</keyword>
+      <keyword>long term</keyword>
+      <keywordThesaurus>LTER controlled vocabulary</keywordThesaurus>
+    </keywordSet>
+    <intellectualRights>
+      <para>
+  This information is released under the Creative Commons license -
+  Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/).
+  The consumer of these data (“Data User” herein) is required to cite it
+  appropriately in any publication that results from its use. The Data
+  User should realize that these data may be actively used by others for
+  ongoing research and that coordination may be necessary to prevent
+  duplicate publication. The Data User is urged to contact the authors
+  of these data if any questions about methodology or results occur.
+  Where appropriate, the Data User is encouraged to consider
+  collaboration or co-authorship with the authors. The Data User should
+  realize that misinterpretation of data may occur if used out of
+  context of the original study. While substantial efforts are made to
+  ensure the accuracy of data and associated documentation, complete
+  accuracy of data sets cannot be guaranteed. All data are made
+  available "as is." The Data User should be aware, however,
+  that data are updated periodically and it is the responsibility of the
+  Data User to check for new versions of the data. The data authors and
+  the repository where these data were obtained shall not be liable for
+  damages resulting from any use or misinterpretation of the data. Thank
+  you.
+</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>Sampling location was the Saddle Stream sampling site.</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-105.5923174</westBoundingCoordinate>
+          <eastBoundingCoordinate>-105.5923174</eastBoundingCoordinate>
+          <northBoundingCoordinate>40.04903177</northBoundingCoordinate>
+          <southBoundingCoordinate>40.04903177</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>1994-05-26</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2020-07-23</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <maintenance>
+      <description>Raw data for 2005-2013 were compiled from excel spreadsheets by HCH [date unknown]. Metadata were compiled based on parallel information from sadd007solu, and columns for LTER_site and local_site were added [ATW 16 December 2018]. Data for 2016, 2017, and 2018 were appended [ATW 2 April 2019]. Leading 0s added to 3 digit times, negative values for DOP, IN and DON replaced with u in all years; negative value for specific analytes in 2013-2018 replaced with lab-reported mdl for that year.[ATW 23 April 2019]. Niwot metadata converted via script to EML[ATW 2019-04-23] Data for 2019 appended [ATW 16 Feb 2021]. Data for 2020 appended [ATW 10 March 2021].</description>
+    </maintenance>
+    <contact>
+      <organizationName>Niwot Ridge LTER</organizationName>
+      <positionName>Information Manager</positionName>
+      <address>
+        <deliveryPoint>4001 Discovery Drive, UCB 450</deliveryPoint>
+        <deliveryPoint>University of Colorado</deliveryPoint>
+        <city>Boulder</city>
+        <administrativeArea>CO</administrativeArea>
+        <postalCode>80303</postalCode>
+        <country>United States</country>
+      </address>
+      <electronicMailAddress>lternwt@colorado.edu</electronicMailAddress>
+      <onlineUrl>http://niwot.colorado.edu/</onlineUrl>
+    </contact>
+    
+    <publisher><organizationName>Environmental Data Initiative</organizationName><electronicMailAddress>info@environmentaldatainitiative.org</electronicMailAddress><onlineUrl>https://environmentaldatainitiative.org</onlineUrl></publisher><pubPlace>Environmental Data Initiative</pubPlace>
+    <methods>
+      <methodStep>
+        <description>
+          <para>The Saddle stream is the stream at the bottom of the saddle catchment, draining the Saddle into the Green Lakes valley (southward). These samples are usually taken at the wooden weir where flow records are maintained, i.e. about 40 m upstream of the Green Lakes road. Surface  waters were collected  as grab samples at daily to weekly sampling frequency at the lower portion of the saddle stream which is below Niwot Ridge in the Boulder County Watershed. Water samples were collected in polyethylene bottles (following the protocol of Campbell et al. 2000), soaked with deionized water overnight, and then rinsed copiously five times; bottles were further rinsed three times with sample water at the time of collection. Samples were collected ~10 cm below the water surface in turbulent areas where the water column was well mixed. All water samples were transported the same day as collection to our wet chemistry laboratory (Kiowa lab) and treated the same as melted snow samples. Samples for dissolved organic carbon (DOC) were collected using precombusted, amber-colored glass bottles with Teflon-lined caps. All analyses were conducted at the Kiowa lab.</para>
+          <para>Data were provided by the Kiowa lab manager as Excel spreadsheets.</para>
+          <para>The charge balance was calculated as (cation sum - anion sum)/(cation sum + anion sum).</para>
+          <para>The missing value indicator is one of the following codes:</para>
+          <para>DNS=Data Not Submitted</para>
+          <para>EQCL=Exceeds Quality Control Limits</para>
+          <para>N/A=Not Applicable</para>
+          <para>NP=Not Performed</para>
+          <para>NSS=No Sample Submitted</para>
+          <para>NV=Not Valid</para>
+          <para>QNS=Quantity Not Sufficient</para>
+          <para>Concentrations below the detection limit are shown as zero prior to 2007 and "u" subsequently.</para>
+          <para>No samples were collected in 2001 and 2002 because of insufficient stream flow.</para>
+          <para>The following variables were not measured, but were included for consistency with other data sets:</para>
+          <para>acidity, alkalinity, tritium, and standard deviation of tritium</para>
+          <para>CITATIONS:</para>
+          <para>[1]Caine, N., E.M. Thurman, D.J. Furbish, and T.A. Moses. 1983. Water quality data from the Green Lakes Valley, 1981-1982. University of Colorado Long-Term Ecological Research Data Report 83/7. 47 pp.</para>
+          <para>[2]Hoffman, K., J. Caine, and N. Caine. 1985. Surface water quality in the Green Lakes Valley prior to peak flow in 1985. University of Colorado Long-Term Ecological Research Data Report 85/7. 18 pp.</para>
+          <para>[3]Caine, N., J. Caine, and E.M. Thurman. 1987. Water quality data from the Green Lakes Valley, 1982-1986. University of Colorado Long-Term Ecological Research Data Report 87/5. 46 pp.</para>
+          <para>[4]Caine, N. 1989. Water quality data from the Green Lakes Valley, 1987-1988. University of Colorado Long-Term Ecological Research Data Report 89/1. 29 pp.</para>
+          <para>[5]Caine, N., and E.M. Thurman. 1990. Temporal and spatial variations in the solute content of an alpine stream, Colorado Front Range. Geomorphology 4:55-72.</para>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>LTER: Long-term research on the dynamics of high-elevation ecosystems -- a framework for understanding ecological responsiveness to climate change</title>
+      <personnel>
+        <organizationName>Niwot Ridge LTER</organizationName>
+        <role>pointOfContact</role>
+      </personnel>
+      <funding>National Science Foundation:1637686</funding>
+    </project>
+    <dataTable>
+      <entityName>saddsolu.nc.data.csv</entityName>
+      <entityDescription>Stream water chemistry data for Saddle Stream site, 1994 - ongoing.</entityDescription>
+      <physical>
+        <objectName>saddsolu.nc.data.csv</objectName>
+        <size
+          unit="byte">208156</size>
+        <authentication
+              method="MD5">f8a2667f6b5b3e2d287f013149634ca7</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+              <quoteCharacter>"</quoteCharacter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+        <distribution>
+          <online>
+            <url
+                    function="download">https://pasta.lternet.edu/package/data/eml/knb-lter-nwt/160/3/89c78a669a77bf9b6ec7c4f407ad4b1a</url>
+          </online>
+        </distribution>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>LTER_site</attributeName>
+          <attributeLabel>LTER_site</attributeLabel>
+          <attributeDefinition>Niwot Ridge LTER site</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>any text</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>local_site</attributeName>
+          <attributeLabel>local_site</attributeLabel>
+          <attributeDefinition>sample location</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>any text</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>year</attributeName>
+          <attributeLabel>year</attributeLabel>
+          <attributeDefinition>year (yyyy)</attributeDefinition>
+          <storageType>dateTime</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY</formatString>
+              <dateTimeDomain>
+                <bounds>
+                  <minimum
+                    exclusive="false">1982</minimum>
+                </bounds>
+              </dateTimeDomain>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>date</attributeName>
+          <attributeLabel>date</attributeLabel>
+          <attributeDefinition>date (yyyy-mm-dd)</attributeDefinition>
+          <storageType>dateTime</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain>
+                <bounds>
+                  <minimum
+                    exclusive="false">1982-02-11</minimum>
+                </bounds>
+              </dateTimeDomain>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeLabel>time</attributeLabel>
+          <attributeDefinition>time collected (hhmm(MST)); DNS-data not submitted</attributeDefinition>
+          <storageType>dateTime</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>hhmm</formatString>
+              <dateTimeDomain>
+                <bounds>
+                  <minimum
+                    exclusive="false">0000</minimum>
+                  <maximum
+          exclusive="false">2400</maximum>
+                </bounds>
+              </dateTimeDomain>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>DNS</code>
+            <codeExplanation>Data not Submitted</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>pH</attributeName>
+          <attributeLabel>pH</attributeLabel>
+          <attributeDefinition>pH</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <interval>
+              <unit>
+                <customUnit>pH</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </interval>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity Not Sufficient</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>cond</attributeName>
+          <attributeLabel>cond</attributeLabel>
+          <attributeDefinition>conductance</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microsiemensPerCentimeter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ANC</attributeName>
+          <attributeLabel>ANC</attributeLabel>
+          <attributeDefinition>acid neutralizing capacity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity Not Sufficient</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>acid</attributeName>
+          <attributeLabel>acid</attributeLabel>
+          <attributeDefinition>acidity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>alkal</attributeName>
+          <attributeLabel>alkal</attributeLabel>
+          <attributeDefinition>alkalinity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>N/A</code>
+            <codeExplanation>not applicable</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>H+</attributeName>
+          <attributeLabel>H+</attributeLabel>
+          <attributeDefinition>H+</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>NV</code>
+            <codeExplanation>Not Valid</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NH4+</attributeName>
+          <attributeLabel>NH4+</attributeLabel>
+          <attributeDefinition>NH4+</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.4</code>
+            <codeExplanation>less than 0.4</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.22</code>
+            <codeExplanation>less than 0.22</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.1428</code>
+            <codeExplanation>less than 0.1428</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.143</code>
+            <codeExplanation>less than 0.143</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.143</code>
+            <codeExplanation>less than 0.143</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Ca++</attributeName>
+          <attributeLabel>Ca++</attributeLabel>
+          <attributeDefinition>Ca++</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.449</code>
+            <codeExplanation>less than 0.449</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.449</code>
+            <codeExplanation>less than 0.449</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Mg++</attributeName>
+          <attributeLabel>Mg++</attributeLabel>
+          <attributeDefinition>Mg++</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.082</code>
+            <codeExplanation>less than 0.082</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.082</code>
+            <codeExplanation>less than 0.082</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Na+</attributeName>
+          <attributeLabel>Na+</attributeLabel>
+          <attributeDefinition>Na+</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.087</code>
+            <codeExplanation>less than 0.087</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.087</code>
+            <codeExplanation>less than 0.087</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>K+</attributeName>
+          <attributeLabel>K+</attributeLabel>
+          <attributeDefinition>K+</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.102</code>
+            <codeExplanation>less than 0.102</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.102</code>
+            <codeExplanation>less than 0.102</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Cl-</attributeName>
+          <attributeLabel>Cl-</attributeLabel>
+          <attributeDefinition>Cl-</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.846</code>
+            <codeExplanation>less than 0.846</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.846</code>
+            <codeExplanation>less than 0.846</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NO3-</attributeName>
+          <attributeLabel>NO3-</attributeLabel>
+          <attributeDefinition>NO3-</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.02</code>
+            <codeExplanation>less than 0.02</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.323</code>
+            <codeExplanation>less than 0.323</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.323</code>
+            <codeExplanation>less than 0.323</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SO4--</attributeName>
+          <attributeLabel>SO4--</attributeLabel>
+          <attributeDefinition>SO4—</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.833</code>
+            <codeExplanation>less than 0.833</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.833</code>
+            <codeExplanation>less than 0.833</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PO4---</attributeName>
+          <attributeLabel>PO4---</attributeLabel>
+          <attributeDefinition>PO4-</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.063</code>
+            <codeExplanation>less than 0.063</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0388</code>
+            <codeExplanation>less than 0.0388</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0388</code>
+            <codeExplanation>less than 0.0388</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Si</attributeName>
+          <attributeLabel>Si</attributeLabel>
+          <attributeDefinition>Si</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0214</code>
+            <codeExplanation>less than 0.0214</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0214</code>
+            <codeExplanation>less than 0.0214</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>cat_sum</attributeName>
+          <attributeLabel>cat_sum</attributeLabel>
+          <attributeDefinition>cation sum</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>NV</code>
+            <codeExplanation>Not Valid</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>an_sum</attributeName>
+          <attributeLabel>an_sum</attributeLabel>
+          <attributeDefinition>anion sum</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>NV</code>
+            <codeExplanation>Not Valid</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>chg_bal</attributeName>
+          <attributeLabel>chg_bal</attributeLabel>
+          <attributeDefinition>charge balance</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>NV</code>
+            <codeExplanation>Not Valid</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TN</attributeName>
+          <attributeLabel>TN</attributeLabel>
+          <attributeDefinition>total N</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TDN</attributeName>
+          <attributeLabel>TDN</attributeLabel>
+          <attributeDefinition>total dissolved N</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.571</code>
+            <codeExplanation>less than 0.571</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.571</code>
+            <codeExplanation>less than 0.571</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PN</attributeName>
+          <attributeLabel>PN</attributeLabel>
+          <attributeDefinition>particulate N</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>DON</attributeName>
+          <attributeLabel>DON</attributeLabel>
+          <attributeDefinition>dissolved organic N</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds Quality Control Limits</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>IN</attributeName>
+          <attributeLabel>IN</attributeLabel>
+          <attributeDefinition>inorganic N</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>microequivalentPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TP</attributeName>
+          <attributeLabel>TP</attributeLabel>
+          <attributeDefinition>total P</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TDP</attributeName>
+          <attributeLabel>TDP</attributeLabel>
+          <attributeDefinition>total dissolved P</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.04</code>
+            <codeExplanation>less than 0.04</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0258</code>
+            <codeExplanation>less than 0.0258</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0258</code>
+            <codeExplanation>less than 0.0258</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.0258</code>
+            <codeExplanation>less than 0.0258</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PP</attributeName>
+          <attributeLabel>PP</attributeLabel>
+          <attributeDefinition>particulate P</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>DOP</attributeName>
+          <attributeLabel>DOP</attributeLabel>
+          <attributeDefinition>dissolved organic P</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds Quality Control Limits</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>IP</attributeName>
+          <attributeLabel>IP</attributeLabel>
+          <attributeDefinition>inorganic P</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>micromolePerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.03</code>
+            <codeExplanation>less than 0.03</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>d18O</attributeName>
+          <attributeLabel>d18O</attributeLabel>
+          <attributeDefinition>delta 18O</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>partsPerThousand</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>d18O_sdev</attributeName>
+          <attributeLabel>d18O_sdev</attributeLabel>
+          <attributeDefinition>standard deviation delta 18O</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>partsPerThousand</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>dDeut</attributeName>
+          <attributeLabel>dDeut</attributeLabel>
+          <attributeDefinition>delta Deuterium</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>partsPerThousand</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>dD_sdev</attributeName>
+          <attributeLabel>dD_sdev</attributeLabel>
+          <attributeDefinition>standard deviation delta Deuterium</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>partsPerThousand</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>D_excess</attributeName>
+          <attributeLabel>D_excess</attributeLabel>
+          <attributeDefinition>Deuterium excess</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>partsPerThousand</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Trit</attributeName>
+          <attributeLabel>Trit</attributeLabel>
+          <attributeDefinition>tritium</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>tritiumUnit</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>T_sdev</attributeName>
+          <attributeLabel>T_sdev</attributeLabel>
+          <attributeDefinition>standard deviation tritium</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>tritiumUnit</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TOC</attributeName>
+          <attributeLabel>TOC</attributeLabel>
+          <attributeDefinition>total organic C</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>milligramPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds Quality Control Limits</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds Quality Control Limits</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>DOC</attributeName>
+          <attributeLabel>DOC</attributeLabel>
+          <attributeDefinition>dissolved organic C</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>milligramPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity Not Sufficient</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity Not Sufficient</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.04</code>
+            <codeExplanation>less than 0.04</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity not sufficient</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>&lt;0.04</code>
+            <codeExplanation>less than 0.04</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>QNS</code>
+            <codeExplanation>Quantity not sufficient</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>POC</attributeName>
+          <attributeLabel>POC</attributeLabel>
+          <attributeDefinition>particulate organic C</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>milligramPerLiter</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>below detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds quality control limits</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>u</code>
+            <codeExplanation>under method detection limit</codeExplanation>
+          </missingValueCode>
+          <missingValueCode>
+            <code>EQCL</code>
+            <codeExplanation>Exceeds Quality Control Limits</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>comments</attributeName>
+          <attributeLabel>comments</attributeLabel>
+          <attributeDefinition>comments on testing</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>any text</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NP</code>
+            <codeExplanation>not performed</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>377</numberOfRecords>
+    </dataTable>
+  </dataset>
+  <additionalMetadata>
+    <metadata>
+      <unitList>
+        <unit
+          abbreviation="pH" id="pH" name="pH"
+          unitType="amountOfSubstanceConcentration">
+          <description>measure of hydrogen ion concentration</description>
+        </unit>
+        <unit
+          abbreviation="uS/cm" id="microsiemensPerCentimeter"
+          name="microsiemensPerCentimeter">
+          <description>microsiemens per centimeter; used for concentration of ionized dissoved solids</description>
+        </unit>
+        <unit
+          constantToSI="0" id="microequivalentPerLiter"
+          name="microequivalentPerLiter" parentSI="molesPerMeterCubed"
+          unitType="amountOfSubstanceConcentration">
+          <description>concentration of charge (on dissolved ions). A single ultiplier to SI is not possible; since conversion includes valence of ion; which can vary</description>
+        </unit>
+        <unit
+          abbreviation="umol/L" constantToSI="0" id="micromolePerLiter"
+          name="micromolePerLiter" parentSI="molePerMeterCubed"
+          unitType="amountOfSubstanceConcentration">
+          <description>commonly used for concentration of some chemical constituents of natural water bodies; e.g.; nutrients. It has the same magnitude as micromolar; but micromolar can only be used for a dissolved constituent</description>
+        </unit>
+        <unit
+          abbreviation="ppt" id="partsPerThousand" multiplierToSI="1"
+          name="partsPerThousand"
+          unitType="dimensionless">
+          <description>ratio of two quantities as parts per thousand (1:1000)</description>
+        </unit>
+        <unit
+          abbreviation="TU" id="tritiumUnit" name="tritiumUnit"
+          unitType="radionucleotideActivity">
+          <description>Tritium unit; 1 tritium unit= 3.22 picocuries per liter</description>
+        </unit>
+        <unit
+          constantToSI="0" id="milligramPerLiter"
+          name="milligramPerLiter" parentSI="kilogramPerCubicMeter" unitType="volumetricMassDensity">
+          <description>concentration unit; sometimes used for pigments in natural waters</description>
+        </unit>
+      </unitList>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

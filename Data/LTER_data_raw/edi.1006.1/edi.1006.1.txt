@@ -1,0 +1,4520 @@
+
+  
+    uid=EDI,o=EDI,dc=edirepository,dc=orgall
+      uid=kzollovenecek,o=EDI,dc=edirepository,dc=org
+      all
+    
+    
+      public
+      read
+    
+  
+  
+    doi:10.6073/pasta/205f63f4786f8fd76da3de164660408eWater chemistry and aquatic vegetation data from Les Cheneaux Islands, Northern Lake Huron, Michigan, USA, 2016-2018
+    
+      Colin Brooks
+      Michigan Tech Research Institute
+      cnbrooks@mtu.edu
+      https://orcid.org/0000-0003-4544-2569
+    
+    
+      Amy Marcarelli
+      Michigan Technological University
+      ammarcar@mtu.edu
+      https://orcid.org/0000-0002-4175-9211
+    
+    
+      Casey Huckins
+      Michigan Technological University
+      cjhuckin@mtu.edu
+    
+    
+      Amanda Grimm
+      Great Lakes Commission
+      agrimm@glc.org
+    
+    
+      Ryan Van Goethem
+      Michigan Tech
+      rrvangoe@mtu.edu
+      Graduate Student; Field Technician
+    
+    2021-10-12
+    
+      
+    Remote sensing approaches that could identify species of submerged
+    aquatic vegetation (SAV) and measure their extent in lake littoral
+    zones would greatly enhance their study and management, especially
+    if they can provide faster or more accurate results than traditional
+    field methods. Remote sensing with multispectral sensors can provide
+    this capability, but SAV identification with this technology must
+    address the challenges of light extinction in aquatic environments
+    where chlorophyll, dissolved organic carbon, and suspended minerals
+    can affect water clarity and the strength of the sensed light
+    signal. Here, we present environmental data collected to support a
+    study using an unmanned aerial system (UAS)-enabled methodology to
+    identify the extent of the invasive SAV species
+    Myriophyllum spicatum (Eurasian watermilfoil,
+    or EWM) in the Les Cheneaux Islands area of northwestern Lake Huron,
+    Michigan, USA. Data collected includes water chemistry (nitrogen,
+    phosphorus, carbon, suspended solids, chlorophyll a), light
+    profiles, and submerged aquatic vegetation characteristics including
+    cover, species dominance using aquatic vegetation survey methods
+    (AVAS), and biomass.
+  
+    
+    
+      Plant communities
+      Plant species
+      Plant biomass
+      surveys suspended sediment
+      Limnology
+      water properties
+      coastal
+      aquatic plants
+      submerged aquatic vegetation
+      Michigan Tech
+      Population and community properties
+    
+    
+      water properties
+      total nitrogen
+      total phosphorus
+      ammonium
+      nitrate
+      dissolved organic carbon
+      chlorophyll a
+      soluble reactive phosphorus
+      chemical properties
+      water column
+      light
+      lakes
+      algae
+      seston
+      vascular plants
+      LTER Controlled Vocabulary
+    
+    
+      This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
+
+    
+    
+      
+        Les Cheneaux Islands region of Lake Huron
+        
+          -84.4562
+          -84.3426
+          45.9704
+          46.0049
+        
+      
+      
+        
+          
+            2016-09-14
+          
+          
+            2018-08-23
+          
+        
+      
+      
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Alismataceae
+                            arrowhead
+                            water-plantain
+                            38890
+                            
+                              genus
+                              Sagittaria
+                              arrowhead
+                              38903
+                              
+                                species
+                                Sagittaria cuneata
+                                arum-leaf arrowhead
+                                arumleaf arrowhead
+                                nothern arrowhead
+                                38917
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          species
+          Utricularia macrorhiza
+          common bladderwort
+          34456
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Poales
+                          846620
+                          
+                            family
+                            Typhaceae
+                            42323
+                            
+                              genus
+                              Sparganium
+                              burreed
+                              bur-reed
+                              42312
+                              
+                                species
+                                Sparganium fluctuans
+                                floating bur-reed
+                                42321
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Charophyta
+                954899
+                
+                  division
+                  Charophyta
+                  green algae
+                  charophytes
+                  brittleworts
+                  stoneworts
+                  9417
+                  
+                    class
+                    Charophyceae
+                    9418
+                    
+                      order
+                      Charales
+                      stoneworts
+                      9419
+                      
+                        family
+                        Characeae
+                        9420
+                        
+                          genus
+                          Nitella
+                          9467
+                          
+                            species
+                            Nitella tenuissima
+                            9488
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Ceratophyllanae
+                        846540
+                        
+                          order
+                          Ceratophyllales
+                          846616
+                          
+                            family
+                            Ceratophyllaceae
+                            hornwort
+                            18401
+                            
+                              genus
+                              Ceratophyllum
+                              hornwort
+                              18402
+                              
+                                species
+                                Ceratophyllum demersum
+                                coon's-tail
+                                coontail
+                                hornwort
+                                common hornwort
+                                coon's tail
+                                18403
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Ranunculanae
+                        846547
+                        
+                          order
+                          Ranunculales
+                          18409
+                          
+                            family
+                            Ranunculaceae
+                            buttercups
+                            crowfoot
+                            18410
+                            
+                              genus
+                              Ranunculus
+                              buttercup
+                              18558
+                              
+                                species
+                                Ranunculus flammula
+                                spearwort buttercup
+                                greater creeping spearwort
+                                18604
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Araceae
+                            Arums
+                            42521
+                            
+                              genus
+                              Lemna
+                              duckweed
+                              42588
+                              
+                                species
+                                Lemna trisulca
+                                star duckweed
+                                ivy-leaf duckweed
+                                42595
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Araceae
+                            Arums
+                            42521
+                            
+                              genus
+                              Lemna
+                              duckweed
+                              42588
+                              
+                                species
+                                Lemna minor
+                                common duckweed
+                                least duckweed
+                                lesser duckweed
+                                42590
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Hydrocharitaceae
+                            frog's bit
+                            tape-grass
+                            waternymphs
+                            38935
+                            
+                              genus
+                              Najas
+                              water nymph
+                              waternymph
+                              38995
+                              
+                                species
+                                Najas flexilis
+                                slender naiad
+                                wavy waternymph
+                                nodding waternymph
+                                38996
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton confervoides
+                                Tuckerman's pondweed
+                                39025
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton richardsonii
+                                Richardson's pondweed
+                                red-head pondweed
+                                Richardson pondweed
+                                504558
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton crispus
+                                curly-leaved pondweed
+                                curly pondweed
+                                39007
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton robbinsii
+                                Robbins' pondweed
+                                Robbins pondweed
+                                504559
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Stuckenia
+                              pondweed
+                              564905
+                              
+                                species
+                                Stuckenia filiformis
+                                fineleaf pondweed
+                                565546
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton zosteriformis
+                                flatstem pondweed
+                                flat-stem pondweed
+                                39055
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton natans
+                                floatingleaf pondweed
+                                broadleaf pondweed
+                                floating pondweed
+                                39008
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton amplifolius
+                                largeleaf pondweed
+                                large-leaf pondweed
+                                39021
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton foliosus
+                                leafy pondweed
+                                39019
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton nodosus
+                                long-leaf pondweed
+                                longleaf pondweed
+                                39009
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton oakesianus
+                                Oakes' pondweed
+                                39040
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton epihydrus
+                                ribbonleaf pondweed
+                                39027
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Stuckenia
+                              pondweed
+                              564905
+                              
+                                species
+                                Stuckenia pectinata
+                                broadleaf pondweed
+                                sago pondweed
+                                757504
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Stuckenia
+                              pondweed
+                              564905
+                              
+                                species
+                                Stuckenia vaginata
+                                sheathed pondweed
+                                757506
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton pusillus
+                                baby pondweed
+                                small pondweed
+                                39017
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton strictifolius
+                                narrowleaf pondweed
+                                straight-leaf pondweed
+                                39047
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton gramineus
+                                grassy pondweed
+                                variableleaf pondweed
+                                39032
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Potamogetonaceae
+                            pondweed
+                            pond weed
+                            Pondweed family
+                            39004
+                            
+                              genus
+                              Potamogeton
+                              pondweed
+                              39005
+                              
+                                species
+                                Potamogeton praelongus
+                                white-stem pondweed
+                                whitestem pondweed
+                                39042
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Lycopodiophytina
+                    954902
+                    
+                      class
+                      Lycopodiopsida
+                      500007
+                      
+                        subclass
+                        Lycopodiidae
+                        846530
+                        
+                          order
+                          Isoetales
+                          quillworts
+                          17118
+                          
+                            family
+                            Isoetaceae
+                            quillworts
+                            17119
+                            
+                              genus
+                              Isoetes
+                              isoète
+                              quillwort
+                              17120
+                              
+                                species
+                                Isoetes lacustris
+                                isoète lacustre
+                                lake quillwort
+                                17131
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          species
+          Isoetes tenella
+          spiny-spore quillwort
+          507546
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Poales
+                          846620
+                          
+                            family
+                            Cyperaceae
+                            sedges
+                            39357
+                            
+                              genus
+                              Schoenoplectus
+                              bulrush
+                              500920
+                              
+                                species
+                                Schoenoplectus tabernaemontani
+                                softstem bulrush
+                                507797
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Nymphaeanae
+                        846545
+                        
+                          order
+                          Nymphaeales
+                          18367
+                          
+                            family
+                            Nymphaeaceae
+                            water lilies
+                            18368
+                            
+                              genus
+                              Nuphar
+                              pond-lily
+                              18371
+                              
+                                species
+                                Nuphar variegata
+                                varigated yellow pond-lily
+                                517583
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Poales
+                          846620
+                          
+                            family
+                            Cyperaceae
+                            sedges
+                            39357
+                            
+                              genus
+                              Eleocharis
+                              spikerush
+                              40010
+                              
+                                species
+                                Eleocharis acicularis
+                                needle spikerush
+                                40025
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Charophyta
+                954899
+                
+                  division
+                  Charophyta
+                  green algae
+                  charophytes
+                  brittleworts
+                  stoneworts
+                  9417
+                  
+                    class
+                    Charophyceae
+                    9418
+                    
+                      order
+                      Charales
+                      stoneworts
+                      9419
+                      
+                        family
+                        Characeae
+                        9420
+                        
+                          genus
+                          Chara
+                          9421
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Hydrocharitaceae
+                            frog's bit
+                            tape-grass
+                            waternymphs
+                            38935
+                            
+                              genus
+                              Vallisneria
+                              eelgrass
+                              38950
+                              
+                                species
+                                Vallisneria americana
+                                watercelery
+                                eel-grass
+                                American eelgrass
+                                38951
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Commelinales
+                          39093
+                          
+                            family
+                            Pontederiaceae
+                            pickerel-weed
+                            42614
+                            
+                              genus
+                              Heteranthera
+                              heteranthera
+                              mud plantain
+                              mudplantain
+                              42615
+                              
+                                species
+                                Heteranthera dubia
+                                grassleaf mudplantain
+                                grass-leaf mud-plantain
+                                502960
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Nymphaeanae
+                        846545
+                        
+                          order
+                          Nymphaeales
+                          18367
+                          
+                            family
+                            Nymphaeaceae
+                            water lilies
+                            18368
+                            
+                              genus
+                              Nymphaea
+                              waterlily
+                              water lily
+                              18383
+                              
+                                species
+                                Nymphaea odorata
+                                American waterlily
+                                white waterlily
+                                American white waterlily
+                                18384
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Saxifraganae
+                        846550
+                        
+                          order
+                          Saxifragales
+                          846633
+                          
+                            family
+                            Haloragaceae
+                            water milfoil
+                            27033
+                            
+                              genus
+                              Myriophyllum
+                              water milfoil
+                              watermilfoil
+                              27034
+                              
+                                species
+                                Myriophyllum alterniflorum
+                                alternateflower watermilfoil
+                                503903
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Saxifraganae
+                        846550
+                        
+                          order
+                          Saxifragales
+                          846633
+                          
+                            family
+                            Haloragaceae
+                            water milfoil
+                            27033
+                            
+                              genus
+                              Myriophyllum
+                              water milfoil
+                              watermilfoil
+                              27034
+                              
+                                species
+                                Myriophyllum spicatum
+                                Eurasian water-milfoil
+                                spiked water milfoil
+                                Eurasian watermilfoil
+                                spike watermilfoil
+                                27039
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Saxifraganae
+                        846550
+                        
+                          order
+                          Saxifragales
+                          846633
+                          
+                            family
+                            Haloragaceae
+                            water milfoil
+                            27033
+                            
+                              genus
+                              Myriophyllum
+                              water milfoil
+                              watermilfoil
+                              27034
+                              
+                                species
+                                Myriophyllum heterophyllum
+                                broadleaf water-milfoil
+                                changeleaf parrotfeather
+                                two-leaf water-milfoil
+                                twoleaf watermilfoil
+                                27044
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Nymphaeanae
+                        846545
+                        
+                          order
+                          Nymphaeales
+                          18367
+                          
+                            family
+                            Cabombaceae
+                            water-shields
+                            18406
+                            
+                              genus
+                              Brasenia
+                              brasenia
+                              18369
+                              
+                                species
+                                Brasenia schreberi
+                                Schreber's watershield
+                                watershield
+                                18370
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          kingdom
+          Plantae
+          plants
+          202422
+          
+            subkingdom
+            Viridiplantae
+            green plants
+            954898
+            
+              infrakingdom
+              Streptophyta
+              land plants
+              846494
+              
+                superdivision
+                Embryophyta
+                954900
+                
+                  division
+                  Tracheophyta
+                  vascular plants
+                  tracheophytes
+                  846496
+                  
+                    subdivision
+                    Spermatophytina
+                    spermatophytes
+                    seed plants
+                    846504
+                    
+                      class
+                      Magnoliopsida
+                      18063
+                      
+                        superorder
+                        Lilianae
+                        monocots
+                        monocotyledons
+                        846542
+                        
+                          order
+                          Alismatales
+                          38883
+                          
+                            family
+                            Hydrocharitaceae
+                            frog's bit
+                            tape-grass
+                            waternymphs
+                            38935
+                            
+                              genus
+                              Elodea
+                              water weed
+                              waterweed
+                              38936
+                              
+                                species
+                                Elodea canadensis
+                                broad waterweed
+                                Canada waterweed
+                                Canadian waterweed
+                                38937
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+        
+          Several genra, especially Drepanocladus and Fontinalis
+        
+        
+          Lemna minor / Spirodela polyrhiza
+          
+        
+        
+          Ranunculas aquatilis
+          
+        
+        
+          Bidens becki
+          
+        
+        
+          Myiophyllum sibiricum
+          
+        
+      
+    
+    
+      completed
+    
+    
+      Amy Marcarelli
+      Michigan Technological University
+      ammarcar@mtu.edu
+      https://orcid.org/0000-0002-4175-9211
+    
+    Environmental Data Initiativeinfo@environmentaldatainitiative.orghttps://environmentaldatainitiative.org0330j0z60Environmental Data Initiative
+      
+        
+          
+    At each site during each visit, we collected a set of standard water
+    chemistry and light data to quantify the CPA values at each site and
+    characterize the sites as having lower or higher water clarity.
+    Primary data collected included the following:
+  
+          
+    The method we used for calculating chlorophyll data was based on
+    standard methods (APHA 2005), including collecting water into 1-L
+    plastic bottles and storing samples on ice until returning to the
+    lab within eight hours. Water was filtered through 47-mm-diameter
+    0.7-µm glass fiber filters, with filters wrapped in aluminum foil
+    and frozen at -20°C until analysis within a month. Chl-a filters
+    were extracted in 95% ethanol and analyzed spectrophotometrically
+    following APHA method 10200H.2.b/EPA method 446.0, with calculations
+    following Nusch 1980.
+  
+          
+    We used a Li-Cor LI-193 SA spherical underwater quantum sensor with
+    a LI-1400 datalogger (LI-COR, Inc., Lincoln, NE, USA), with light
+    intensity values recorded above the surface, immediately below the
+    surface, and every 0.5 m until the bottom was reached, with the
+    bottom depth also being recorded (Wetzel and Likens 2013). We also
+    recorded Secchi disk transparency depth at each site.
+  
+          
+    For TSS, we used APHA method 2540B (APHA 2005) to calculate the mass
+    of total suspended solids (TSS) in mg/L. Water was collected into
+    1-L plastic bottles and stored on ice until returning to the lab
+    within eight hours. A well-mixed, measured volume of a water sample,
+    typically 750–1000 mL, was filtered through a pre-weighed
+    47-mm-diameter 0.7-µm glass fiber filter. The filter was heated to
+    constant mass at 104 ± 1º C and then weighed. The mass of material
+    captured on the filter divided by the water volume filtered is equal
+    to the TSS.
+  
+          
+    For DOC, we collected water samples in 60-mL Nalgene bottles.
+    Samples were filtered through 0.45-μm membrane filters and frozen at
+    -20°C until analysis. DOC samples were acidified with hydrochloric
+    acid and quantified using a Shimadzu TOC-VCSN (Shimadzu Scientific
+    Instruments, Columbia, Maryland).
+  
+          
+    The depth to EWM was based on visual estimation of the field team to
+    the top of visible EWM growth at each site. The depth to bottom was
+    measured as part of the SDT measurements by dropping the Secchi disc
+    all the way to the bottom.
+  
+          
+    Percent open water was also based on visual estimation of the field
+    team, with open water defined as areas with no emergent or submerged
+    aquatic vegetation present within the visible water column at each
+    site.
+  
+          
+    Field sampling of vegetation type and density was completed through
+    visual estimates, rake tosses, and rake twists, with results
+    recorded on standardized field sheets. Visual estimate methods and
+    percent vegetation by sampling location were described in Brooks et
+    al. 2019 and based on the Michigan Department of Environmental
+    Quality guidance of 2005 (MDEQ 2005). Visual estimates were made by
+    an experienced aquatic vegetation expert, representing an
+    approximately 3-m radius. In 2016, visual estimates were made in
+    approximately the center of each sampling site and recorded on a
+    field data sheet, and location coordinates were recorded with a
+    Trimble GeoExplorer GPS with sub-meter accuracy. In 2017 and 2018,
+    three marker buoys were placed in the water around each site and
+    three visual estimates were made per buoy in different directions,
+    with locations recorded with the same Trimble GPS and visual
+    estimate data recorded on field sheets.
+  
+          
+    Rake twists provided a more benthic-oriented sampling of vegetation
+    types than rake tosses. For rake tosses, a rake end was tied to a
+    rope, thrown approximately 10 m and dragged back towards the boat.
+    Rake fullness was scored on a four-point scale (1, 2, 3, or 4 =
+    found, sparse, common, dense) based on a visual estimation, and
+    vegetation types were recorded by approximate predominance. With
+    rake twists, a rake end mounted on a two-meter pole was thrust
+    downwards into the water immediately off the side of the research
+    vessel (Johnson and Newman 2011). Vegetation caught in the rake was
+    deposited in buckets for sorting and identification, including
+    predominance on a five-point scale. The macrophytes from each twist
+    rake sample were separated and identified to species using Fasset et
+    al. 2006 and Skawinski 2014. Species of Chara
+    and Elodea were identified to genus. EWM and
+    hybrid EWM (M. spicatum x sibiricum) were
+    grouped together, as they are not distinguishable in the field and
+    are difficult to separate (Parkinson et al. 2011). The samples were
+    dried for 48 h at 60°C to determine dry weight (see Van Goethem et
+    al. 2020 for additional detail).
+  
+          
+    Methods citations:
+  
+          
+    AMERICAN PUBLIC HEALTH ASSOCIATION (APHA). 2005. Standard methods
+    for the examination of water and wastewater, 21st edition. American
+    Public Health Association, American Water Works Association, and
+    Water Environment Federation, Washington, DC. 1,368 pgs.
+  
+          
+    FASSETT, N. C. 2006. A manual of aquatic plants,
+    2nd Edition. Univ of Wisconsin Press. 405
+    pgs.
+  
+          
+    Johnson J. A., & Newman, R. M. 2011. A comparison of two methods
+    for sampling biomass of aquatic plants. Journal of Aquatic
+    Plant Management, 49, 1-8.
+  
+          
+    MICHIGAN DEPARTMENT OF ENVIRONMENTAL QUALITY (MDEQ). 2005.
+    Procedures for aquatic vegetation surveys.
+    <link xlink:href="https://www.michigan.gov/documents/deq/wrd-illm-surveyprocedure_445615_7.pdf">https://www.michigan.gov/documents/deq/wrd-illm-surveyprocedure_445615_7.pdf</link>
+  
+          
+    Nusch, E. A. 1980. Comparison of different methods for chlorophyll
+    and phaeopigment determination. Archiv für
+    Hydrobiologie–BeiheftErgebnisse der Limnologie 14, 14-36.
+  
+          
+    Parkinson, H., MANGOLD, J., JACOBS, J., MADSEN, J. & HALPOP, J.
+    2011. Ecology and Management of Eurasian Watermilfoil
+    (Myriophyllum spicatum L.), 2nd ed., Montana
+    State University Extension: Bozeman, MT, USA. 6 pgs.
+  
+          
+    SKAWINSKI, P. M. 2014. Aquatic plants of the upper midwest: a
+    photographic field guide to our underwater forests,
+    2nd edition. 225 pages.
+  
+          
+    Van Goethem, R. R., Huckins, C. J. & Marcarelli, A. M. 2020.
+    Effects of Invasive Watermilfoil on Primary Production in Littoral
+    Zones of North-Temperate Lakes, Diversity,
+    12(2), 82.
+  
+          
+    WETZEL, R. G. & LIKENS, G. E. 2013. Limnological analyses,
+    Springer Science & Business Media. 444 pgs.
+  
+        
+      
+    
+    
+      Innovative and multifaceted control of invasive Eurasian and hybrid watermilfoil using integrative pest management principles
+      
+        Casey Huckins
+        Michigan Technological University
+        cjhuckin@mtu.edu
+        Principal Investigator
+      
+      Michigan Invasive Species Grant Program Application IS14-2005
+      
+        Les Cheneaux Islands Eurasian Watermilfoil Control
+        
+          Colin Brooks
+          Michigan Tech Research Institute
+          cnbrooks@mtu.edu
+          https://orcid.org/0000-0003-4544-2569
+          Principal Investigator
+        
+        Great Lakes Restoration Initiative 00E01291
+      
+    
+    
+      Light.csv
+      Vertical profiles of photosynthetically active radiation collected at 0.5-1m depth increments through the water column.
+      
+        Light.csv
+        10604
+        ab8c75a881474f76cf05ab4a808d2190
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/e3d5586235111f7bf3300e7b57bbc576
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Secchi Depth
+          Average secchi depth measured from 1 drop and 1 raise of Secchi depth on boat
+          string
+          
+            
+              
+                
+                  Average secchi depth measured from 1 drop and 1 raise of Secchi depth on boat
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Profile Depth
+          Depth of measurement taken with Li-Cor spherical light sensor
+          string
+          
+            
+              
+                
+                  Depth of measurement taken with Li-Cor spherical light sensor
+                
+              
+            
+          
+        
+        
+          PAR
+          measurement of photosynthetically active radiation
+          float
+          
+            
+              
+                micromolPhotonsPerSquareMeterPerSecond
+              
+              
+                real
+                
+                  2.25
+                  4292
+                
+              
+            
+          
+        
+        
+          Notes/Angles
+          Notes on cloud cover or angle of the LICOR cord determined visually during measurements
+          string
+          
+            
+              
+                
+                  Notes on cloud cover or angle of the LICOR cord determined visually during measurements
+                
+              
+            
+          
+        
+      
+      180
+    
+    
+      Plant Names Used.csv
+      Common and scientific names of all submerged aquatic vegetation taxa included in this dataset.
+      
+        Plant Names Used.csv
+        2427
+        b8ee684cba2a9fae0445725f90d8e174
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/0929b4936ee28138dab2b84baad4f64f
+          
+        
+      
+      
+        
+          Group
+          General grouping of aquatic plant taxa sampled
+          string
+          
+            
+              
+                
+                  General grouping of aquatic plant taxa sampled
+                
+              
+            
+          
+        
+        
+          Common Name
+          Common name of plant species sampled
+          string
+          
+            
+              
+                
+                  Common name of plant species sampled
+                
+              
+            
+          
+        
+        
+          Scientific Name
+          Scientific name of plant species sampled
+          string
+          
+            
+              
+                
+                  Scientific name of plant species sampled
+                
+              
+            
+          
+        
+      
+      47
+    
+    
+      Site_locations.csv
+      Latitude and longitude for centroids for all study sites included in this study.
+      
+        Site_locations.csv
+        428
+        229255b46ea6949e1fff4f8ffb50c036
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/f5cf490868c3a5997c69deacedfcd658
+          
+        
+      
+      
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Latitude Centroid
+          Approximate latitude centroid of collection site or zone based on field-collected GPS data
+          float
+          
+            
+              
+                degree
+              
+              
+                real
+                
+                  45.9704
+                  46.0049
+                
+              
+            
+          
+        
+        
+          Longitude Centroid
+          Approximate longitude centroid of collection site or zone based on field-collected GPS data
+          float
+          
+            
+              
+                degree
+              
+              
+                real
+                
+                  -84.4562
+                  -84.3426
+                
+              
+            
+          
+        
+      
+      13
+    
+    
+      SONDE.csv
+      Vertical profiles of basic water properties (temperature, conductivity, pH, dissolved oxygen) measured at 0.5-1m depth increments through the water column
+      
+        SONDE.csv
+        11348
+        42bf98ced02ad5d6878cd51e6e22f805
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/8b71e2d499ab79b460b7df248c610851
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Time
+          Time of vertical profile; Hh:mm in 24 hr format, daylight saving was observed
+          string
+          
+            
+              
+                
+                  Time of vertical profile; Hh:mm in 24 hr format, daylight saving was observed
+                
+              
+            
+          
+          
+            nr
+            not recorded in field
+          
+        
+        
+          Site depth
+          Total depth at sampling station
+          string
+          
+            
+              
+                
+                  Total depth at sampling station
+                
+              
+            
+          
+          
+            nr
+            not recorded in field
+          
+        
+        
+          Profile depth
+          Depth of measurement taken with YSI sonde
+          string
+          
+            
+              
+                
+                  Depth of measurement taken with YSI sonde
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Conductivity
+          Specific Conductivity
+          string
+          
+            
+              
+                
+                  Specific Conductivity
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Temp
+          Water Temperature
+          string
+          
+            
+              
+                
+                  Water Temperature
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          pH
+          pH reading
+          string
+          
+            
+              
+                
+                  pH reading
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          pH_mV
+          Raw pH probe reading
+          string
+          
+            
+              
+                
+                  Raw pH probe reading
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Turbidity
+          Turbidity
+          string
+          
+            
+              
+                
+                  Turbidity
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          ODO_%
+          Oxygen saturation measured with an optical prove
+          string
+          
+            
+              
+                
+                  Oxygen saturation measured with an optical prove
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          ODO_concentration
+          Oxygen concentration measured with an optical probe
+          string
+          
+            
+              
+                
+                  Oxygen concentration measured with an optical probe
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+      
+      127
+    
+    
+      Veg toss.csv
+      Relative abundance of submerged aquatic vegetation quantified using  the aquatic vegetation assessment site (AVAS) survey method
+      
+        Veg toss.csv
+        80298
+        cd13a479caeb07a2af59ce3188766b87
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/3c4255e9905dcbe98a0ae31ab852fa8a
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Plot
+          For sites with transects, this identifies which point along the transect data were collected
+          string
+          
+            
+              
+                
+                  For sites with transects, this identifies which point along the transect data were collected
+                
+              
+            
+          
+        
+        
+          Point
+          For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+          string
+          
+            
+              
+                
+                  For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Plant
+          Plant identification; See list of Plant Names used above (also included as a data table)
+          string
+          
+            
+              
+                
+                  Plant identification; See list of Plant Names used above (also included as a data table)
+                
+              
+            
+          
+        
+        
+          Rake toss replicate
+          Rake toss replicate, from 1 to 3
+          string
+          
+            
+              
+                
+                  Rake toss replicate, from 1 to 3
+                
+              
+            
+          
+        
+        
+          Rake Fullness
+          Aquatic Vegetation Score (AVAS), from 1-4 based on fullness
+          string
+          
+            
+              
+                
+                  
+                    0
+                    0
+                  
+                  
+                    1
+                    found
+                  
+                  
+                    2
+                    sparse
+                  
+                  
+                    3
+                    common
+                  
+                  
+                    4
+                    dense
+                  
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+      
+      1230
+    
+    
+      Veg twist.csv
+      Biomass measurements of submerged aquatic vegetation quantified by sampling with a known-area twist rake
+      
+        Veg twist.csv
+        65045
+        99a86a50a14a490bb3f325598551bd3a
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/94837b8f641f1822737f7ceda75073fc
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Plot
+          For sites with transects, this identifies which point along the transect data were collected
+          string
+          
+            
+              
+                
+                  For sites with transects, this identifies which point along the transect data were collected
+                
+              
+            
+          
+        
+        
+          Point
+          For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+          string
+          
+            
+              
+                
+                  For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Depth
+          Depth at sampling location
+          string
+          
+            
+              
+                
+                  Depth at sampling location
+                
+              
+            
+          
+          
+            nr
+            not recorded in the field
+          
+        
+        
+          Plant
+          Plant identification See list of Plant Names used above (also included as a data table)
+          string
+          
+            
+              
+                
+                  Plant identification See list of Plant Names used above (also included as a data table)
+                
+              
+            
+          
+        
+        
+          Rake fullness
+          Aquatic Vegetation Score (AVAS), from 1-4 based on fullness
+          string
+          
+            
+              
+                
+                  
+                    1
+                    found
+                  
+                  
+                    2
+                    sparse
+                  
+                  
+                    3
+                    common
+                  
+                  
+                    4
+                    dense
+                  
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Wet Mass
+          Wet mass of sample
+          string
+          
+            
+              
+                
+                  Wet mass of sample
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Bag Dry Mass
+          Mass of sample after drying in lab
+          float
+          
+            
+              
+                gram
+              
+              
+                real
+                
+                  0
+                  76.2593
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          # of twists/point
+          Number of twist rake samples collected in the field and combined into a single sample
+          float
+          
+            
+              
+                number
+              
+              
+                natural
+                
+                  1
+                  3
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Rake size
+          Area sampled with twist rake
+          float
+          
+            
+              
+                meterSquared
+              
+              
+                real
+                
+                  0.0214
+                  0.125
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          Dry Mass
+          Dry mass of sample scared for area sampled
+          float
+          
+            
+              
+                gramPerMeterSquared
+              
+              
+                real
+                
+                  0
+                  1586.631
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+      
+      750
+    
+    
+      Visual Estimates.csv
+      Visual estimates of submerged aquatic vegetation cover determined from above the water surface
+      
+        Visual Estimates.csv
+        42046
+        d9be419c547304a9d32ac679dec78776
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/132d9d4e120ca3d82df872cd6017c437
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Plot
+          For sites with transects, this identifies which point along the transect data were collected
+          string
+          
+            
+              
+                
+                  For sites with transects, this identifies which point along the transect data were collected
+                
+              
+            
+          
+        
+        
+          Point
+          For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+          string
+          
+            
+              
+                
+                  For vegetation analysis particularly, this indicates which replicate or point sample taken within plot/transect
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Plant
+          Plant identification; See list of Plant Names used above (also included as a data table)
+          string
+          
+            
+              
+                
+                  Plant identification; See list of Plant Names used above (also included as a data table)
+                
+              
+            
+          
+        
+        
+          % Cover
+          Percent cover determined visually by observer on boat
+          string
+          
+            
+              
+                
+                  Percent cover determined visually by observer on boat
+                
+              
+            
+          
+        
+        
+          Depth from Surface
+          Aquatic Vegetation Score (AVAS), from 1-4 based on fullness; nr = not recorded in field
+NA = not applicable to this cover type
+          string
+          
+            
+              
+                
+                  Aquatic Vegetation Score (AVAS), from 1-4 based on fullness; nr = not recorded in field
+NA = not applicable to this cover type
+                
+              
+            
+          
+        
+      
+      679
+    
+    
+      Waterchem.csv
+      Concentration of dissolved and particulate constituents in lake water (phosphorus, nitrogen, carbon, solids, chlorophyll a)
+      
+        Waterchem.csv
+        20696
+        20bd55d03f72894cc6635fcd653d90dd
+        
+          
+            1
+            \r\n
+            column
+            
+              ,
+              "
+            
+          
+        
+        
+          
+            https://pasta.lternet.edu/package/data/eml/edi/1006/1/14dcbe51fb754da308361a4a5f6c06f8
+          
+        
+      
+      
+        
+          Site Label
+          This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+          string
+          
+            
+              
+                
+                  This is the name assigned to the site in the field - note that different site lables were sometimes used for the same site
+                
+              
+            
+          
+        
+        
+          Collection Site or Zone
+          this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+          string
+          
+            
+              
+                
+                  this is the site name assigned by C. Brooks based on common locations of site labels across sampling events
+                
+              
+            
+          
+        
+        
+          Date
+          Sampling date
+          date
+          
+            
+              YYYY-MM-DD
+              
+            
+          
+        
+        
+          Type
+          Indicates whether water samples were filtered in the field through 0.45 um filters (dissolved) or unfiltered (total)
+          string
+          
+            
+              
+                
+                  
+                    Dissolved
+                    filtered in the field through 0.45 um filters
+                  
+                  
+                    Total
+                    unfiltered
+                  
+                
+              
+            
+          
+        
+        
+          Collection depth
+          Depth at which sample was collected using a van dorn or niskin bottle
+          float
+          
+            
+              
+                meter
+              
+              
+                real
+                
+                  0.5
+                  0.5
+                
+              
+            
+          
+        
+        
+          Analysis
+          Identifies which nutrient was analyzed on the sample
+          string
+          
+            
+              
+                
+                  
+                    AFDM
+                    ash-free dry mass of seston
+                  
+                  
+                    Alkalinity
+                    Alkalinity
+                  
+                  
+                    Ammonium
+                    Ammonium
+                  
+                  
+                    Chla
+                    Chlorophyll a of seston
+                  
+                  
+                    DOC
+                    dissolved organic carbon
+                  
+                  
+                    Nitrate
+                    Nitrate
+                  
+                  
+                    SRP
+                    soluble reactive phosphate
+                  
+                  
+                    TDN
+                    total dissolved nitrogen
+                  
+                  
+                    TDP
+                    total dissolved phosphorus
+                  
+                  
+                    TP
+                    total phosphorus
+                  
+                  
+                    TSS
+                    total suspended solids
+                  
+                
+              
+            
+          
+        
+        
+          Concentration
+          Value determined for the analysis
+          string
+          
+            
+              
+                
+                  Value determined for the analysis
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+        
+          units
+          Unit of the concentration
+          string
+          
+            
+              
+                
+                  
+                    g/L
+                    gramsPerLiter
+                  
+                  
+                    mequiv./L
+                    mequiv./L
+                  
+                  
+                    mg/L
+                    milligramsPerLiter
+                  
+                  
+                    mgC/L
+                    mgC/L
+                  
+                  
+                    mgN/L
+                    mgN/L
+                  
+                  
+                    ug/L
+                    microgramsPerLiter
+                  
+                
+              
+            
+          
+          
+            NA
+            not available
+          
+        
+      
+      315
+    
+  
+  
+    
+      
+        
+          SI unit for conductivity
+        
+        
+          Unit for turbidity
+        
+        
+          A unit for photosynthetically active radiatiation (PAR)
+        
+      
+    
+  

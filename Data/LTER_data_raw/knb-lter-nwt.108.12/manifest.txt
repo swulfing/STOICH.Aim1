@@ -1,0 +1,5 @@
+Manifest file for knb-lter-nwt.108.12-4c9184f37cff01bcdc32dc486ec36961.zip created on Wed May 05 13:24:37 MDT 2021
+gre4solu.nc.data.csv (286925 bytes)
+knb-lter-nwt.108.12.xml (64653 bytes)
+knb-lter-nwt.108.12.txt (35846 bytes)
+knb-lter-nwt.108.12.report.xml (33517 bytes)
