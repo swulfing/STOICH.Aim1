@@ -137,19 +137,19 @@ want <-tibble(
   "Nitrite mg{NO2}/L", "NO3 as N mg/L", "Non-ionised ammonia mg{NH3}/L", "Ammonium mg{NH4}/L" , "PO4 as P mg/L", "pH [pH]",
   "Potassium mg/L", "Sodium mg/L", "Sulphate mg/L", "Total inorganic nitrogen mg{N}/L" , "Total oxidised nitrogen mg{N}/L", 
   "Total nitrogen mg{N}/L", "Total organic nitrogen mg{N}/L", "Total organic carbon (TOC) mg{C}/L", "Total phosphorus mg{P}/L",
-  "Water temperature Cel"  
+  "Water temperature Cel" , "Dissolved oxygen mg/L"
 ), 
 Param_new = c(
   "CALCIUM", "CHLORIDE", "CHLA", "DOC", "SP_COND", "IRON", "TKN", "MAGNESIUM", 
   "MANGANESE", "NO2 as N", "NO3 as N", "NH3 as N", "NH4 as N", "PO4 as P", "pH", "POTASSIUM", 
   "SODIUM", "SULPHATE", "TIN as N", "TOXIDN as N", "TN", "TON as N", "TOC", "TP", 
-  "TEMP"
+  "TEMP", "DO"
 ),
 Unit = c("mg/L", "mg/L", "mg/L", "mg/L", "uS/cm", "mg/L",  "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "Unitless", 
-         "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "deg_C"), 
+         "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "deg_C", "mg/L"), 
 Action = c("Rename", "Rename", "Rename and /1000", "Rename", "Rename", "Rename and /1000", "Rename", "Rename", 
            "Rename and /1000", "Rename and /46.0*14.0", "Rename and /62.0*14.0", "Rename and /17.0*14.0", "Rename and /18.0*14.0",
-           "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename"))
+           "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename"))
 
 
 ```
