@@ -58,7 +58,7 @@ N <- tibble(
 
 ```
 
-The formula for the conversions of N species are as follows: `r glue("{NSpecies} / {AtomWeight} * {AtomWeightN}", NSpecies = N$Species, AtomWeight = N$"Atomic weight", AtomWeightN = N$"Atomic weight N")`.
+The formula for the conversions of N species are as follows: `r glue("{NSpecies} / {AtomWeight} * {AtomWeightN}", NSpecies = N$Species, AtomWeight = N$"Atomic weight", AtomWeightN = N$"Atomic weight N")`. Note: this is not needed for NO~3~^-^ as already converted to NO~3~^-^ as N.
 
 DOC, NO3 as N and PO4 as P are already standardised.
 
@@ -86,7 +86,7 @@ When you are finished, save the new dataset as "NAME_1.csv" in the Data/other_va
 
 #if(!dir.exists("local_data")){dir.create("local_data")}
 #write_delim(dat, "local_data/EU_all_raw.csv", delim = ",")
-dat <- read_csv("C://Users/dgschwentner2/OneDrive - University of Nebraska-Lincoln/PhD/Aim1Biogeochem/local_data/EU_all_raw.csv")
+dat <- read_csv("C://Users/Dan/OneDrive - University of Nebraska-Lincoln/PhD/Aim1Biogeochem/local_data/EU_all_raw.csv")
 
 ```
 
@@ -148,7 +148,7 @@ Param_new = c(
 Unit = c("mg/L", "mg/L", "mg/L", "mg/L", "uS/cm", "mg/L",  "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "Unitless", 
          "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "mg/L", "deg_C", "mg/L"), 
 Action = c("Rename", "Rename", "Rename and /1000", "Rename", "Rename", "Rename and /1000", "Rename", "Rename", 
-           "Rename and /1000", "Rename and /46.0*14.0", "Rename and /62.0*14.0", "Rename and /17.0*14.0", "Rename and /18.0*14.0",
+           "Rename and /1000", "Rename and /46.0*14.0", "Rename", "Rename and /17.0*14.0", "Rename and /18.0*14.0",
            "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename", "Rename"))
 
 
@@ -182,7 +182,7 @@ data_filtered <- dat_edits %>%
     RESULT = ifelse(VARIABLE == "IRON", RESULT/1000, RESULT), 
     RESULT = ifelse(VARIABLE == "MANGANESE", RESULT/1000, RESULT), 
     RESULT = ifelse(VARIABLE == "NO2 as N", RESULT/46.0055*14.0067, RESULT),
-    RESULT = ifelse(VARIABLE == "NO3 as N", RESULT/62.004*14.0067, RESULT),
+    #RESULT = ifelse(VARIABLE == "NO3 as N", RESULT/62.004*14.0067, RESULT), NO3 is already converted.
     RESULT = ifelse(VARIABLE == "NH3 as N", RESULT/17.031*14.0067, RESULT),
     RESULT = ifelse(VARIABLE == "NH4 as N", RESULT/18.04*14.0067,RESULT)
     
@@ -208,7 +208,7 @@ for(i in edited_vars){
 
 eu_edited <- data_filtered
 
-#write_delim(eu_edited, "C://Users/dgschwentner2/OneDrive - University of Nebraska-Lincoln/PhD/Aim1Biogeochem/local_data/EU_filtered_cleaned.csv", delim = "'")
+write_delim(eu_edited, "C://Users/Dan/OneDrive - University of Nebraska-Lincoln/PhD/Aim1Biogeochem/local_data/EU_filtered_cleaned.csv", delim = "'")
 
 
 ```
