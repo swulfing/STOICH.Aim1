@@ -1,5 +1,0 @@
-Manifest file for knb-lter-nwt.163.3-4c9184f37cff01bcdc32dc486ec36961.zip created on Thu Jun 03 20:09:26 MDT 2021
-grrgsolu.nc.data.csv (174214 bytes)
-knb-lter-nwt.163.3.xml (58281 bytes)
-knb-lter-nwt.163.3.txt (28250 bytes)
-knb-lter-nwt.163.3.report.xml (33830 bytes)

@@ -1,5 +1,0 @@
-Manifest file for knb-lter-nwt.112.4-4c9184f37cff01bcdc32dc486ec36961.zip created on Thu Mar 25 20:41:25 MDT 2021
-martsolu.nc.data.csv (183977 bytes)
-knb-lter-nwt.112.4.xml (62332 bytes)
-knb-lter-nwt.112.4.txt (34065 bytes)
-knb-lter-nwt.112.4.report.xml (33519 bytes)
