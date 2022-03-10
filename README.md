@@ -30,7 +30,9 @@ Caine, T. 2021. Stream water chemistry data for Green Lake 5 Rock Glacier, 1998 
 Caine, T. 2021. Stream water chemistry data for Martinelli basin, 1984 - ongoing. ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/5534a25d64cd018f9c96a6a4c2f49315 (Accessed 2021-12-13).
 
 Caine, T. 2021. Stream water chemistry data for Saddle Stream site, 1994 - ongoing. ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/9173009d00ed4602fcda5a529ee4a603 (Accessed 2021-12-13).
- 
+
+Cooper, D.M.; Evans, C.; Norris, D.; Burden, A.; Lawler, A. (2013). Conwy catchment - spatial water chemistry dataset. NERC Environmental Information Data Centre. https://doi.org/10.5285/c53a1f93-f64c-4d84-82a7-44038a394c59
+
 European Environement Agency: Waterbase - Water Quality ICM (https://www.eea.europa.eu/data-and-maps/data/waterbase-water-quality-icm-1)
 
 Government of Canada: National Long-term Water Quality Monitoring Data (https://open.canada.ca/data/en/dataset/67b44816-9764-4609-ace1-68dc1764e9ea)
@@ -40,7 +42,9 @@ National Ecological Observatory Network. 2021. Data Product DP1.20093.001, Chemi
 Niwot Ridge LTER and N. Caine. 2018. Stream water chemistry data for Green Lake 1, 1985 - 2010. ver 10. Environmental Data Initiative. https://doi.org/10.6073/pasta/ea17637406c07cd69b8de8ca263799ca (Accessed 2021-12-13).
 
 Powers, S. and E. Stanley. 2014. River Nutrient Uptake and Transport at North Temperate Lakes LTER (2005-2011) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/16d2a519bcb283fedb7efc605512e870 (Accessed 2021-12-13).
-  
+ 
+Rennie, S.; Adamson, J.; Anderson, R.; Andrews, C.; Bater, J.; Bayfield, N.; Beaton, K.; Beaumont, D.; Benham, S.; Bowmaker, V.; Britt, C.; Brooker, R.; Brooks, D.; Brunt, J.; Common, G.; Cooper, R.; Corbett, S.; Critchley, N.; Dennis, P.; Dick, J.; Dodd, B.; Dodd, N.; Donovan, N.; Easter, J.; Flexen, M.; Gardiner, A.; Hamilton, D.; Hargreaves, P.; Hatton-Ellis, M.; Howe, M.; Kahl, J.; Lane, M.; Langan, S.; Lloyd, D.; McCarney, B.; McElarney, Y.; McKenna, C.; McMillan, S.; Milne, F.; Milne, L.; Morecroft, M.; Murphy, M.; Nelson, A.; Nicholson, H.; Pallett, D.; Parry, D.; Pearce, I.; Pozsgai, G.; Rose, R.; Schafer, S.; Scott, T.; Sherrin, L.; Shortall, C.; Smith, R.; Smith, P.; Tait, R.; Taylor, C.; Taylor, M.; Thurlow, M.; Turner, A.; Tyson, K.; Watson, H.; Whittaker, M.; Wood, C. (2017). UK Environmental Change Network (ECN) stream water chemistry data: 1992-2015. NERC Environmental Information Data Centre. https://doi.org/10.5285/fd7ca5ef-460a-463c-ad2b-5ad48bb4e22e
+ 
 ++be careful with LAGOS data, check sources to ensure we don't have redundancy++ && update when new data information is released 
 
 Soranno, P.A., E.G. Bissell, K.S. Cheruvelil, S.T. Christel, S.M. Collins, C.E. Fergus, C.T. Filstrup, J.F. Lapierre, N.R. Lottig, S.K. Oliver, C.E. Scott, N.J. Smith, S. Stopyak, S. Yuan, M.T. Bremigan, J.A. Downing, C. Gries, E.N. Henry, N.K. Skaff, E.H. Stanley, C.A. Stow, P.-N. Tan, T. Wagner, K.E. Webster. 2015. Building a multi-scaled geospatial temporal ecology database from disparate data sources: Fostering open science and data reuse. GigaScience 4:28  https://doi.org/10.1186/s13742-015-0067-4
