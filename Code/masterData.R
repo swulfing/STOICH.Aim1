@@ -5,17 +5,30 @@ library(lubridate)
 
 
 #call in the data & ensure it is ready to use#####
-temp <- (read.csv("Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_NRC.csv")) %>%
-  rbind(read.csv("Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")) %>%
+temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
+  
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")) %>%
+  
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NRC.csv")) %>%
+  
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")) %>%
+  
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EIDC.csv"))
+  
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
+  
   filter(year(DATE_COL) >= 2000) #get rid of any data pre 2000
 
 
-EU <- read.csv("Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
+
+
+
+EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
+  
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
+  
   mutate(DATE_COL = as.Date(DATE_COL))
+
 
 ALL_CNP <- rbind(EU, temp) 
 #This dataset contains all concurrently collected DOC, nitrate as N, and phosphate as P data. units of everything are mg/L
@@ -55,3 +68,4 @@ stats.per.site <- ALL_CNP %>%
             sd.DOC = sd(DOC),
             sd.NO3 = sd(NO3.as.N),
             sd.PO4.as.P = sd(PO4.as.P))
+
