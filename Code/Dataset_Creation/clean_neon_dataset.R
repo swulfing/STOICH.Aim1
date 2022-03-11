@@ -32,4 +32,4 @@ varsunits <- neon1 |>
   select(VARIABLE, UNIT) |>
   distinct()
 
-write.csv(neon1, 'Data/other_vars_datasets/NEON_filtered_cleaned.csv')
+write.csv(neon1, 'Data/other_vars_datasets/NEON_1.csv')
