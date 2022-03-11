@@ -6,15 +6,16 @@ library(lubridate)
 
 
 #call in the data & ensure it is ready to use#####
-temp <- (read.csv("Data/other_vars_datasets/LAGOS.csv")) %>%
-  rbind(read.csv("Data/other_vars_datasets/NEON.csv")) %>%
-  rbind(read.csv("Data/other_vars_datasets/NRC.csv")) %>%
-  rbind(read.csv("Data/other_vars_datasets/LTER.csv")) %>%
+temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LAGOS_1.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NEON_1.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NRC.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv")) %>%
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EIDC.csv")) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   filter(year(DATE_COL) >= 2000) #get rid of any data pre 2000
 
 
-EU <- read.csv("Data/other_vars_datasets/EU.csv") %>%
+EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv") %>%
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
   mutate(DATE_COL = as.Date(DATE_COL))
 
