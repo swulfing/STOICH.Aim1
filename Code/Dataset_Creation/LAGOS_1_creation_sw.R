@@ -83,7 +83,7 @@ LAGOS_1 <-subset(LAGOS_df, VARIABLE %in% c("DOC",
                                            "DO"))
 print(data.frame(unique(LAGOS_1$VARIABLE)))
 
-LAGOS_1 <- LAGOS_1[,3:9]
+LAGOS_1 <- LAGOS_1[,2:9]
 #Write csv into other_vars_datasets folder
 write.csv(LAGOS_1, "Data/other_vars_datasets/LAGOS_1.csv", row.names = FALSE)
 

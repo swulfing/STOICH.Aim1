@@ -227,7 +227,7 @@ LTER_1 <-subset(LTER_df, VARIABLE %in% c("DOC",
                                            "POTASSIUM"))
 print(data.frame(unique(LTER_1$VARIABLE)))
 
-LTER_1 <- LTER_1[,3:9]
+LTER_1 <- LTER_1[,2:9]
 #Write csv into other_vars_datasets folder
 write.csv(LTER_1, "Data/other_vars_datasets/LTER_1.csv", row.names = FALSE)
 
