@@ -1,0 +1,221 @@
+---
+title: "NRC Data Set Cleaning"
+author: "Daniel Gschwenter"
+date: "3/17/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+---
+---
+
+### Code to tidy NRC data set following GitHub Guidelines
+
+---
+---
+
+#### Guidelines
+---
+###### Major ions to include
+
+- CHLORIDE
+- SULFATE
+- CALCIUM
+- MAGNESIUM
+- SODIUM
+- POTASSIUM
+- IRON
+- MANGANESE
+
+##### Forms of C,N,P
+
+Naming conventions
+
+- Total kjeldahl nitrogen == TKN
+- Total particulate phosphorus == TPP
+- Total carbon == TC
+- NH4 == NH4 as N
+- NH3 == NH3 as N
+- NO2 == NO2 as N
+- NO3 == NO3 as N
+
+Conversion of N forms to N as N: Divide mass of species by atomic weight and multiply by atomic weight of N.
+
+```{r N conversion table, include=F}
+
+N <- tibble(
+  Species = c("NH4", "NH3", "NO3", "NO2"), 
+  "Atomic weight" = c(18.04, 17.031, 62.0049, 46.0055), 
+  "Atomic weight N" = 14.0067 
+)
+
+```
+
+The formula for the conversions of N species are as follows: `r glue("{NSpecies} / {AtomWeight} * {AtomWeightN}", NSpecies = N$Species, AtomWeight = N$"Atomic weight", AtomWeightN = N$"Atomic weight N")`. Note: this is not needed for NO~3~^-^ as already converted to NO~3~^-^ as N.
+
+DOC, NO3 as N and PO4 as P are already standardised.
+
+
+##### Other things
+
+- TEMP = deg_C
+- SP_COND = uS/cm
+- DO = mg/L
+- CHLA = mg/L
+- pH
+
+##### Data upload.
+
+When you are finished, save the new dataset as "NAME_1.csv" in the Data/other_vars_datasets folder, i.e., do not overwrite the dataset that is in there, rather make a new one, e.g., EU_1.csv.
+
+---
+
+```{r Load data save locally and re-import, include=F}
+
+# nrc <- read_csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NRC.csv")
+# write_delim(nrc, "local_data/nrc_raw.csv", delim = ",")
+nrc <- read_csv("local_data/nrc_raw.csv")
+
+# Had to manually replace µ with u in data set...
+```
+
+
+```{r Overview of data, echo = F}
+
+colnames(nrc)
+
+unique(nrc$VARIABLE) # Yikes!!!!
+
+# Copy of data set.
+nrc_edit<- nrc %>%
+  mutate(param_units = paste0(VARIABLE, " ", UNIT))
+
+### Do not run, this just creates a headache.
+# dat_edits %>%
+#   group_by(param_units) %>%
+#   mutate(n = n()) %>%
+#   kable() %>%
+#   kable_classic(full_width = F, position = "float_left")
+
+# Do not run.
+sort(unique(nrc_edit$param_units))
+
+
+```
+
+N.B.!!!! For the NRC data set following parameters have issues:
+- Calcium: doesn't exist in data set.
+- Chloride: only dissolved fraction present.
+- Sodium: only dissolved fraction present.
+- Potassium: only dissolved fraction present.
+- Magneisum is the sum of the particulate and dissolved fractions.
+- Assuming following vars are already converted to N based on names and prior information: AMMONIA DISSOLVED MG/L N, 
+- Particulate P calculated as TP - Dissolved P
+
+Lots of dissolved N that I did not include in data tidying.
+
+
+```{r ID variables of interest, echo = F}
+
+# Variables of interest:
+vars <- c("CARBON TOTAL ORGANIC MG/L", # Transform to TC as C.
+          "CHLORIDE DISSOLVED MG/L", # Rename
+          "IRON TOTAL uG/L" , # ug/L to mg/L -> divide by 1000.
+          "MAGNESIUM DISSOLVED MG/L",  # Rename
+          "MAGNESIUM PARTICULATE uG/G",# Rename, convert to mg/L and sum with dissolved magnesium
+          "MANGANESE TOTAL uG/L", # Convert to mg/L
+          "POTASSIUM DISSOLVED MG/L", # Rename
+          "SODIUM DISSOLVED/FILTERED MG/L", # Rename
+          "AMMONIA DISSOLVED MG/L N", # Rename to NH3
+          "CHLOROPHYLL A uG/L", # Convert to mg/L
+          "CONDUCTIVITY uS/CM" , # Rename
+          "DOC MG/L", # Rename
+          "NITROGEN NITRITE MG/L", # Convert to NO2 as N
+          "NO3 as N MG/L", # Rename
+          "NITROGEN TOTAL MG/L", # Convert to TN as N
+          "PH (FIELD) PH", # Rename
+          "PHOSPHORUS TOTAL DISSOLVED MG/L P", # Rename
+          "PHOSPHORUS TOTAL MG/L P", # Rename and use to calculate particulate P from dissolved P
+          "PO4 as P MG/L P", # Rename
+          "TEMPERATURE WATER (FIELD) DEG C", # Rename
+          "OXYGEN DISSOLVED (FIELD) MG/L"  # Rename
+)
+
+
+# Filter.
+nrc_select <- nrc_edit %>%
+  filter(param_units %in%  vars) %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID, LAT, LON, ECO_TYPE), # Pivoting makes things a bit more managable for what we need to do.
+              names_from = param_units, 
+              values_from = RESULT,
+              values_fn = mean) # Some list cols so had to summarise.
+
+```
+
+
+```{r Data editing, include=F}
+
+
+nrc_clean <- nrc_select %>%
+  mutate("TCasC mg/L" = `CARBON TOTAL ORGANIC MG/L`/12.011, # Divide by molecular weight of C
+         "CHLORIDE mg/L" = `CHLORIDE DISSOLVED MG/L`,
+         "IRON mg/L" = `IRON TOTAL uG/L`/1000,
+         "MAGNESIUM mg/L" = `MAGNESIUM DISSOLVED MG/L` + `MAGNESIUM PARTICULATE uG/G`/1000,
+         "MANGANESE mg/L" = `MANGANESE TOTAL uG/L`/1000,
+         "POTASSIUM mg/L" = `POTASSIUM DISSOLVED MG/L`, 
+         "SODIUM mg/L" = `SODIUM DISSOLVED/FILTERED MG/L`,
+         "NH3asN mg/L" = `AMMONIA DISSOLVED MG/L N`,
+         "CHLA mg/L" = `CHLOROPHYLL A uG/L`/1000,
+         "SP_Cond uS/cm" = `CONDUCTIVITY uS/CM`,
+         "DOC mg/L" = `DOC MG/L`,
+         "NO2asN mg/L" = `NITROGEN NITRITE MG/L`/46.0055,
+         "TNasN mg/L" = `NITROGEN TOTAL MG/L`/14.007, 
+         "pH Unitless" = `PH (FIELD) PH`,
+         "TDPasP mg/L" = `PHOSPHORUS TOTAL DISSOLVED MG/L P`,
+         "TPasP mg/L" = `PHOSPHORUS TOTAL MG/L P`,
+         "TPPasP mg/L" = `TPasP mg/L` - `TDPasP mg/L`,
+         "PO4asP mg/L" = `PO4 as P MG/L P`,
+         "TEMP deg_C" = `TEMPERATURE WATER (FIELD) DEG C`,
+         "DO mg/L" = `OXYGEN DISSOLVED (FIELD) MG/L`
+         ) %>%
+  select(
+    DATE_COL, SITE_ID, LAT, LON, ECO_TYPE, "TCasC mg/L", "CHLORIDE mg/L", "IRON mg/L", "MAGNESIUM mg/L", "MANGANESE mg/L", "POTASSIUM mg/L",
+    "SODIUM mg/L", "NH3asN mg/L", "CHLA mg/L", "SP_Cond uS/cm", "DOC mg/L", "NO2asN mg/L", "TNasN mg/L", "pH Unitless", "TDPasP mg/L",
+    "TPasP mg/L", "TPPasP mg/L", "PO4asP mg/L", "TEMP deg_C", "DO mg/L"
+  )
+
+# Pivot back to long format...
+
+nrc_clean_long <- nrc_clean %>%
+  gather("VARIABLE", "RESULT", -DATE_COL, -SITE_ID, -LAT, -LON, -ECO_TYPE) %>%
+  separate(VARIABLE, c("VARIABLE", "UNIT"), sep = " ") %>%
+  drop_na() %>%
+  mutate( # Final renaming.
+    VARIABLE = ifelse(VARIABLE == "TCasC","TC as C", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "NH3asN", "NH3 as N", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "NO2asN", "NO2 as N", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "TNasN", "TN as N", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "TDPasP", "TDP as P", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "TPasP", "TP as P", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "TPPasP", "TPP as P", VARIABLE),
+    VARIABLE = ifelse(VARIABLE == "PO4asP", "PO4 as P", VARIABLE),
+    UNIT = ifelse(UNIT == "Unitless", NA, UNIT)
+  )
+
+# Quality control
+
+sort(unique(paste0(nrc_clean_long$VARIABLE, " ", nrc_clean_long$UNIT)))
+
+```
+
+```{r Save file}
+
+write_delim(nrc_clean_long, "local_data/nrc_cleaned.csv", delim = ",")
+
+```
+
