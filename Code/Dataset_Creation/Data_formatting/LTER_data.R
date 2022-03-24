@@ -463,6 +463,18 @@ LTER_all <- rbind(b.1, d.1, e.1, f.1, g.1, i.1, j.1, k.1, l.2, m.1, n.1, o.1, p.
 
 write.csv(LTER_all, "Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")
 
+
+
+# Linnea found a problem with 4 locations in this dataset: big_spring_creek_a, _b, _c, and _d. There is no lat/long information provided in the metadata. So I am removing these from the dataset and re-saving. 
+# I'm documenting this here for transparency and in case anyone has a better suggestion!
+
+lter <- read.csv("Data/Simplified_datasets_per_source/SIMPLE_LTER.csv") 
+lter1 <- lter |>
+  filter(!SITE_ID %in% c("big_spring_creek_a", "big_spring_creek_b", "big_spring_creek_c", "big_spring_creek_d"))
+
+write.csv(lter1, "Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")
+
+
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -1004,3 +1016,15 @@ LTER_all_vars <- rbind(b.1, d.1, e.1, f.1, g.1, i.1, j.1, k.1, l.2, m.1, n.1, o.
 
 
 write.csv(LTER_all_vars, "Data/other_vars_datasets/LTER.csv")
+
+
+
+# Linnea found a problem with 4 locations in this dataset: big_spring_creek_a, _b, _c, and _d. There is no lat/long information provided in the metadata. So I am removing these from the dataset and re-saving. 
+# I'm documenting this here for transparency and in case anyone has a better suggestion!
+
+lter <- read.csv("Data/other_vars_datasets/LTER.csv") 
+lter1 <- lter |>
+  filter(!SITE_ID %in% c("big_spring_creek_a", "big_spring_creek_b", "big_spring_creek_c", "big_spring_creek_d"))
+
+write.csv(lter1, "Data/other_vars_datasets/LTER.csv")
+

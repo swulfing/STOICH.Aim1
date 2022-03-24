@@ -30,14 +30,14 @@ step2 <- step1 %>%
   filter(RESULT > 0)
 
 #some information about the dataset
-# number.sites.VARS <- nrow(unique(All_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+# number.sites.VARS <- nrow(unique(ALL_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
 #                               distinct()))
-# number.lakes.VARS <- nrow(unique(All_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+# number.lakes.VARS <- nrow(unique(ALL_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
 #                               distinct() %>% filter(ECO_TYPE == "Lake")))
-# number.rivers.VARS <- nrow(unique(All_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+# number.rivers.VARS <- nrow(unique(ALL_CNP_VARS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
 #                                distinct() %>% filter(ECO_TYPE != "Lake")))
 
-# check.that.sites.are.unique.VARS <- All_CNP_VARS %>% 
+# check.that.sites.are.unique.VARS <- ALL_CNP_VARS %>% 
 #   dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
 #   distinct() %>%
 #   count(SITE_ID)
@@ -60,19 +60,16 @@ step3 <- step2 |>
 
 # Some sites without all three DOC, NO3, and PO4 were uploaded somehow -- adding those missing variables back in
 source("Code/masterData.R")
-rm(number.sites)
-rm(number.lakes)
-rm(number.rivers)
+
 
 
 step4 <- ALL_CNP |>
   select(-X) |>
   rename(`NO3 as N` = NO3.as.N,
          `PO4 as P` = PO4.as.P) |>
-  pivot_longer(6:8, names_to = 'VARIABLE', values_to = 'RESULT') |>
-  rename(UNIT = UNITS)
+  pivot_longer(6:8, names_to = 'VARIABLE', values_to = 'RESULT')
 
-All_CNP_VARS <- full_join(step3, step4) |>
+ALL_CNP_VARS <- full_join(step3, step4) |>
   distinct()
 
 
@@ -84,17 +81,17 @@ rm(step4)
 
 
 # what are the units? 
-UNITS_available <- All_CNP_VARS |>
+UNITS_available <- ALL_CNP_VARS |>
   select(VARIABLE, UNIT) |>
   distinct()
 
 # what proportion of sites have each variable? 
-prop.sites <- All_CNP_VARS |>
+prop.sites <- ALL_CNP_VARS |>
   select(SITE_ID, VARIABLE, UNIT) |>
   unique() |>
   count(VARIABLE) |>
   rename(percent_sites = n) |>
-  mutate(percent_sites = percent_sites/length(unique(All_CNP_VARS$SITE_ID)) * 100) |>
+  mutate(percent_sites = percent_sites/length(unique(ALL_CNP_VARS$SITE_ID)) * 100) |>
   left_join(UNITS_available)
 
 rm(UNITS_available)

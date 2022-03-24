@@ -234,9 +234,14 @@ write.csv(LTER_1, "Data/other_vars_datasets/LTER_1.csv", row.names = FALSE)
 
 
 
+# Linnea found a problem with 4 locations in this dataset: big_spring_creek_a, _b, _c, and _d. There is no lat/long information provided in the metadata. So I am removing these from the dataset and re-saving. 
+# I'm documenting this here for transparency and in case anyone has a better suggestion!
 
+lter <- read.csv("Data/other_vars_datasets/LTER_1.csv") 
+lter1 <- lter |>
+  filter(!SITE_ID %in% c("big_spring_creek_a", "big_spring_creek_b", "big_spring_creek_c", "big_spring_creek_d"))
 
-
+write.csv(lter1, "Data/other_vars_datasets/LTER_1.csv")
 
 
 

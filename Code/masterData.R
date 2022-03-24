@@ -39,7 +39,8 @@ rm(temp)
 ALL_CNP <- ALL_CNP %>%
   filter(NO3.as.N >0,
          PO4.as.P > 0,
-         DOC >0 )
+         DOC >0 ) %>%
+  rename(UNIT = UNITS)
 
 #some information about the dataset
 number.sites <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
