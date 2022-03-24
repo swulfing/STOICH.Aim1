@@ -13,7 +13,7 @@ temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/D
   
   rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LTER.csv")) %>%
   
-  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EIDC.csv"))
+  rbind(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EIDC.csv")) %>%
   
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   
@@ -49,13 +49,13 @@ number.lakes <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYP
 number.rivers <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
                               distinct() %>% filter(ECO_TYPE != "Lake")))
 
-check.that.sites.are.unique <- ALL_CNP %>% 
-  dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
-  distinct() %>%
-  count(SITE_ID)
+# check.that.sites.are.unique <- ALL_CNP %>% 
+#   dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+#   distinct() %>%
+#   count(SITE_ID)
 
-observations.per.site <- ALL_CNP %>%
-  count(SITE_ID)
+observations.per.site.of.CNP <- ALL_CNP %>%
+  count(SITE_ID) 
 
 stats.per.site <- ALL_CNP %>%
   group_by(SITE_ID) %>%
