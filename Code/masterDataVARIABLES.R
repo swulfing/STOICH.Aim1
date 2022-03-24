@@ -64,7 +64,6 @@ source("Code/masterData.R")
 
 
 step4 <- ALL_CNP |>
-  select(-X) |>
   rename(`NO3 as N` = NO3.as.N,
          `PO4 as P` = PO4.as.P) |>
   pivot_longer(6:8, names_to = 'VARIABLE', values_to = 'RESULT')
