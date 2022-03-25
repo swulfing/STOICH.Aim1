@@ -59,7 +59,7 @@ step3 <- step2 |>
          UNIT = ifelse(UNIT == 'degc', 'deg_C', UNIT)) 
 
 # Some sites without all three DOC, NO3, and PO4 were uploaded somehow -- adding those missing variables back in
-source("Code/masterData.R")
+source("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Code/masterData.R") # This way you source the file on Github....
 
 
 
