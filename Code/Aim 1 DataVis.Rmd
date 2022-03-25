@@ -1,0 +1,362 @@
+---
+title: "Aim 1 EDA Vis"
+author: "Daniel Gschwentner"
+date: "24 March 2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+lapply(c("tidyverse", "ggsci", "ggpubr"), require, character.only = T)
+
+my_theme <- theme_bw() + 
+  theme(axis.text = element_text(color = "black"), 
+        axis.ticks = element_line(color = "black"), 
+        panel.grid = element_blank(),
+        strip.background = element_rect(size= 0.75, fill = "white"),
+        legend.position = "bottom")
+
+theme_set(my_theme)
+
+
+```
+
+
+```{r Load data, include=F}
+
+source("C://Users/dgschwentner2/OneDrive - University of Nebraska-Lincoln/PhD/Aim1Biogeochem/R Code/LRock_AllMasterVars.R")
+
+```
+
+```{r Pivoting, include=F}
+
+# Pivot to include all vars for plotting.
+
+master_wide <- ALL_CNP_VARS %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID,  LAT, LON, ECO_TYPE), # Gotta drop units here.
+              names_from = VARIABLE, values_from = RESULT, values_fn = mean)
+# This is a bit of an issue....
+# Long data format hides duplicate measurments from same site, date.... Not good...
+
+# Some maniputlation so I can get subsets for vis purposes
+CNP_subsets <- ALL_CNP_VARS %>%
+  mutate(SUBSET = "ALL") %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE == "River/Stream") %>% mutate(SUBSET = "River/Stream")) %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE != "River/Stream") %>% mutate(SUBSET = "Lake"))
+
+
+```
+
+```{r Boxplots, echo = F, fig.align='center', dpi = 600}
+
+# Density distribution of variables.
+# Gott use log, not really feasible to see stuff otherwise....
+
+(box_all <- CNP_subsets %>%
+  ggplot(aes(SUBSET, log10(RESULT), fill = SUBSET)) + 
+  geom_boxplot() +
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  facet_wrap(VARIABLE~.,scales = "free") + 
+  labs(x = "Variable in mg/L, deg C, pH units or uS/Cm", y = "Density"))
+
+
+boxplt_list <- list()
+for(i in unique(CNP_subsets$VARIABLE)){
+  boxplt_list[[i]] <- CNP_subsets %>%
+    filter(VARIABLE == i) %>%
+  ggplot(aes(SUBSET, RESULT, fill = SUBSET)) + 
+  geom_boxplot() +
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  labs(y = "unit", x = NULL, subtitle = i)
+
+}
+
+boxplt_list_log10 <- list()
+for(i in unique(CNP_subsets$VARIABLE)){
+  boxplt_list_log10[[i]] <- CNP_subsets %>%
+    filter(VARIABLE == i) %>%
+  ggplot(aes(SUBSET, log10(RESULT), fill = SUBSET)) + 
+  geom_boxplot() +
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  labs(y = "log10(unit)", x = NULL, subtitle = i)
+
+}
+
+# A subset of the data; just the most relevant aspects....
+
+ggarrange(plotlist = boxplt_list[c("DOC", "NO3 as N", "PO4 as P", "TN", "TP" ,"pH", "DO", "SP_COND")], ncol = 3, nrow = 3, common.legend = T, legend = "bottom")
+
+
+ggarrange(plotlist =boxplt_list_log10[c("DOC", "NO3 as N", "PO4 as P", "TN", "TP" ,"pH", "DO", "SP_COND")], ncol = 3, nrow = 3, common.legend = T, legend = "bottom")
+
+```
+
+---
+
+Some thoughts:
+
+- Rivers/Streams generally have higher NO~3~ as N concentrations than lakes. Average NO~3~ as N concentrations for rivers and streams are `r mean(CNP_subsets %>% filter(SUBSET == "River/Stream" & VARIABLE == "NO3 as N") %>% pull(RESULT)) ` and `r mean(CNP_subsets %>% filter(SUBSET == "Lake" & VARIABLE == "NO3 as N") %>% pull(RESULT)) ` mgL. 
+
+- PO~4~ concentrations are similarily lower in lakes than in rivers or streams. Average concentrations are `r mean(CNP_subsets %>% filter(SUBSET == "Lake" & VARIABLE == "PO4 as P") %>% pull(RESULT)) ` and `r  mean(CNP_subsets %>% filter(SUBSET == "River/Stream" & VARIABLE == "PO4 as P") %>% pull(RESULT))` mgL respectively.
+
+- TP and TN pools are similar across lakes and rivers/streams.
+
+- pH and specific conductivity are similar, however lakes have a larger range of pH. Both ecotypes have more neutral and basic pH than acidic. 
+
+---
+
+```{r Stoich ratios boxplot, echo=F}
+
+# First calc. molar concentrations.
+
+stoic_ratios <- ALL_CNP %>%
+  mutate("DOC as C molar" = DOC/1000/12.011,
+         "NO3 as N molar" = NO3.as.N/1000/14.007, 
+         "PO4 as P molar"= PO4.as.P/1000/30.974,
+         "DOC:NO3" = `DOC as C molar`/`NO3 as N molar` ,
+         "DOC:PO4" = `DOC as C molar`/`PO4 as P molar`,
+         "NO3:PO4" = `NO3 as N molar`/`PO4 as P molar`,
+         SUBSET = "ALL")
+  
+stoic_ratios <- stoic_ratios %>%
+  bind_rows(stoic_ratios %>% filter(ECO_TYPE == "River/Stream") %>% mutate(SUBSET ="River/Stream")) %>%
+  bind_rows(stoic_ratios %>% filter(ECO_TYPE == "Lake") %>% mutate(SUBSET = "Lake"))
+
+ggarrange(
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,`DOC:NO3`, fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = 106/16, col = "red") + 
+    scale_fill_jama() + labs(y = "DOC:NO3", x = NULL),
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,`DOC:PO4`, fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = 106/1, col = "red") + 
+    scale_fill_jama() + labs(y = "DOC:PO4", x = NULL),
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,`NO3:PO4`, fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = 16/1, col = "red") + 
+    scale_fill_jama() + labs(y = "NO3:PO4", x = NULL),
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,log10(`DOC:NO3`), fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = log10(106/16), col = "red") + 
+    scale_fill_jama() + labs(y = "log10(DOC:NO3)", x = NULL),
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,log10(`DOC:PO4`), fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = log10(106/1), col = "red") + 
+    scale_fill_jama() + labs(y = "DOC:PO4", x = NULL),
+  
+  stoic_ratios %>% ggplot(aes(SUBSET,log10(`NO3:PO4`), fill = SUBSET )) + 
+    geom_boxplot() + geom_hline(yintercept = log10(16/1), col = "red") + 
+    scale_fill_jama() + labs(y = "log10(NO3:PO4)", x = NULL), 
+  
+  ncol = 3, nrow = 2, common.legend = T, legend = "bottom"
+  
+)
+
+```
+
+
+---
+
+Some comments
+
+- Stoich. imbalances abound: as far from Redfield as you can imagine....
+
+- Lakes and streams have similar NO~3~:PO~4~ but DOC:nutrient ratios are very distinct. Suggests DOC dynamics in lakes and streams are different...
+
+- Average values for all the data are as follows:
+
+`r flextable::flextable(stoic_ratios %>% group_by(SUBSET) %>% summarise_at(c("DOC:NO3", "DOC:PO4", "NO3:PO4"), .funs = function(x){round(median(x), digits = 0)}))`
+
+- Some pretty extreme outliers
+
+---
+
+```{r Density distributions, echo = F, fig.align='center', dpi = 600}
+
+# Density distribution of variables.
+density_all <- ALL_CNP_VARS %>%
+  mutate(SUBSET = "ALL") %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE == "River/Stream") %>% mutate(SUBSET = "River/Stream")) %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE != "River/Stream") %>% mutate(SUBSET = "Lake")) %>%
+  ggplot(aes(RESULT, col = SUBSET)) + 
+  geom_density() + 
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  facet_wrap(VARIABLE~.,scales = "free") + 
+  labs(x = "Variable in mg/L, deg C, pH units or uS/Cm", y = "Density")
+
+# Log for better vis.
+density_alllog10 <- ALL_CNP_VARS %>%
+  mutate(SUBSET = "ALL") %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE == "River/Stream") %>% mutate(SUBSET = "River/Stream")) %>%
+  bind_rows(ALL_CNP_VARS %>% filter(ECO_TYPE != "River/Stream") %>% mutate(SUBSET = "Lake")) %>%
+  ggplot(aes(log10(RESULT), col = SUBSET)) + 
+  geom_density() + 
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  facet_wrap(VARIABLE~.,scales = "free") + 
+  labs(x = "Variable in log10(mg/L, deg C, pH units or uS/Cm)", y = "Density")
+
+# This is easier vis tbh...
+
+density_list <- list()
+for(i in unique(CNP_subsets$VARIABLE)){
+ density_list[[i]] <- CNP_subsets %>%
+    filter(VARIABLE == i) %>%
+  ggplot(aes(RESULT, col = SUBSET, fill = SUBSET, alpha = 0.1)) + 
+  geom_density() +
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  labs(y = "Density", x = i, subtitle = i)
+
+}
+
+
+density_list_log10 <- list()
+for(i in unique(CNP_subsets$VARIABLE)){
+ density_list_log10[[i]] <- CNP_subsets %>%
+    filter(VARIABLE == i) %>%
+  ggplot(aes(log10(RESULT), col = SUBSET, fill = SUBSET, alpha = 0.05)) + 
+  geom_density() +
+  scale_fill_jama() + 
+  scale_color_jama() + 
+  labs(y = "Density", x = paste0("log10(",i, ")"), subtitle = i)
+
+}
+# A subset of the data; just the most relevant aspects....
+
+ggarrange(plotlist = density_list[c("DOC", "NO3 as N", "PO4 as P", "TN", "TP" ,"pH", "DO", "SP_COND")], ncol = 3, nrow = 3, common.legend = T, legend = "bottom")
+
+
+ggarrange(plotlist =density_list_log10[c("DOC", "NO3 as N", "PO4 as P", "TN", "TP" ,"pH", "DO", "SP_COND")], ncol = 3, nrow = 3, common.legend = T, legend = "bottom")
+
+
+
+```
+
+---
+
+Some comments:
+
+For untransformed data:
+
+- Data departs from assumptions of normality (i.e. we need to transform or consider some statistical methods to account for this, e.g. non-parametric approaches)
+
+- Lakes generally have broader range of values: this is the case for DO, temp., pH. Streams and rivers tend to have narrow-ish ranges for DO and temp. and the data suggests that DO and temp. dynamics are different in streams/rivers when compared to lakes. This may need to be considered for analysis purposes.
+
+- Data is from neutral to basic/alkaline systems; not that much data from acidic aquatic ecosystems. 
+
+---
+
+```{r Scatter plots DOC, echo = F}
+
+# Only really interested in relationship between DOC, NO3 and PO4 with other vars...
+# Some clever plotting.
+scatter_data <- master_wide %>%
+  gather("key", "value", -DATE_COL, -SITE_ID, -LAT, -LON, -ECO_TYPE, -DOC, -`NO3 as N`, -`PO4 as P`) 
+scatter_data  <- scatter_data %>%
+  mutate(SUBSET = "ALL") %>% 
+  bind_rows(scatter_data %>% filter(ECO_TYPE == "River/Stream") %>% mutate(SUBSET = "River/Stream")) %>%
+  bind_rows(scatter_data %>% filter(ECO_TYPE == "Lake") %>% mutate(SUBSET = "Lake"))
+
+# Scatter lists of plots.
+doc_scatter <- list()
+for(i in unique(scatter_data$key)){
+  doc_scatter[[paste0("DOC X ", i)]] <- scatter_data %>%
+  filter(key ==i) %>%
+  ggplot(aes(log10(value), log10(DOC), col = SUBSET), alpha = 0.05) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_color_jama() + 
+  labs(y = "log10(DOC)", x = paste0("log10(",i,")"), subtitle = paste0("DOC X ", i))
+  
+}
+
+ggarrange(plotlist = doc_scatter[c("DOC X TN", "DOC X TP" ,"DOC X pH", "DOC X DO", "DOC X SP_COND")], ncol = 3, nrow = 2, common.legend = T, legend = "bottom")
+
+
+
+```
+
+```{r Scatter plots NO3 as N, echo = F}
+
+# Only really interested in relationship between DOC, NO3 and PO4 with other vars...
+# Some clever plotting.
+
+# Scatter lists of plots.
+no3_scatter <- list()
+for(i in unique(scatter_data$key)){
+  no3_scatter[[paste0("NO3 X ", i)]] <- scatter_data %>%
+  filter(key ==i) %>%
+  ggplot(aes(log10(value), log10(`NO3 as N`), col = SUBSET)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_color_jama() + 
+  labs(y = "log10(NO3)", x = paste0("log10(",i,")"), subtitle = paste0("NO3 X ", i))
+  
+}
+
+ggarrange(plotlist = no3_scatter[c("NO3 X TN", "NO3 X TP" ,"NO3 X pH", "NO3 X DO", "NO3 X SP_COND")], ncol = 3, nrow = 2, common.legend = T, legend = "bottom")
+
+
+
+```
+
+```{r Scatter plots PO4 as P, echo = F}
+
+# Only really interested in relationship between DOC, NO3 and PO4 with other vars...
+# Some clever plotting.
+
+# Scatter lists of plots.
+po4_scatter <- list()
+for(i in unique(scatter_data$key)){
+  po4_scatter[[paste0("PO4 X ", i)]] <- scatter_data %>%
+  filter(key ==i) %>%
+  ggplot(aes(log10(value), log10(`PO4 as P`), col = SUBSET), alpha = 0.05) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_color_jama() + 
+  labs(y = "log10(PO4)", x = paste0("log10(",i,")"), subtitle = paste0("PO4 X ", i))
+  
+}
+
+ggarrange(plotlist = po4_scatter[c("PO4 X TN", "PO4 X TP" ,"PO4 X pH", "PO4 X DO", "PO4 X SP_COND")], ncol = 3, nrow = 2, common.legend = T, legend = "bottom")
+
+
+
+```
+---
+
+```{r Fit an initial model, echo=F}
+library(broom)
+# Does PO4 explain resids of DOC ~ NO3 relationship.
+
+ALL_CNP %>%
+  ggplot(aes(log10(`NO3.as.N`), log10(DOC), col = ECO_TYPE)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_color_jama() + 
+  labs(y = "log10(DOC)", x = "log10(NO3)")
+# Create model
+docXno3 <- lm(log10(DOC) ~ log10(`NO3.as.N`) * ECO_TYPE, data = ALL_CNP)
+# Summary
+summary(docXno3)
+# Extract resids and add to model.
+ALL_CNP$mod_resids <- resid(docXno3)
+# What is the effect of PO4?
+ALL_CNP %>% ggplot(aes(log10(PO4.as.P), mod_resids, col = ECO_TYPE)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_color_jama() + 
+  labs(y = "Model residuals: log10(DOC) ~ log10(NO3)", x = "log10(PO4)") # Some funky stuff going on here...
+
+# Create new model.
+po4Xresid <- lm(mod_resids ~ log10(PO4.as.P) * ECO_TYPE, data = ALL_CNP)
+summary(po4Xresid)
+
+```
+
