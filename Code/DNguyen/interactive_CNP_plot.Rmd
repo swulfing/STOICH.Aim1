@@ -1,0 +1,37 @@
+---
+title: "interactive CNP plot"
+author: "David Nguyen"
+date: '2022-04-08'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C://Users//david//Documents//STOICH//STOICH.Aim1//Code/DNguyen")
+```
+
+## R Markdown
+```{r message = FALSE, warning = FALSE}
+ALL_CNP <- read.csv("ALL_CNP.csv")
+library(plotly)
+fig <- plot_ly(ALL_CNP, x = ~DOC, z = ~NO3.as.N, y = ~PO4.as.P, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
+
+fig <- fig %>% add_markers()
+
+fig <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+
+                     zaxis = list(title = 'NO3', type = "log"),
+
+                     yaxis = list(title = 'PO4', type = "log")))
+
+
+fig
+```
+
+This interactive plot shows the log-scaled measurements of:
+
+* DOC
+* NO3 as N
+* PO4 as P
+
+Note the two lake clusters in log-CNP space. The low-DOC cluster are all lakes that are in the Great Lakes region of the US. The other lake cluster is in a similar log-CNP space as the river/stream eco type. 
