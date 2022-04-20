@@ -15,8 +15,7 @@ temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/D
   filter(year(DATE_COL) >= 2000) |> #get rid of any data pre 2000
   select(-X)
 
-EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv",
-               sep = "'") %>%
+EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv") %>%
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
   mutate(DATE_COL = as.Date(DATE_COL))
 
