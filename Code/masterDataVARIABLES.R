@@ -13,11 +13,12 @@ temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/D
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EIDC.csv")) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   filter(year(DATE_COL) >= 2000) |> #get rid of any data pre 2000
-  select(-X)
+  select(-X, - X.1)
 
 EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv") %>%
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
-  mutate(DATE_COL = as.Date(DATE_COL))
+  mutate(DATE_COL = as.Date(DATE_COL)) %>%
+  select(-X)
 
 step1 <- rbind(EU, temp) 
 #This dataset contains all concurrently collected DOC, nitrate as N, and phosphate as P data. units of everything are mg/L
@@ -80,7 +81,8 @@ rm(step4)
 step5 <- ALL_CNP_VARS |>
   select(SITE_ID, DATE_COL, TROPHIC_STATE)
 
-ALL_CNP <- left_join(ALL_CNP, step5)
+ALL_CNP <- left_join(ALL_CNP, step5) |>
+  distinct()
 
 rm(step5)
 

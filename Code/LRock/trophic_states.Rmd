@@ -1,16 +1,293 @@
 ---
 title: "Trophic States"
 author: "Linnea"
-date: '2022-04-20'
+date: '2022-04-21'
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, message = FALSE, echo = FALSE}
+library(sf)
+library(ggspatial)
+library(raster)
+library(rnaturalearth)
+library(rgeos)
+library(patchwork)
 ```
 
 
-```{r, warning = FALSE}
-source("C:/Users/linne/Downloads/PhD_code/STOICH.Aim1/Code/masterDataVARIABLES.R")
+```{r, warning = FALSE, echo = FALSE, inlcude = FALSE, message = FALSE}
+source("C:/Users/lrock1/Downloads/PhD_code/STOICH.Aim1/Code/masterDataVARIABLES.R")
 ```
 
+## How many observations of concurrently collected C, N, P with a trophic state associated?
+```{r, warning = FALSE, message = FALSE}
+total.TS <- ALL_CNP |>
+  count(TROPHIC_STATE)
+
+total.TS
+```
+We had a total of 106920 observations with a TP measurement to calculate trophic state. 6342 sites/dates did not have a TP measurement. 
+
+The trophic state was calculated as follows: 
+
+ -- OLIGOTROPHIC (TP <= 10 ug/L)
+ -- MESOTROPHIC (10 > TP >= 25 ug/L)
+ -- EUTROPHIC (TP > 25 ug/L)
+ 
+## Maps showing trophic states of lakes and rivers across our regions
+```{r, warning = FALSE, include = FALSE}
+world <- ne_countries(returnclass = "sf")
+
+america.map <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50), mapping = aes(LON, LAT, color = TROPHIC_STATE)) +
+  theme_light() +
+  scale_color_viridis_d() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50), mapping = aes(LON, LAT, color = TROPHIC_STATE)) +
+  theme_light() +
+  scale_color_viridis_d() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map 
+europe.map
+```
+
+## Eutrophic waters only - PO4
+Note that I am taking natural log of PO4
+```{r message=FALSE, warning=FALSE, include = FALSE}
+
+america.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.P 
+europe.map.P
+```
+
+## Mesotrophic waters only - PO4
+Note that I am taking natural log of PO4
+```{r, warning = FALSE, message = FALSE, include = FALSE}
+
+america.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+europe.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.P 
+europe.map.P
+```
+
+## Oligotrophic waters only - PO4
+Note that I am taking natural log of PO4
+```{r, warning = FALSE, message = FALSE, include=FALSE}
+
+america.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Oligotrohpic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+europe.map.P <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Oligotrophic"), mapping = aes(LON, LAT, color = log(PO4.as.P))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.P 
+europe.map.P
+```
+
+
+## Eutrophic waters only - NO3
+Note that I am taking natural log of NO3
+```{r, warning = FALSE, message = FALSE, inlcude = FALSE}
+
+america.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.N 
+europe.map.N
+```
+
+## Mesotrophic waters only - NO3
+Note that I am taking natural log of NO3
+```{r, warning = FALSE, message = FALSE, include=FALSE}
+
+america.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+europe.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.N 
+europe.map.N
+```
+
+## Oligotrophic waters only - NO3
+Note that I am taking natural log of NO3
+```{r, warning = FALSE, message = FALSE, inlcude = FALSE}
+
+america.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Oligotrohpic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map.N <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Oligotrophic"), mapping = aes(LON, LAT, color = log(NO3.as.N))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.N 
+europe.map.N
+```
+
+
+
+## Eutrophic waters only - DOC
+Note that I am taking natural log of DOC
+```{r, warning = FALSE, message = FALSE, include=FALSE}
+
+america.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+europe.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Eutrophic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.C 
+europe.map.C
+```
+
+## Mesotrophic waters only - DOC
+Note that I am taking natural log of DOC
+```{r, warning = FALSE,message=FALSE, include=FALSE}
+
+america.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Mesotrophic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.C 
+europe.map.C
+```
+
+## Oligotrophic waters only - DOC
+Note that I am taking natural log of DOC
+```{r, warning = FALSE, message=FALSE, include=FALSE}
+
+america.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON < -50 & TROPHIC_STATE == "Oligotrohpic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE)
+  
+
+
+europe.map.C <- ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP |> filter(LON > -50 & TROPHIC_STATE == "Oligotrophic"), mapping = aes(LON, LAT, color = log(DOC))) +
+  theme_light() +
+  scale_color_viridis_c() +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE)
+```
+
+```{r, warning = FALSE, message = FALSE}
+america.map.C 
+europe.map.C
+```
