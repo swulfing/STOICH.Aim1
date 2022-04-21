@@ -15,8 +15,7 @@ temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/D
   filter(year(DATE_COL) >= 2000) |> #get rid of any data pre 2000
   select(-X)
 
-EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv",
-               sep = "'") %>%
+EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EU_filtered_cleaned.csv") %>%
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
   mutate(DATE_COL = as.Date(DATE_COL))
 
@@ -77,7 +76,13 @@ rm(step2)
 rm(step3)
 rm(step4)
 
+# trophic states are in the full variables dataset -- add them to all cnp
+step5 <- ALL_CNP_VARS |>
+  select(SITE_ID, DATE_COL, TROPHIC_STATE)
 
+ALL_CNP <- left_join(ALL_CNP, step5)
+
+rm(step5)
 
 # what are the units? 
 UNITS_available <- ALL_CNP_VARS |>

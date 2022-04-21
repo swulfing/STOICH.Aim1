@@ -29,6 +29,9 @@ calc_trophic_state <- function(data) {
                                          ifelse(RESULT > 0.025, "Eutrophic", TROPHIC_STATE)))) |>
     select(-RESULT)
   
+  
+  data2 <- left_join(data, data1)
+  
 }
 
 
@@ -41,7 +44,11 @@ eidc_ts <- calc_trophic_state(eidc)
 eu_ts <- calc_trophic_state(EU)
 
 
-## combine trophic states with the datasets and overwrite the exisiting datasets (completed 04/18/2022)
-lagos_new <- left_join(lagos, lagos_ts)
+write.csv(lagos_ts, "Data/other_vars_datasets/LAGOS_1.csv")
+write.csv(neon_ts, "Data/other_vars_datasets/NEON_1.csv")
+write.csv(nrc_ts, "Data/other_vars_datasets/nrc_cleaned.csv")
+write.csv(lter_ts, "Data/other_vars_datasets/LTER_1.csv")
+write.csv(eidc_ts, "Data/other_vars_datasets/EIDC.csv") 
+write.csv(eu_ts, "Data/other_vars_datasets/EU_filtered_cleaned.csv")
 
 
