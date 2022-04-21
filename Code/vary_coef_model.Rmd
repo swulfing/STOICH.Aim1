@@ -1,0 +1,211 @@
+---
+title: "varycoef spatial regression"
+author: "Daniel Gschwenter"
+date: "4/15/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE,  message = F, warning = F)
+
+```
+
+Code to generate spatial regression of NO~3~ ~ DOC + PO~4~ + DOC * ECOTYPE + PO~4~ * ECOTYPE. This is a preliminary model with low complexity. Trophic state will be added once it is generated as a variable for streams and lakes. 
+
+The model will be fitted following the vignette for (varycoef)[https://cran.r-project.org/web/packages/varycoef/vignettes/example.html] where the model takes the form
+
+$$ y = X \beta + W_n(s) + \epsilon $$
+
+and W~n~(s) define the random effects that allowthe model coefficients to vary spatially.
+
+```{r Setup}
+
+lapply(c("tidyverse", "ggsci", "ggpubr", "sf", "tmap", "varycoef", "tmap"), require, character.only = T)
+
+my_theme <- theme_bw() + 
+  theme(axis.text = element_text(color = "black"), 
+        axis.ticks = element_line(color = "black"), 
+        panel.grid = element_blank(),
+        strip.background = element_rect(size= 0.75, fill = "white"),
+        legend.position = "bottom")
+
+theme_set(my_theme)
+
+```
+
+```{r Load data}
+
+all_cnp <- read_csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/ALL_CNP_April2022.csv")
+
+summary(all_cnp)
+
+```
+
+```{r Remove low DOC sites for now}
+
+# Log10 -1.5 is a convenient cutoff.
+all_cnp %>% ggplot(aes(log10(DOC), log10(PO4.as.P))) + geom_point() 
+all_cnp <- all_cnp %>% filter(log10(DOC) > -1.5)
+
+
+```
+
+```{r Create spatial object}
+
+all_cnp <- st_as_sf(all_cnp, coords = c("LON", "LAT"), crs = 4326)
+
+# Gonna reproject to projected CRS EPSG 26918; while this is centred over North America, this makes my life easier.
+
+
+all_cnp <- st_transform(all_cnp, crs = 26918)
+
+# Gonna export this and use the shapefile to compute spatial autocorrelation with python. Actually not sure this works with points so easily...
+#st_write(all_cnp, "local_data/ALL_CNP.shp")
+
+```
+
+```{r Create map of objects}
+# Data for world.
+data("World")
+st_crs(World)
+World <- st_transform(World, 26918)
+st_crs(World)
+# Generate centroids.
+#st_centroid(World) # Some errors.
+World$valid <- st_is_valid(World)  # Check if geom is valid.
+World %>% filter(valid != "TRUE") # Ok, 7 countries in Africa do not have valid geoms. We don't have data in these countries so we don't need to bother with them.
+World <- World %>% filter(valid == "TRUE", continent %in% c("Europe", "North America"))
+#World$centroid <- st_centroid(World)
+
+```
+
+```{r Map DOC}
+
+tmap_leaflet(tm_shape(World) + tm_borders() + tm_shape(all_cnp) + tm_dots("DOC",  palette = "viridis", size = 0.1, breaks = c(5,10,20,30,40,60,80)))
+
+
+```
+
+```{r Map NO3}
+
+tmap_leaflet(tm_shape(World) + tm_borders() + tm_shape(all_cnp) + tm_dots("NO3.as.N",  palette = "viridis", size = 0.1, breaks = c(0.1, 0.5, 1, 1.5, 2, 10, 30)))
+
+```
+
+```{r Map for PO4}
+
+tmap_leaflet(tm_shape(World) + tm_borders() + tm_shape(all_cnp) + tm_dots("PO4.as.P",  palette = "viridis", size = 0.1, breaks = c(0.005, 0.01, 0.03, 0.05, 0.1, 0.5, 1, 4)))
+
+
+```
+
+---
+
+Standard linear model (I want to see distribution of residuals)
+
+```{r LM1}
+
+lm_simple <- lm(log10(`NO3.as.N`) ~ log10(DOC) + log10(`PO4.as.P`) + ECO_TYPE *log10(DOC) + ECO_TYPE *log10(`PO4.as.P`), data = all_cnp)
+lm_simple %>% summary()
+
+plot(lm_simple, which = 1:2) # Some trends going on here.
+
+```
+
+```{r Spatial pattern of linear model residuals}
+
+tmap_leaflet(tm_shape(World) + 
+               tm_borders() + 
+               tm_shape(
+                 all_cnp %>% mutate(r = resid(lm_simple), r = (r - mean(r))/sd(r))) + # Standardises residuals...
+               tm_dots("r", size = 0.1, breaks = seq(-10, 5, 1)))
+
+# Quite a bit of clustering going on here...with some interesting outliers popping up here and there.
+```
+
+
+---
+
+Fun and games are over, let's fit the spatial model.
+
+```{r SVC model set up}
+# Response.
+y <- log10(all_cnp$NO3.as.N)
+# Predictors
+x <- model.matrix(~ 1 + log10(DOC) + log10(`PO4.as.P`) + ECO_TYPE *log10(DOC) + ECO_TYPE *log10(`PO4.as.P`), data = all_cnp )
+# Locations
+locs <- st_coordinates(all_cnp)/1000 # Converting to km (I  think?)
+# Spatial weights: allowing effect of PO4 and DOC to vary spatially.
+W <-  model.matrix(~ 1 + log10(DOC) + log10(`PO4.as.P`) + ECO_TYPE, data = all_cnp ) # Did not include interaction term here to make model more simple...
+
+```
+
+
+```{r Geostat model aka variogram}
+library(gstat)
+# Initial variogram
+vgm1 <- variogram(log10(NO3.as.N) ~ 1, all_cnp)
+plot(vgm1)
+# Add estimates for what I think starting values should be.
+vgm1 %>%
+  ggplot(aes(dist, gamma)) + 
+  geom_point() + 
+  geom_smooth(se = F) +  # Loess smooth here  
+  geom_vline(xintercept = 2e+06, col = "red") + 
+  geom_hline(yintercept = 0.8, col = "red") + 
+  geom_hline(yintercept = 0.3, col = "red")
+
+```
+
+```{r}
+# Emprical variogram (based on residuals of linear model)
+eV <- variogram(log10(NO3.as.N) ~ 1, data = all_cnp)
+# Variogram model with initial values.
+mV <- vgm(0.8, "Exp",2e+06 , 0.3)
+# fit model 
+(fV <- fit.variogram( eV, mV))
+```
+
+
+```{r Plot semivariogram}
+
+plot(eV, model = fV) # Not too shabby I would say.
+
+```
+
+```{r Construct initial values for SVC model}
+
+(init <- c(
+  rep(c(
+  # range
+  fV$range[2], # Should already be in km,
+  # variance
+  fV$psill[2]),
+  4),
+  # nugget
+  fV$psill[1]
+))
+
+```
+
+
+```{r Control setting MLE}
+
+control <- SVC_mle_control(
+  profileLik = T, 
+  init = init
+)
+
+```
+
+
+```{r Fir SVC}
+
+vc.fit <- SVC_mle(y = y, X = x, W = W, locs = locs) # Run without control for now; adding control = control throws this error: 
+#Error in init_bounds_optim(control, p, q, id_obj, med_dist, y_var, OLS_mu) :  Initial values do not lie between lower and upper boundarys.
+
+vc.fit %>% summary()
+
+```
+
