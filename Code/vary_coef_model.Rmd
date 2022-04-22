@@ -202,10 +202,121 @@ control <- SVC_mle_control(
 
 ```{r Fir SVC}
 
-vc.fit <- SVC_mle(y = y, X = x, W = W, locs = locs) # Run without control for now; adding control = control throws this error: 
+vc.fit <- SVC_mle(y = y, X = x, W = W, locs = locs, control = control) # Run without control for now; adding control = control throws this error: 
 #Error in init_bounds_optim(control, p, q, id_obj, med_dist, y_var, OLS_mu) :  Initial values do not lie between lower and upper boundarys.
 
 vc.fit %>% summary()
+
+```
+
+# Create subset of the data and fit SVC model.
+
+```{r Random subset}
+
+# Create random subset
+rand <- all_cnp[sample(nrow(all_cnp), 1000), ]
+
+table(rand$ECO_TYPE) # Ehhh not balanced but what the heck...
+
+# Qucik map
+
+tm_shape(World) + 
+  tm_borders() +
+tm_shape(rand) + 
+  tm_dots()
+
+```
+
+```{r SVC model set up}
+# Response.
+y <- log10(rand$NO3.as.N)
+# Predictors
+x <- model.matrix(~ 1 + log10(DOC) + log10(`PO4.as.P`) + ECO_TYPE *log10(DOC) + ECO_TYPE *log10(`PO4.as.P`), data = rand )
+# Locations
+locs <- st_coordinates(rand)/1000 # Converting to km (I  think?)
+# Spatial weights: allowing effect of PO4 and DOC to vary spatially.
+W <-  model.matrix(~ 1 + log10(DOC) + log10(`PO4.as.P`) + ECO_TYPE, data = rand ) # Did not include interaction term here to make model more simple...
+
+```
+
+
+```{r Fir SVC for subset of data}
+
+vc.fit <- SVC_mle(y = y, X = x, W = W, locs = locs)
+
+vc.fit %>% summary()
+
+```
+
+```{r Coeffs}
+
+coef(vc.fit)
+
+```
+
+
+For the SVC model with the random data subset following generalisations can be made:
+
+1. NO~3~ decreases with DOC (significant at the 0.05 p level)
+
+2. NO~3~ increases with PO~4~ (significant at the 0.05 p level)
+
+3. Lakes generally have lower NO~3~/lower intercept for ~NO3~ (by a lot actually: about 0.6 mg/L)
+
+4. Interaction of lake/river type with DOC is barely significant and increases NO~3~. 
+
+5. Model captures a high degree of variance (R^2 = 0.79) but significance is low.
+
+6. Interaction between PO~4~ and lake/river type was not significant.
+
+7. Residuals are funky, especially at tail ends of distributions.
+
+8. Large range in spatially varying coeffs....
+
+  1. How useful are these spatially variable coefs if range is so big?
+  
+  2. Can we draw meaningful insights if range is too large?
+  
+  3. Are we interested in prediction or inference? If inference, do we need coefs to vary spatially? We are more interested in the behaviour of the systems in general than prediction NO~3~ at a given location (are we not?)...
+  
+9. Random model with subset of data and no control took about an hour to fit....I used 1,000 observations and a relatively simple model.... data set has >16,000 observations fyi...
+
+10. Lack of sign. for most of the terms suggests this model isn't top notch/our approach may not be suitable for the data/things are getting messy...
+
+```{r Check residuals}
+
+plot(vc.fit, which = 1:2)
+
+```
+
+```{r Extract residuals}
+
+rand$model_resids <- residuals(vc.fit)
+
+tmap_mode("view")
+tm_shape(World) + 
+  tm_borders() + 
+tm_shape(rand) + 
+  tm_dots(col = "model_resids",shape = "ECO_TYPE",  palette = "Spectral", size = 0.1)
+
+```
+
+
+```{r Playing with resids}
+
+
+rand %>% 
+  ggplot(aes(ECO_TYPE, model_resids)) + 
+  geom_boxplot()
+
+rand %>% 
+  ggplot(aes(PO4.as.P, model_resids, col = ECO_TYPE)) + 
+  geom_point()
+
+
+rand %>% 
+  ggplot(aes(DOC, model_resids, col = ECO_TYPE)) + 
+  geom_point()
 
 ```
 
