@@ -291,3 +291,26 @@ europe.map.C <- ggplot() +
 america.map.C 
 europe.map.C
 ```
+
+```{r, warning = FALSE, message=FALSE, include=FALSE}
+#do not include in this document. Creating some maps to include in the JASM presentation 
+library(MetBrewer)
+ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP, mapping = aes(LON, LAT, color = ECO_TYPE)) +
+  theme_light() +
+  scale_color_manual(values = met.brewer("Egypt"), "") +
+  coord_sf(xlim = c(-171.565140, -50), ylim = c(10.942356, 80), expand = FALSE) +
+  labs(x = "",
+       y = "") + 
+  theme(legend.position = 'none')
+  
+
+ggplot() +
+  geom_sf(world, mapping = aes(), fill = "white") +
+  geom_point(ALL_CNP, mapping = aes(LON, LAT, color = ECO_TYPE)) +
+  theme_light() +
+  scale_color_manual(values = met.brewer("Egypt"), "") +
+  coord_sf(xlim = c(-40, 49.021941), ylim = c(30, 70), expand = FALSE) +
+  labs(x = "", y = "")
+```
