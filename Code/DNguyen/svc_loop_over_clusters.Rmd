@@ -1,0 +1,93 @@
+---
+title: "SVC loop over clusters"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(varycoef)
+
+# timing functions
+tic <- function(){ start.time <<- Sys.time() }
+toc <- function(){ round(Sys.time() - start.time) }
+```
+
+# Overview
+
+Here, I fit a separate SVC model to each cluster.
+
+$$log$$
+
+```{r}
+cnp_med <- readRDS(file = "data/cnp_median_clustered.rds")
+cnp_med <- cnp_med %>% filter(cluster != "Noise")
+```
+
+```{r eval = FALSE}
+cnp_duplicate_coord <- cnp_med %>% group_by(LAT, LON) %>% 
+  summarise(SITE_ID = unique(SITE_ID),
+                                             n_obs = n()) %>%
+  filter(n_obs > 1) %>%
+  arrange(desc(n_obs))
+
+duplicate_coords_site <- cnp_duplicate_coord$SITE_ID
+cnp_med <- cnp_med %>% filter(!(SITE_ID %in% duplicate_coords_site))
+```
+
+```{r}
+cnp_med %>% group_by(cluster) %>% summarise(nobs = n())
+```
+
+
+```{r}
+# create input matrices
+y <- log10(cnp_med$N_med)
+# Predictors
+X <- model.matrix(~ 1 + log10(DOC_med) + log10(P_med), #+ 
+                    # ECO_TYPE *log10(DOC) + 
+                    # ECO_TYPE *log10(`PO4.as.P`), 
+                  data = cnp_med )
+# locations (now in kilometers)
+locs <- cnp_med[, c("LON", "LAT")]/1000
+# Spatial weights: allowing effect of PO4 and DOC to vary spatially.
+W <-  model.matrix(~ 1 + log10(DOC_med) + log10(P_med)
+                   , data = cnp_med )
+```
+
+```{r}
+cnp_clusters <- unique(cnp_med$cluster)
+
+# fit SVC to each cluster
+# save runtime and fitted model
+for ( cluster_id in cnp_clusters) {
+  
+  # get cluster specific subset
+  clust_index <- cnp_med$cluster == cluster_id
+  y_clust <- y[clust_index]
+  X_clust <- X[clust_index,]
+  W_clust <- W[clust_index,]
+  locs_clust <- locs[clust_index,]
+  
+  # fit SVC model
+  control <- SVC_mle_control(profileLik = T)
+  
+  tic()
+  cnp.fit <- SVC_mle(y = y_clust, 
+                     X = X_clust, W = W_clust, 
+                     locs = locs_clust,
+                     control = control
+  )
+  runtime <- toc()
+  
+  # make file names and save output
+  svc_name <- paste0("models/svc_",cluster_id, ".rds")
+  runtime_name <- paste0("models/runtime_",cluster_id, ".rds")
+  
+  saveRDS(cnp.fit,file = svc_name)
+  saveRDS(runtime, file = runtime_name)
+}
+```
+

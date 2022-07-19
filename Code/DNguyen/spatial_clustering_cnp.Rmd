@@ -1,0 +1,101 @@
+---
+title: "spatial clustering for CNP sites"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(dbscan)
+library(maps)
+
+theme_set(theme_bw())
+```
+
+# Overview
+
+To "objectively" decide how to subset the CNP data set I use hierarchical density-based spatial clustering of applications with noise (HDBSCAN). 
+
+DBSCAN forms clusters based on "reachability" which allows for determination of odd shaped clusters. The hierarchical variant allows for clusters that have different densities.
+
+I used great circle earth distance (`fields::rdist.earth()`) to cluster the sampling sites. I chose 50 points as the minimum cluster size.
+
+```{r}
+# load CNP data
+cnp <- read_csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/ALL_CNP_April2022.csv")
+
+# correcting DOC for LAGOS sites seems to make sense
+# probably was a unit error
+cnp <- cnp %>% mutate(DOC = ifelse(log10(DOC) < -1 & str_detect(SITE_ID, "LAGOS"),
+                                   DOC * 10^3,
+                                   DOC))
+# get country from LAT LON
+cnp <- 
+  cnp %>% 
+  mutate(country = map.where(database = "world", x = LON, y = LAT))
+
+
+# get median of each SITE_ID over time
+cnp_med <- 
+  cnp %>% #filter(country %in% country_names) %>%
+  # group_by(SITE_ID) %>%
+  group_by(LAT, LON) %>%
+  summarise(country = unique(country), 
+            LAT = unique(LAT),
+            LON = unique(LON),
+            ECO_TYPE = unique(ECO_TYPE),
+            N_med = median(NO3.as.N, na.rm = TRUE),
+            P_med = median(PO4.as.P, na.rm = TRUE),
+            DOC_med = median(DOC, na.rm = TRUE))
+```
+
+```{r eval = FALSE}
+# calculate
+D = fields::rdist.earth(x1 = cbind(cnp_med$LON, cnp_med$LAT))
+# use hdbscan clustering
+minPts <- 50
+system.time(clust <-  hdbscan(x = D, minPts = minPts))
+# save hdclust object
+saveRDS(clust, file = "models/hdbscan_clusters.rds")
+```
+
+```{r}
+clust <- readRDS("models/hdbscan_clusters.rds")
+clust
+```
+
+```{r}
+cluster_names <- c("Noise", "Baltics", "Germany", 
+                   "Spain", "France", "Wales", "Scotland","North America"
+                   )
+cnp_med$cluster <- factor(clust$cluster, labels = cluster_names)
+# cnp_med$cluster[cnp_med$cluster == 0] <- NA
+# saveRDS(cnp_med, file = "data/cnp_median_clustered.rds")
+```
+
+```{r}
+world_map <- map_data("world")
+
+ggplot() +
+  geom_map(aes(map_id = region), col = "grey", fill = "white", 
+           data = world_map, map = world_map) +
+  geom_point(data = cnp_med, aes(x = LON, y = LAT, col = cluster), shape = 21, alpha = 0.5) +
+  expand_limits(x = c(min(cnp_med$LON), max(cnp_med$LON)), 
+                      y = c(min(cnp_med$LAT), max(cnp_med$LAT))) +
+  coord_equal(ratio = 1) +
+  guides(colour = guide_legend(override.aes = list(alpha = 1, shape = 16)))
+```
+
+```{r}
+cnp_med %>%
+  group_by(cluster) %>%
+  summarise(n_sites = n(),
+            prop_lake = sum(ECO_TYPE == "Lake") / n(),
+            prob_river = 1 - prop_lake) %>%
+  knitr::kable(caption = "ECO_TYPE by each cluster",
+               digits = 2)
+
+```
+
