@@ -26,17 +26,6 @@ cnp_med <- readRDS(file = "data/cnp_median_clustered.rds")
 cnp_med <- cnp_med %>% filter(cluster != "Noise")
 ```
 
-```{r eval = FALSE}
-cnp_duplicate_coord <- cnp_med %>% group_by(LAT, LON) %>% 
-  summarise(SITE_ID = unique(SITE_ID),
-                                             n_obs = n()) %>%
-  filter(n_obs > 1) %>%
-  arrange(desc(n_obs))
-
-duplicate_coords_site <- cnp_duplicate_coord$SITE_ID
-cnp_med <- cnp_med %>% filter(!(SITE_ID %in% duplicate_coords_site))
-```
-
 ```{r}
 cnp_med %>% group_by(cluster) %>% summarise(nobs = n())
 ```
