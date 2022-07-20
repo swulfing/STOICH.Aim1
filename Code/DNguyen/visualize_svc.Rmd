@@ -1,0 +1,137 @@
+---
+title: "SVC maps"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(maps)
+library(varycoef)
+
+make_svc_maps <- function(svc_data) {
+  p.pred <- svc_data$fitted %>%
+    ggplot() + geom_point(aes(
+      x = loc_1 * 1000,
+      y = loc_2 * 1000,
+      col = y.pred
+    )) +
+    labs(title = "Prediction") +
+    viridis::scale_color_viridis()
+  
+  p.int <- svc_data$fitted %>%
+    ggplot() + geom_point(aes(
+      x = loc_1 * 1000,
+      y = loc_2 * 1000,
+      col = SVC_1
+    )) +
+    labs(title = "Intercept") +
+    viridis::scale_color_viridis()
+  
+  p.doc <- svc_data$fitted %>%
+    ggplot() + geom_point(aes(
+      x = loc_1 * 1000,
+      y = loc_2 * 1000,
+      col = SVC_2
+    )) +
+    labs(title = "log10(DOC)") +
+    viridis::scale_color_viridis()
+  
+  p.po4 <- svc_data$fitted %>%
+    ggplot() + geom_point(aes(
+      x = loc_1 * 1000,
+      y = loc_2 * 1000,
+      col = SVC_3
+    )) +
+    labs(title = "log10(PO4)") +
+    viridis::scale_color_viridis()
+  
+  gridExtra::grid.arrange(p.pred, p.int, p.doc, p.po4, nrow = 2, ncol = 2)
+}
+
+```
+
+# models
+
+Fixed effect: intercept, log10(PO4), and log10(DOC)
+
+SVC: Interecpt, log10(PO4), and log10(DOC)
+
+# Data
+
+```{r }
+cnp_med <- readRDS("data/cnp_median_clustered.rds")
+
+world_map <- map_data("world")
+
+ggplot() +
+  geom_map(aes(map_id = region), col = "grey", fill = "white", 
+           data = world_map, map = world_map) +
+  geom_point(data = cnp_med, aes(x = LON, y = LAT, col = cluster), shape = 21, alpha = 0.5) +
+  expand_limits(x = c(min(cnp_med$LON), max(cnp_med$LON)), 
+                      y = c(min(cnp_med$LAT), max(cnp_med$LAT))) +
+  coord_equal(ratio = 1) +
+  guides(colour = guide_legend(override.aes = list(alpha = 1, shape = 16)))
+```
+
+
+```{r}
+# load fitted models
+svc_france <- readRDS("models/svc_France.rds")
+svc_NA <- readRDS("models/svc_North America.rds")
+svc_germany <- readRDS("models/svc_Germany.rds")
+svc_scotland <- readRDS("models/svc_Scotland.rds")
+svc_wales <- readRDS("models/svc_Wales.rds")
+svc_baltics <- readRDS("models/svc_Baltics.rds")
+svc_spain <- readRDS("models/svc_Spain.rds")
+```
+
+# France
+```{r}
+make_svc_maps(svc_france)
+summary(svc_france)
+```
+
+# North America
+```{r}
+make_svc_maps(svc_NA)
+summary(svc_NA)
+```
+
+# Germany
+```{r}
+make_svc_maps(svc_germany)
+summary(svc_germany)
+```
+
+# Scotland
+```{r}
+make_svc_maps(svc_scotland)
+summary(svc_scotland)
+```
+
+# Wales
+```{r}
+make_svc_maps(svc_wales)
+summary(svc_wales)
+```
+
+# Spain
+```{r}
+make_svc_maps(svc_spain)
+summary(svc_spain)
+```
+
+# Baltics
+```{r}
+make_svc_maps(svc_baltics)
+summary(svc_baltics)
+```
+
+# TO-DO
+
+* Use (lat,long) instead of (lat,long)/1000
+* Standardize all covariates and predictions w/i cluster
+* make plots for each region of the response and covariates
