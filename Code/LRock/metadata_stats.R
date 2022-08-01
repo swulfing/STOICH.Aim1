@@ -92,7 +92,13 @@ lakesstats <- ALL_CNP |>
             maxPO4 = max(PO4.as.P),
             m.DOC = median(DOC),
             m.NO3 = median(NO3.as.N),
-            m.PO4 = median(PO4.as.P))
+            m.PO4 = median(PO4.as.P),
+            mean.DOC = mean(DOC),
+            mean.NO3 = mean(NO3.as.N),
+            mean.PO4 = mean(PO4.as.P),
+            sd.DOC = sd(DOC),
+            sd.NO3 = sd(NO3.as.N),
+            sd.PO4 = sd(PO4.as.P))
 
 
 
@@ -125,7 +131,13 @@ riversstats <- ALL_CNP |>
             maxPO4 = max(PO4.as.P),
             m.DOC = median(DOC),
             m.NO3 = median(NO3.as.N),
-            m.PO4 = median(PO4.as.P))
+            m.PO4 = median(PO4.as.P),
+            mean.DOC = mean(DOC),
+            mean.NO3 = mean(NO3.as.N),
+            mean.PO4 = mean(PO4.as.P),
+            sd.DOC = sd(DOC),
+            sd.NO3 = sd(NO3.as.N),
+            sd.PO4 = sd(PO4.as.P))
 
 
 
