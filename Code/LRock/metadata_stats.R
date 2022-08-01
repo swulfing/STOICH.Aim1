@@ -144,3 +144,28 @@ alldatstats <- ALL_CNP |>
 
 prop.sites
 write.csv(prop.sites, "C:/Users/linne/OneDrive/Desktop/prop.sites.csv")
+
+
+library(colorblindr)
+
+subset <-  ALL_CNP_VARS |>
+  filter(VARIABLE %in% c("DOC", "NO3 as N", "PO4 as P")) 
+
+ggplot(subset) +
+  geom_boxplot(aes(ECO_TYPE, log10(RESULT), fill = ECO_TYPE)) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_manual(values = c("red4", "#336a98")) +
+  facet_wrap(~VARIABLE) +
+  labs(x = "",
+       y = "log10(unit)",
+       caption = "Figure XX. Boxplots comparing distrubtion of logged DOC, nitrate, and phosphate in lakes vs. streams.")  +
+  theme(
+    plot.caption = element_text(hjust = 0)
+  )
+
+ggsave("Figures/boxplot_basic_stats.png", height = 4.5, width = 6.5, dpi = 500)
+
+
+
+
