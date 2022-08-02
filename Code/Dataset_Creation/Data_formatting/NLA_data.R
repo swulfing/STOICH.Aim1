@@ -31,6 +31,7 @@ NLA <- rbind(nla07, nla12) |>
   mutate(TROPHIC_STATE = ifelse(TP <= 0.01, "Oligotrophic", 
                                 ifelse(between(TP, 0.01, 0.025), "Mesotrophic",
                                        ifelse(TP > 0.025, "Eutrophic", TROPHIC_STATE)))) |>
+  drop_na() |>
   pivot_longer(cols = c(DOC, NO3N_PPM, TP), names_to = "VARIABLE", values_to = "RESULT") |>
   mutate(VARIABLE = ifelse(VARIABLE == "NO3N_PPM", "NO3 as N", VARIABLE))
 
