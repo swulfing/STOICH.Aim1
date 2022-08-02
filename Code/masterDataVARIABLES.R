@@ -6,8 +6,8 @@ library(lubridate)
 
 
 #call in the data & ensure it is ready to use#####
-temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LAGOS_1.csv")) %>%
-  bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NEON_1.csv")) %>%
+temp <- #(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LAGOS_1.csv")) %>%
+  read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NEON_1.csv") %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/nrc_cleaned.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EIDC.csv")) %>%
