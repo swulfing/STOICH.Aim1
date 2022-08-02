@@ -5,9 +5,9 @@ library(lubridate)
 
 
 #call in the data & ensure it is ready to use#####
-temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_LAGOS.csv")) %>%
+temp <- #(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/NLA.csv")) %>%
   
-  bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NEON.csv")) %>%
+  read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NEON.csv") %>%
   
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_NRC.csv")) %>%
   

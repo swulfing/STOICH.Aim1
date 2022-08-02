@@ -10,7 +10,12 @@ library(rnaturalearth)
 library(rgeos)
 
 
-source("Code/masterDataVARIABLES.R")
+source("Code/THE_DATA.R")
+
+observations.per.site.of.CNP <- ALL_CNP %>%
+  count(SITE_ID)
+
+
 
 
 ## how many observations at each site 
@@ -35,13 +40,7 @@ obs.51.100 <- observations.per.site.of.CNP |>
 obs.g101 <- observations.per.site.of.CNP |>
   filter(n > 100)
 
-# 992 sites have 1 observation
-# 308 sites have 2 observations
-# 1309 sites have 3 observations
-# 242 sites have 4-10 observations
-# 84 sites have 11-50 observations
-# 39 sites have 51-100 observations 
-# 21 sites have >100 observations 
+
 
 
 groups <- observations.per.site.of.CNP |>
@@ -65,14 +64,14 @@ ggplot(groups) +
 # where are lakes?
 world <- ne_countries(returnclass = "sf")
 
-lakesonly <- ALL_CNP |>
-  dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) |>
-  filter(ECO_TYPE == "Lake") |>
-  distinct()
+# lakesonly <- ALL_CNP |>
+#   dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) |>
+#   filter(ECO_TYPE == "Lake") |>
+#   distinct()
 
 ggplot() +
   geom_sf(world, mapping = aes(), fill = "white") +
-  geom_point(lakesonly, mapping = aes(LON, LAT), color = "blue") +
+  geom_point(LAKES, mapping = aes(LON, LAT), color = "blue") +
   theme_bw() +
   labs(x = "Longitude",
        y = "Latitude",
@@ -82,30 +81,35 @@ ggplot() +
 
 
 #lake medians 
-lakesstats <- ALL_CNP |>
-  filter(ECO_TYPE == "Lake") |>
+lakesstats <- LAKES |>
   summarise(minDOC = min(DOC),
             maxDOC = max(DOC),
             minNO3 = min(NO3.as.N),
             maxNO3 = max(NO3.as.N),
-            minPO4 = min(PO4.as.P),
-            maxPO4 = max(PO4.as.P),
+            minTP = min(TP),
+            maxTP = max(TP),
             m.DOC = median(DOC),
             m.NO3 = median(NO3.as.N),
-            m.PO4 = median(PO4.as.P))
+            m.TP = median(TP),
+            mean.DOC = mean(DOC),
+            mean.NO3 = mean(NO3.as.N),
+            mean.TP = mean(TP),
+            sd.DOC = sd(DOC),
+            sd.NO3 = sd(NO3.as.N),
+            sd.TP = sd(TP))
 
 
 
 # where are rivers?
 
-riversonly <- ALL_CNP |>
-  dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) |>
-  filter(ECO_TYPE == "River/Stream") |>
-  distinct()
+# riversonly <- ALL_CNP |>
+#   dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) |>
+#   filter(ECO_TYPE == "River/Stream") |>
+#   distinct()
 
 ggplot() +
   geom_sf(world, mapping = aes(), fill = "white") +
-  geom_point(riversonly, mapping = aes(LON, LAT), color = "blue") +
+  geom_point(RIVERS, mapping = aes(LON, LAT), color = "blue") +
   theme_bw() +
   labs(x = "Longitude",
        y = "Latitude",
@@ -115,8 +119,7 @@ ggplot() +
 
 
 #river medians 
-riversstats <- ALL_CNP |>
-  filter(ECO_TYPE == "River/Stream") |>
+riversstats <- RIVERS |>
   summarise(minDOC = min(DOC),
             maxDOC = max(DOC),
             minNO3 = min(NO3.as.N),
@@ -125,7 +128,13 @@ riversstats <- ALL_CNP |>
             maxPO4 = max(PO4.as.P),
             m.DOC = median(DOC),
             m.NO3 = median(NO3.as.N),
-            m.PO4 = median(PO4.as.P))
+            m.PO4 = median(PO4.as.P),
+            mean.DOC = mean(DOC),
+            mean.NO3 = mean(NO3.as.N),
+            mean.PO4 = mean(PO4.as.P),
+            sd.DOC = sd(DOC),
+            sd.NO3 = sd(NO3.as.N),
+            sd.PO4 = sd(PO4.as.P))
 
 
 
@@ -142,5 +151,36 @@ alldatstats <- ALL_CNP |>
             m.NO3 = median(NO3.as.N),
             m.PO4 = median(PO4.as.P))
 
-prop.sites
-write.csv(prop.sites, "C:/Users/linne/OneDrive/Desktop/prop.sites.csv")
+#prop.sites
+#write.csv(prop.sites, "C:/Users/linne/OneDrive/Desktop/prop.sites.csv")
+
+
+library(colorblindr)
+
+subset <-  bind_rows(LAKES, RIVERS) |>
+  pivot_longer(8:11, names_to = "VARIABLE", values_to = "RESULT") |>
+  mutate(VARIABLE = ifelse(VARIABLE %in% c("TP", "PO4.as.P"), "P", VARIABLE)) |>
+  drop_na(RESULT) |>
+  mutate(ECO_TYPE = ifelse(VARIABLE == "P" & 
+                             ECO_TYPE == "Lake", "Lake - TP", ECO_TYPE)) |>
+  mutate(ECO_TYPE = ifelse(VARIABLE == "P" & 
+                             ECO_TYPE == "River/Stream", "River/Stream - PO4", ECO_TYPE))
+ 
+ggplot(subset) +
+  geom_boxplot(aes(ECO_TYPE, log10(RESULT), fill = ECO_TYPE)) +
+  theme_light() +
+  theme(legend.position = "none") +
+ # scale_fill_manual(values = c("red4", "red4", "#336a98", "#336a98")) +
+  facet_wrap(~VARIABLE, scales = "free_x") +
+  labs(x = "",
+       y = "log10(unit)",
+       caption = "Figure XX. Boxplots comparing distrubtion of logged DOC, nitrate, and phosphorus in lakes vs. streams.")  +
+  theme(
+    plot.caption = element_text(hjust = 0)
+  )
+
+ggsave("Figures/boxplot_basic_stats.png", height = 4.5, width = 6.5, dpi = 500)
+
+
+
+

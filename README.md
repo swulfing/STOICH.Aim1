@@ -1,6 +1,6 @@
 # STOICH.Aim1
 
-Authors: Sophie Wulfing, Reilly Farrell, Linnea Rock, Daniel Gschwentner, David Nguyen, Casey Brucker, Elise Ehlers, Uchechukwu Ogbenna, Jessica Corman, Sarah Collins, Yawen Guan, Steven Thomas
+Authors: Reilly Farrell,Sophie Wulfing, Linnea Rock, Daniel Gschwentner, David Nguyen, Casey Brucker, Elise Ehlers, Uchechukwu Ogbenna, Carly Olsen, Jessica Corman, Sarah Collins, Yawen Guan, Steven Thomas
 
 ##Folders:
 
