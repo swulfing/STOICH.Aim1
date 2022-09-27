@@ -137,6 +137,8 @@ ALL_CNP <- ALL_CNP_VARS |>
 
 rm(ALL_CNP_VARS)
 
+ALL_CNP <- ALL_CNP |>
+  select(-TROPHIC_STATE)
 
 RIVERS <- ALL_CNP |>
   filter(ECO_TYPE != "Lake") |>
