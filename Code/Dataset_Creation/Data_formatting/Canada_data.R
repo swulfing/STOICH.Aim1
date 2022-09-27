@@ -8,7 +8,7 @@ getwd()
 
 #create a list of the files from your target directory
 file_list <- list.files(path="Data/Natural_Resources_Canada_Data/raw_data")
-file_list <- paste("C:/Users/linne/OneDrive - University of Wyoming/PhD_code/STOICH_Aim1/Data/Natural_Resources_Canada_Data/raw_data/", file_list, sep = "")
+file_list <- paste("C:/Users/lrock1/Downloads/PhD_Code/STOICH.Aim1/Data/Natural_Resources_Canada_Data/raw_data/", file_list, sep = "")
 
 #initiate a blank data frame, each iteration of the loop will append the data from the given file to this variable
 chems_dataset <- data.frame()
@@ -18,6 +18,7 @@ for (i in 1:length(file_list)){
   temp_chems_data <- fread(file_list[i], stringsAsFactors = F) #read in files using the fread function from the data.table package
   chems_dataset <- rbindlist(list(chems_dataset, temp_chems_data), use.names = T, fill = TRUE) #for each iteration, bind the new data to the building dataset
 }
+
 
 params <- as.data.frame(unique(chems_dataset$VARIABLE))
 units <- as.data.frame(unique(chems_dataset$UNIT_UNITÉ))
