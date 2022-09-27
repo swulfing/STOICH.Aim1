@@ -171,3 +171,39 @@ write.csv(FINAL_no_latlong, "Code/LRock/WQP_datapull_needlatlong.csv")
 
 checksite <- readWQPdata("USGS-05458150",
    characteristicName = "Organic%20carbon")
+#################################################################################
+# add lat long to dataset 
+source("Code/THE_DATA.R") # check out all the data
+
+wqp <- read.csv("Code/LRock/WQP_datapull_needlatlong.csv")
+
+site_list <- unique(wqp$SITE_ID) # 2772 rivers
+
+site_info <- read.csv("C:/Users/lrock1/downloads/station/station.csv") |>
+  select(MonitoringLocationIdentifier, LatitudeMeasure, LongitudeMeasure) |>
+  rename(SITE_ID = MonitoringLocationIdentifier,
+         LAT = LatitudeMeasure,
+         LON = LongitudeMeasure)
+
+wqp1 <- wqp |>
+  left_join(site_info) |>
+  distinct()
+
+# check the sites
+library(sf)
+library(ggspatial)
+library(raster)
+library(rnaturalearth)
+library(rgeos)
+
+states <- ne_countries(country = "United States of America", returnclass = "sf")
+
+WQP_sites_sf <- wqp1 %>%
+  st_as_sf(coords = c("LON", "LAT"), crs = 4326)
+
+
+ggplot() +
+  geom_sf(states, mapping = aes(), fill = "white") +
+  geom_sf(WQP_sites_sf, mapping = aes(color = ECO_TYPE)) +
+  theme_bw()
+
