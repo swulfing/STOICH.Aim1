@@ -207,3 +207,11 @@ ggplot() +
   geom_sf(WQP_sites_sf, mapping = aes(color = ECO_TYPE)) +
   theme_bw()
 
+
+wqp2 <- wqp1 |>
+  rename(`NO3 as N` = NO3.as.N,
+         `PO4 as P` = PO4.as.P) |>
+  pivot_longer(cols = c(DOC, `NO3 as N`, `PO4 as P`), names_to = "VARIABLE", values_to = "RESULT") |>
+  select(-X, -X.1)
+
+write.csv(wqp2, "Data/Simplified_datasets_per_source/WQP_rivers.csv")
