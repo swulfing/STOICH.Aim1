@@ -40,11 +40,11 @@ wqpDOC_5 <- wqpDOC_4 |>
   filter(DOC > 0,
          !is.na(DOC)) |>
   mutate(DOC = ifelse(ResultMeasure.MeasureUnitCode == "ug/l", DOC/1000, DOC),
-         UNITS = "mg/L",
+         UNIT = "mg/L",
          ECO_TYPE = "River/Stream") |>
   mutate(DATE_COL = as.Date(ActivityStartDate)) |>
   rename(SITE_ID = MonitoringLocationIdentifier) |>
-  select(DATE_COL, SITE_ID, DOC, UNITS, ECO_TYPE) |>
+  select(DATE_COL, SITE_ID, DOC, UNIT, ECO_TYPE) |>
   drop_na()
     
 # Needs lat/long
@@ -94,7 +94,7 @@ units <- wqpNO3_DOC |> count(ResultMeasure.MeasureUnitCode)
 wqpnNO3_DOC_2 <- wqpNO3_DOC |>
   mutate(NO3.as.N = ifelse(ResultMeasure.MeasureUnitCode == "mg/l asNO3", NO3.as.N * 0.2259, NO3.as.N)) |> # convert NO3 as NO3 to NO3 as N
   mutate(NO3.as.N = ifelse(ResultMeasure.MeasureUnitCode == "ueq/L", NO3.as.N * 14.007/1000, NO3.as.N)) |> # convert NO3 as N ueq/L to NO3 as N mg/L
-  select(DATE_COL, SITE_ID, DOC, NO3.as.N, UNITS, ECO_TYPE)
+  select(DATE_COL, SITE_ID, DOC, NO3.as.N, UNIT, ECO_TYPE)
 
 
 
@@ -159,9 +159,9 @@ ids
 
 
 FINAL_no_latlong <- WQP_add2 |>
-  select(DATE_COL, SITE_ID, DOC, NO3.as.N, PO4.as.P, UNITS, ECO_TYPE) |>
+  select(DATE_COL, SITE_ID, DOC, NO3.as.N, PO4.as.P, UNIT, ECO_TYPE) |>
   distinct() |>
-  group_by(DATE_COL, SITE_ID, UNITS, ECO_TYPE) |>
+  group_by(DATE_COL, SITE_ID, UNIT, ECO_TYPE) |>
   summarise(DOC = mean(DOC),
             NO3.as.N = mean(NO3.as.N),
             PO4.as.P = mean(PO4.as.P)) |>
