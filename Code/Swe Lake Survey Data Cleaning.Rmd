@@ -1,0 +1,224 @@
+---
+title: "Swedish Lake Survey Data"
+author: "Daniel Gschwenter"
+date: '2022-11-03'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=F}
+
+lapply(c("tidyverse", "sf"), require, character.only = T)
+
+```
+
+Code to manipulate Swedish Lake data. Data downloaded from https://miljodata.slu.se/MVM/Search on October 25, 2022.
+
+Data set seems to contain oligotrophic, C-poor lakes?
+
+
+```{r Load file, echo = F}
+
+swe_lek <- read_csv("local_data/slu_mvm_221025_161001512_data_raw_numeric.csv")
+
+```
+```{r Colnames swedish to english}
+
+colnames(swe_lek)
+
+swe_lek_eng <- swe_lek
+colnames(swe_lek_eng) <- c(
+  "Monitoring station", 
+  "National Monitoring Station ID", 
+  "MD-MVM Id",
+  "EU Id", 
+  "Station coordinate N/X",
+  "Station coordinate E/Y",
+  "Test site", 
+  "National test site Id",
+  "sample site coordinate N/X",
+  "sample site coordinate E/Y",
+  "Coordinate system",
+  "Sampling medium",
+  "Program (project?)",
+  "SUb program (project?)",
+  "Project",
+  "County",
+  "Municipality",
+  "MS_CD C2",
+  "MS_CD C3",
+  "Sample ID",
+  "Sample date",
+  "Sample year",
+  "Sample month",
+  "Sample day",
+  "Min sample depth (m)",
+  "Max sample depth (m)",
+  "Survey  type",
+  "Test comment (?)",
+  "QUality flat",
+  "Variable",
+  "Unit",
+  "Value/Concentration",
+  "Quantification limit/reporting limit",
+  "Detection limit",
+  "Measurement uncertainty",
+  "Analysis method",
+  "Analysis method",
+  "Lab",
+  "Accreditation"
+)
+
+#write_csv(swe_lek_eng, "local_data/slu_mvm_221025_161001512_data_raw_english.csv")
+
+```
+```{r Tidying of values below detection limits}
+
+table(str_detect(swe_lek_eng$`Value/Concentration`, "<"))
+
+swe_lek_eng_clean <- swe_lek_eng[!str_detect(swe_lek_eng$`Value/Concentration`, "<"), ]
+swe_lek_eng_clean$`Value/Concentration` <- as.numeric(swe_lek_eng_clean$`Value/Concentration`)
+
+```
+
+
+```{r Select variables of interest and pivot wide}
+
+keep <- swe_lek_eng_clean %>%
+  select(`EU Id`, `Sample date`, `National Monitoring Station ID`, `Station coordinate E/Y`, `Station coordinate N/X`,
+         Variable, `Value/Concentration`, Unit) %>%
+  mutate(Var_name = paste0(Variable, " - ", Unit)) %>%
+  pivot_wider(id_cols = c(`EU Id`, `Sample date`, `National Monitoring Station ID`, `Station coordinate E/Y`, `Station coordinate N/X`),
+              names_from = Var_name, 
+              values_from = `Value/Concentration`,
+              values_fn = mean
+              )
+
+```
+
+
+```{r Transform chemical species to correct unit and mass}
+
+keep_edit <- keep %>%
+  mutate(
+    NH4_as_N_mgl = `NH4-N - µg/l N`/(14.007 + 4 * 1.008) * 14.007/1000,
+    NO3_as_N_mgl = (`NO2+NO3-N - µg/l N` - `NO2-N - µg/l N`)/(14.007 + 3 * 15.999) * 14.007/1000,
+    PO4_as_P_mgl = `PO4-P - µg/l P`/(30.974 + 15.999 * 4)/30.974/1000,
+    DOC_mgl = `TOC - mg/l C` * 0.9 # Sobek et al 2007 who cite Wetzel 2001
+  )
+
+```
+
+```{r CRS wrangling, include=F}
+
+# Empty site
+
+keep_edit_sf <- keep_edit[!is.na(keep_edit$`Station coordinate E/Y`),]
+
+keep_edit_sf <- st_as_sf(keep_edit_sf, coords = c("Station coordinate E/Y", "Station coordinate N/X"), crs = 3006)
+
+# Transform to more useful CRS
+keep_edit_sf <- st_transform(keep_edit_sf, crs = 4326)
+
+# Grab coordinates
+coords <- st_coordinates(keep_edit_sf) %>% as_tibble()
+
+# Drop sf and add coordinates
+keep_edit_coords <- keep_edit_sf %>%
+  st_drop_geometry() %>% 
+  mutate(LON = coords$X, LAT = coords$Y) %>%
+  select(`EU Id`, `Sample date`, `National Monitoring Station ID`, "Temperature (C)" = `Vattentemperatur - °C`, 
+         NH4_as_N_mgl, NO3_as_N_mgl, PO4_as_P_mgl, DOC_mgl, LON, LAT)
+
+```
+
+
+```{r Clean and tidy data set}
+
+swe_lek_final <- keep_edit_coords %>%
+  gather("VARIABLE", "RESULT", -`EU Id`, -`Sample date`, -`National Monitoring Station ID`, -LON, -LAT) %>%
+  mutate(ECO_TYPE = "Lake",
+         UNIT = ifelse(VARIABLE == "NH4_as_N_mgl", "mg/L",
+                       ifelse(VARIABLE == "NO3_as_N_mgl", "mg/L",
+                              ifelse(VARIABLE == "PO4_as_P_mgl", "mg/L",
+                                     ifelse(VARIABLE == "DOC_mgl", "mg/L", "C")))),
+         VARIABLE = ifelse(VARIABLE == "NH4_as_N_mgl", "NH4_as_N",
+                           ifelse(VARIABLE == "DOC_mgl", "DOC",
+                                  ifelse(VARIABLE == "NO3_as_N_mgl", "NO3_as_N",
+                                         ifelse(VARIABLE == "PO4_as_P_mgl", "PO4_as_P", "Temperature")))))
+
+```
+
+
+```{r Create final data set for STOCH}
+
+swe_stoich <- swe_lek_final %>%
+  mutate("DATE_COL"= lubridate::dmy(`Sample date`),
+         "SITE_ID"= `EU Id`) %>%
+  select(DATE_COL, 'SITE_ID', VARIABLE, 'RESULT', UNIT, 'LAT', LON, 'ECO_TYPE')
+
+```
+
+
+```{r Sanity check histogram}
+
+swe_stoich %>%
+  ggplot(aes(RESULT)) + 
+  geom_histogram() + 
+  facet_wrap(VARIABLE ~., scales = "free")
+
+```
+
+```{r Sanity check plot stoich ratios}
+
+swe_stoich %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID, UNIT, LAT, LON, ECO_TYPE),
+              names_from = VARIABLE, values_from = RESULT) %>%
+  ggplot(aes(NH4_as_N, NO3_as_N)) + 
+  geom_point()
+
+swe_stoich %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID, UNIT, LAT, LON, ECO_TYPE),
+              names_from = VARIABLE, values_from = RESULT) %>%
+  ggplot(aes(DOC, NO3_as_N)) + 
+  geom_point()
+
+swe_stoich %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID, UNIT, LAT, LON, ECO_TYPE),
+              names_from = VARIABLE, values_from = RESULT) %>%
+  ggplot(aes(PO4_as_P, NO3_as_N)) + 
+  geom_point()
+
+swe_stoich %>%
+  pivot_wider(id_cols = c(DATE_COL, SITE_ID, UNIT, LAT, LON, ECO_TYPE),
+              names_from = VARIABLE, values_from = RESULT) %>%
+  ggplot(aes(DOC, PO4_as_P)) + 
+  geom_point()
+
+
+
+```
+
+```{r Sanity check summary stats}
+
+swe_stoich %>%
+  group_by(VARIABLE) %>%
+  summarise(
+    min = min(RESULT, na.rm = T),
+    mean = mean(RESULT, na.rm = T),
+    max = max(RESULT, na.rm = T),
+    sd = sd(RESULT, na.rm = T)
+  ) %>%
+  mutate_at(2:5, .funs = round, digits = 2)
+
+```
+
+```{r Save stoich data}
+
+write_csv(swe_stoich, "local_data/swe_lake_data_2510222.csv")
+
+```
+
