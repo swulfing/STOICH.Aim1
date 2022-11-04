@@ -106,6 +106,7 @@ keep_edit <- keep %>%
   mutate(
     NH4_as_N_mgl = `NH4-N - µg/l N`/(14.007 + 4 * 1.008) * 14.007/1000,
     NO3_as_N_mgl = (`NO2+NO3-N - µg/l N` - `NO2-N - µg/l N`)/(14.007 + 3 * 15.999) * 14.007/1000,
+    TP_mgl = `Tot-P - µg/l P`/1000,
     PO4_as_P_mgl = `PO4-P - µg/l P`/(30.974 + 15.999 * 4)/30.974/1000,
     DOC_mgl = `TOC - mg/l C` * 0.9 # Sobek et al 2007 who cite Wetzel 2001
   )
@@ -131,7 +132,7 @@ keep_edit_coords <- keep_edit_sf %>%
   st_drop_geometry() %>% 
   mutate(LON = coords$X, LAT = coords$Y) %>%
   select(`EU Id`, `Sample date`, `National Monitoring Station ID`, "Temperature (C)" = `Vattentemperatur - °C`, 
-         NH4_as_N_mgl, NO3_as_N_mgl, PO4_as_P_mgl, DOC_mgl, LON, LAT)
+         NH4_as_N_mgl, NO3_as_N_mgl, PO4_as_P_mgl, TP_mgl, DOC_mgl, LON, LAT)
 
 ```
 
@@ -144,11 +145,13 @@ swe_lek_final <- keep_edit_coords %>%
          UNIT = ifelse(VARIABLE == "NH4_as_N_mgl", "mg/L",
                        ifelse(VARIABLE == "NO3_as_N_mgl", "mg/L",
                               ifelse(VARIABLE == "PO4_as_P_mgl", "mg/L",
-                                     ifelse(VARIABLE == "DOC_mgl", "mg/L", "C")))),
+                                     ifelse(VARIABLE == "DOC_mgl", "mg/L", 
+                                            ifelse(VARIABLE == "TP_mgl", "mg/L", "C"))))),
          VARIABLE = ifelse(VARIABLE == "NH4_as_N_mgl", "NH4_as_N",
                            ifelse(VARIABLE == "DOC_mgl", "DOC",
                                   ifelse(VARIABLE == "NO3_as_N_mgl", "NO3_as_N",
-                                         ifelse(VARIABLE == "PO4_as_P_mgl", "PO4_as_P", "Temperature")))))
+                                         ifelse(VARIABLE == "PO4_as_P_mgl", "PO4_as_P", 
+                                                ifelse(VARIABLE == "TP_mgl", "TP", "Temperature"))))))
 
 ```
 
