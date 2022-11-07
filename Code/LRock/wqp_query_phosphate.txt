@@ -1,0 +1,5 @@
+https://www.waterqualitydata.us/#siteType=Stream&sampleMedia=water&sampleMedia=Water&characteristicName=Orthophosphate&characteristicName=Orthophosphate%20as%20PO4&characteristicName=Phosphate&characteristicName=Soluble%20Reactive%20Phosphorus%20(SRP)&startDateLo=01-01-2000&mimeType=csv&dataProfile=resultPhysChem&providers=NWIS&providers=STEWARDS&providers=STORET
+
+https://www.waterqualitydata.us/#siteType=Stream&sampleMedia=water&sampleMedia=Water&characteristicName=Nitrate&characteristicName=Nitrate-N&characteristicName=Nitrate%20as%20N&characteristicName=Nitrate-Nitrite&characteristicName=Nitrate-nitrogen&characteristicName=Nitrate-Nitrogen&characteristicName=Nitrate%20%2B%20Nitrite&startDateLo=01-01-2000&mimeType=csv&dataProfile=resultPhysChem&providers=NWIS&providers=STEWARDS&providers=STORET
+
+https://www.waterqualitydata.us/#siteType=Stream&sampleMedia=water&sampleMedia=Water&characteristicName=Organic%20carbon&startDateLo=01-01-2000&mimeType=csv&dataProfile=resultPhysChem&providers=NWIS&providers=STEWARDS&providers=STORET

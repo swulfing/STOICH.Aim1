@@ -8,6 +8,7 @@ library(lubridate)
 
 #call in the data & ensure it is ready to use#####
 temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/NLA.csv")) %>%
+  bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/WQP_rivers.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NEON_1.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/nrc_cleaned.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv")) %>%
@@ -68,6 +69,7 @@ temp <- #(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/
 
 
 
+
 EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/SIMPLE_EU.csv") %>%
   
   mutate(DATE_COL = paste(DATE_COL, "-01-01", sep = "")) %>%
@@ -122,7 +124,7 @@ rm(ALL_CNP)
 
 ALL_CNP <- ALL_CNP_VARS |>
   filter(VARIABLE %in% c("DOC", "NO3 as N", "PO4 as P", "TP")) |>
-  #select(-TROPHIC_STATE) |>
+  select(-TROPHIC_STATE) |>
   group_by(DATE_COL, SITE_ID, VARIABLE) |>
   mutate(RESULT = mean(RESULT)) |>
   ungroup() |>
@@ -136,6 +138,8 @@ ALL_CNP <- ALL_CNP_VARS |>
 
 rm(ALL_CNP_VARS)
 
+ALL_CNP <- ALL_CNP |>
+  unique()
 
 RIVERS <- ALL_CNP |>
   filter(ECO_TYPE != "Lake") |>

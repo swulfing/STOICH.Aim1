@@ -1,6 +1,8 @@
 
 ## script to look at some descriptives about the metadata
 
+source("Code/THE_DATA.R")
+
 library(tidyverse)
 library(MetBrewer)
 library(sf)
@@ -10,7 +12,7 @@ library(rnaturalearth)
 library(rgeos)
 
 
-source("Code/THE_DATA.R")
+
 
 observations.per.site.of.CNP <- ALL_CNP %>%
   count(SITE_ID)
@@ -113,7 +115,7 @@ ggplot() +
   theme_bw() +
   labs(x = "Longitude",
        y = "Latitude",
-       title = "Rivers") +
+       title = "Rivers/Streams") +
   theme(legend.title = element_blank()) +
   coord_sf(xlim = c(-171.565140, 49.021941), ylim = c(10.942356, 88.306487), expand = FALSE)
 
@@ -158,7 +160,7 @@ alldatstats <- ALL_CNP |>
 library(colorblindr)
 
 subset <-  bind_rows(LAKES, RIVERS) |>
-  pivot_longer(8:11, names_to = "VARIABLE", values_to = "RESULT") |>
+  pivot_longer(7:10, names_to = "VARIABLE", values_to = "RESULT") |>
   mutate(VARIABLE = ifelse(VARIABLE %in% c("TP", "PO4.as.P"), "P", VARIABLE)) |>
   drop_na(RESULT) |>
   mutate(ECO_TYPE = ifelse(VARIABLE == "P" & 
