@@ -1,0 +1,418 @@
+---
+title: "Fit OLS log-log regression"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(broom)
+```
+
+```{r}
+cnp_med <- read_csv("Code/DNguyen/data/ALL_CNP_med.csv")
+
+# merge median of medians of PO4 (rivers) and TP (lakes) into one variable
+# this is so we can fit a common model for lakes and rivers
+cnp_med <- cnp_med %>% mutate(phos_med = ifelse(ECO_TYPE == "River/Stream", 
+                                                 P_med,
+                                                 TP_med))
+
+# appropriate P measurment missing for 5 EU lakes
+# cnp_med %>% group_by(ECO_TYPE, region) %>% summarise(missing_phos = sum(is.na(phos_med)))
+cnp_med <- cnp_med %>% filter(!is.na(phos_med))
+
+cnp_med <- cnp_med %>% mutate(log_N_med = log(N_med),
+                              log_phos_med = log(phos_med),
+                              log_DOC_med = log(DOC_med))
+
+# split into NA and EU subset
+cnp_med_na <- filter(cnp_med, region == "North America")
+cnp_med_eu <- filter(cnp_med, region == "Europe")
+```
+
+# Data
+
+```{r warning = FALSE}
+cnp_med %>% group_by(ECO_TYPE, region) %>% summarise(n_sampling_sites = n()) %>%
+  knitr::kable(caption = "Observations per group")
+```
+
+# Model
+
+To the observations $i = 1, \ldots, n$ we fit the model
+
+\begin{align}
+\log(NO_3)_i & = \beta_0 + \beta_1 (River)_i + \beta_2 \log(DOC)_i + \beta_2 \log(P)_i\\ 
+& + \beta_3 \log(DOC)_i \times (River)_i + \beta_4 \log(P)_i \times (River)_i +
+\beta_5 \log(DOC)_i \times \log(P)_i + \epsilon_i
+\end{align}
+
+Where
+
+* $(NO_3)_i$, $(P)_i$, and $(DOC)_i$ are the median of medians of the nutrient concentration for the $i^{th}$ site. Note, that $(P)_i$ is either $PO_4$ for River/Stream of $TP$ for Lakes.
+    + The median of medians are calculated as: $MoM_i(x) = med_T(med_t(x_{i,T,t}))$ where $i$ denotes the sampling site (unique LAT/LON), $T$ is the year, and $t$ are samples within a year $T$.
+* $(River)_i = \cases{1  \text{ if site is "River/Stream"} \\ 0 \text{ if site is "Lake"}}$ 
+    + The baseline estimates are for "Lake."
+* $\epsilon \sim N(0, \sigma^2)$ is the residual error. 
+    + While this is assumed to be independent and identically distributed, we know this is untrue because the data are likely positively correlated in space. This will make our uncertainty estimates (standard errors) too small. The practical consequence of this assumption is that our p-values will be too small and our confidence intervals too narrow.
+
+```{r}
+# North American region
+lm.na <- lm(log_N_med ~ ECO_TYPE * log_DOC_med + ECO_TYPE * log_phos_med + ECO_TYPE + log_DOC_med*log_phos_med, 
+             data = cnp_med_na)
+# European regions
+lm.eu <- lm(log_N_med ~ ECO_TYPE * log_DOC_med + ECO_TYPE * log_phos_med + ECO_TYPE + log_DOC_med*log_phos_med, 
+             data = cnp_med_eu )
+```
+
+# Model summary
+
+```{r}
+glance_na <- glance(lm.na) %>% mutate(region = "North America")
+glance_eu <- glance(lm.eu) %>% mutate(region = "Europe")
+glance_all <- rbind(glance_na, glance_eu)
+
+glance_all %>% 
+  select(region, "observations" = nobs, "R2" = r.squared, "residual s.d." = sigma) %>%
+  knitr::kable(caption = "Model summary", digit = 2)
+```
+
+
+# Coefficient estimates
+
+```{r}
+# grab point and interval estimates
+tidy_na <- tidy(lm.na, conf.int = T) %>% mutate(region = "North America")
+tidy_eu <- tidy(lm.eu, conf.int = T) %>% mutate(region = "Europe")
+
+tidy_all <- rbind(tidy_na, tidy_eu)
+```
+
+```{r}
+na_estimates <- tidy_na %>% select(estimate, conf.low, conf.high) %>% round(2) %>% transmute(Estimate = paste0(estimate, " (", conf.low, ", ", conf.high, ")" ))
+
+eu_estimates <- tidy_eu %>% select(estimate, conf.low, conf.high) %>% round(2) %>% transmute(Estimate = paste0(estimate, " (", conf.low, ", ", conf.high, ")" ))
+
+tibble(Term = tidy_na$term, 
+       `North America` = na_estimates$Estimate, 
+       `Europe` = eu_estimates$Estimate) %>%
+  knitr::kable(caption = "Coefficient estimates")
+```
+
+Need to figure out interpretation of coefficients in log-log regression. 
+See AdamO's comment here [(Link)](https://stats.stackexchange.com/questions/18480/interpretation-of-log-transformed-predictor-and-or-response).
+
+```{r}
+tidy_all %>%
+  ggplot(aes(x = term)) +
+  geom_point(aes(y = estimate), size = 2) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0) +
+  geom_hline(yintercept = 0, linetype = "dashed", col = "red") +
+  coord_flip() +
+  facet_wrap(~region) +
+  labs(title = "Model estimates")
+```
+
+# Estimated regression curves
+
+Here, I show the estimated mean and 95% CI for the mean for predictions of the median of medians $\log (NO_3)$. 
+I look at predictions for both regions (NA and EU),
+Within each of these regions I plot predictions for both levels of ECO_TYPE (Lake vs River/Stream).
+I make one plot using log(DOC) on the x-axis with different lines for the 25%, 50%, and 75% quantiles of log(P), and vice-versa.
+
+
+
+```{r}
+quant_log_phos_na <- quantile(cnp_med_na$log_phos_med, c(0.25, 0.5, 0.75))
+quant_log_phos_eu <- quantile(cnp_med_eu$log_phos_med, c(0.25, 0.5, 0.75))
+         
+nd_DOC_na <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(DOC_med)` = seq(from = log(min(cnp_med_na$DOC_med)), 
+                  #                   to = log(max(cnp_med_na$DOC_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_na$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_DOC_med = seq(from = min(cnp_med_na$log_DOC_med), 
+                                    to = max(cnp_med_na$log_DOC_med),
+                                    length = 100),
+                  log_phos_med = quant_log_phos_na
+                  )
+preds_DOC_na <- predict(lm.na, newdata = nd_DOC_na, se.fit = TRUE)
+nd_DOC_na$pred <- preds_DOC_na$fit
+nd_DOC_na$se <- preds_DOC_na$se.fit
+nd_DOC_na <- nd_DOC_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_DOC_eu <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(DOC_med)` = seq(from = log(min(cnp_med_eu$DOC_med)), 
+                  #                   to = log(max(cnp_med_eu$DOC_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_eu$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_DOC_med = seq(from = min(cnp_med_eu$log_DOC_med), 
+                                    to = max(cnp_med_eu$log_DOC_med),
+                                    length = 100),
+                  log_phos_med = quant_log_phos_eu
+                  )
+preds_DOC_eu <- predict(lm.eu, newdata = nd_DOC_eu, se.fit = TRUE)
+nd_DOC_eu$pred <- preds_DOC_eu$fit
+nd_DOC_eu$se <- preds_DOC_eu$se.fit
+nd_DOC_eu <- nd_DOC_eu %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_DOC_eu <- nd_DOC_eu %>% mutate(region = "Europe",
+                                  p_quantile = case_when(
+                                    log_phos_med == quant_log_phos_eu[1] ~ "25%",
+                                    log_phos_med == quant_log_phos_eu[2] ~ "50%",
+                                    log_phos_med == quant_log_phos_eu[3] ~ "75%",
+                                                         ))
+nd_DOC_na <- nd_DOC_na %>% mutate(region = "North America",
+                                  p_quantile = case_when(
+                                    log_phos_med == quant_log_phos_na[1] ~ "25%",
+                                    log_phos_med == quant_log_phos_na[2] ~ "50%",
+                                    log_phos_med == quant_log_phos_na[3] ~ "75%",
+                                                         ))
+
+nd_DOC_all <- rbind(nd_DOC_eu, nd_DOC_na)
+```
+
+```{r}
+nd_DOC_all %>%
+  ggplot(aes(x = log_DOC_med, y = pred)) +
+  geom_line(aes(linetype = ECO_TYPE), size = 1.5) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = ECO_TYPE), alpha = 0.5) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(p_quantile~region)
+```
+
+```{r}
+quant_log_DOC_na <- quantile(cnp_med_na$log_DOC_med, c(0.25, 0.5, 0.75))
+quant_log_DOC_eu <- quantile(cnp_med_eu$log_DOC_med, c(0.25, 0.5, 0.75))
+         
+nd_phos_na <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(phos_med)` = seq(from = log(min(cnp_med_na$phos_med)), 
+                  #                   to = log(max(cnp_med_na$phos_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_na$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_phos_med = seq(from = min(cnp_med_na$log_phos_med), 
+                                    to = max(cnp_med_na$log_phos_med),
+                                    length = 100),
+                  log_DOC_med = quant_log_DOC_na
+                  )
+preds_phos_na <- predict(lm.na, newdata = nd_phos_na, se.fit = TRUE)
+nd_phos_na$pred <- preds_phos_na$fit
+nd_phos_na$se <- preds_phos_na$se.fit
+nd_phos_na <- nd_phos_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_phos_eu <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(phos_med)` = seq(from = log(min(cnp_med_eu$phos_med)), 
+                  #                   to = log(max(cnp_med_eu$phos_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_eu$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_phos_med = seq(from = min(cnp_med_eu$log_phos_med), 
+                                    to = max(cnp_med_eu$log_phos_med),
+                                    length = 100),
+                  log_DOC_med = quant_log_DOC_eu
+                  )
+preds_phos_eu <- predict(lm.eu, newdata = nd_phos_eu, se.fit = TRUE)
+nd_phos_eu$pred <- preds_phos_eu$fit
+nd_phos_eu$se <- preds_phos_eu$se.fit
+nd_phos_eu <- nd_phos_eu %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_phos_eu <- nd_phos_eu %>% mutate(region = "Europe",
+                                  DOC_quantile = case_when(
+                                    log_DOC_med == quant_log_DOC_eu[1] ~ "25%",
+                                    log_DOC_med == quant_log_DOC_eu[2] ~ "50%",
+                                    log_DOC_med == quant_log_DOC_eu[3] ~ "75%",
+                                                         ))
+nd_phos_na <- nd_phos_na %>% mutate(region = "North America",
+                                  DOC_quantile = case_when(
+                                    log_DOC_med == quant_log_DOC_na[1] ~ "25%",
+                                    log_DOC_med == quant_log_DOC_na[2] ~ "50%",
+                                    log_DOC_med == quant_log_DOC_na[3] ~ "75%",
+                                                         ))
+
+nd_phos_all <- rbind(nd_phos_eu, nd_phos_na)
+```
+
+```{r}
+nd_phos_all %>%
+  ggplot(aes(x = log_phos_med, y = pred)) +
+  geom_line(aes(linetype = ECO_TYPE), size = 1.5) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = ECO_TYPE), alpha = 0.5) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(DOC_quantile~region)
+```
+
+# Maps
+
+```{r}
+world_map <- map_data("world")
+
+cnp_med_na$lm_resid <- residuals(lm.na)
+cnp_med_eu$lm_resid <- residuals(lm.eu)
+
+cnp_med_na$lm_fit <- fitted(lm.na)
+cnp_med_eu$lm_fit <- fitted(lm.eu)
+```
+
+### Predicted NO3 maps
+
+#### North America
+
+We can easily see in the map that predicted NO[3] median of medians is lower in lakes relative to rivers.
+
+```{r}
+cnp_med_na %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_fit),
+    alpha = 0.5, shape = 1) +
+  scale_color_viridis() +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Predicted log(NO3)",
+       col = "Prediction")
+
+```
+
+In these next maps, I plot lakes and rivers/streams using two different color scales to see if there are patterns in predicted mean log(NO3) within each ECO_TYPE.
+There is some spatial pattern, but I don't have the domain knowledge to interpret it.
+
+```{r}
+map_fit_na_lakes <- cnp_med_na %>% 
+  filter(ECO_TYPE == "Lake") %>%
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_fit),
+    alpha = 0.7, shape = 1) +
+  scale_color_viridis() +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Predicted NO3 in Lakes",
+       col = "Prediction")
+
+map_fit_na_rivers <- cnp_med_na %>% 
+  filter(ECO_TYPE != "Lake") %>%
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_fit),
+    alpha = 0.7, shape = 1) +
+  scale_color_viridis() +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Predicted NO3 in Rivers/Streams",
+       col = "Prediction")
+
+map_fit_na_lakes + map_fit_na_rivers
+```
+
+#### Europe
+
+There are far fewer EU lake observations. As seen from the estimated coefficient for ECO_TYPE(River) it is hard to say that there is difference between average levels of log(NO3) between rivers and lakes in Europe like there is in North America.
+
+```{r}
+cnp_med_eu %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_fit),
+    alpha = 0.5, shape = 1) +
+  scale_color_viridis() +
+  facet_wrap(~ECO_TYPE)
+
+```
+
+### Residual maps
+
+These maps show the sign of the residual error which is the observed minus predicted value. 
+So, if the residual is > 0, this means the model *underestimated* the value, and if the residual is < 0, this means that the model *overestimated* the value.
+We can see spatial patterns in the sign of the residuals.
+This suggests we are missing some variables that explain log(NO3) that also vary spatially. 
+A consequence of failing to either include these variables in our model/model the spatially correlated residuals is that our uncertainty estimates (standard errors) will be too small.
+
+```{r}
+cnp_med_na %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_resid > 0),
+    alpha = 0.5, shape = 1) +
+  scale_color_viridis(discrete = TRUE) +
+  facet_wrap(~ECO_TYPE) +
+  labs(color = "Residual > 0")
+  
+```
+
+```{r}
+cnp_med_eu %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_resid > 0),
+    alpha = 0.5, shape = 1) +
+  scale_color_viridis(discrete = TRUE) +
+  facet_wrap(~ECO_TYPE) +
+  labs(color = "Residual > 0")
+```
+
+
+# Diagnostic plots
+
+### NA region
+
+* The two "blobs" that are seperated along the x-axis (predicted log(NO3) value) are Lakes (lower values) and Rivers/Streams (higher values). 
+* Visually there seems to be more residual variance for lakes than for rivers/streams.
+    + This could be modeled using GLS.
+* Appears to be lower bound (censoring?) in NO3 measurements. This can be detected by the lines of points (resid vs fitted plot) and the weird check mark shape (sqrt(std. resid) vs fitted).
+* Residuals have a heavier upper upper tail than expected under normal, this means that underestimates are more common than expected under normal error assumption.
+
+
+
+```{r}
+# par(mfrow = c(2,2))
+plot(lm.na)
+```
+
+### EU region
+
+* most obvious issue is some heteroscedasticity of residuals (residuals don't have constant "breadth" across x-axis).
+* Normal error assumption is fine
+
+```{r}
+# par(mfrow = c(2,2))
+plot(lm.eu)
+```
+
+
+
+
+
