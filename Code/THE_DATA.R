@@ -11,8 +11,15 @@ temp <- (read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/D
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/Simplified_datasets_per_source/WQP_rivers.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/NEON_1.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/nrc_cleaned.csv")) %>%
-  bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv")) %>%
+  #bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv")) %>%
   bind_rows(read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/EIDC.csv")) %>%
+  mutate(DATE_COL = as.Date(DATE_COL)) %>%
+  filter(year(DATE_COL) >= 2000) |> #get rid of any data pre 2000
+  select(-X, - X.1)
+
+lter <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data/other_vars_datasets/LTER_1.csv") %>%
+  # i found a mistake in the conversion of ueq PO4/L to mg P/L - this fixes it
+  mutate(RESULT = ifelse(VARIABLE == "PO4 as P", RESULT/3, RESULT)) %>%
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   filter(year(DATE_COL) >= 2000) |> #get rid of any data pre 2000
   select(-X, - X.1)
@@ -22,7 +29,7 @@ EU <- read.csv("https://raw.githubusercontent.com/swulfing/STOICH.Aim1/main/Data
   mutate(DATE_COL = as.Date(DATE_COL)) %>%
   select(-X)
 
-step1 <- rbind(EU, temp) 
+step1 <- rbind(EU, temp, lter) 
 #This dataset contains all concurrently collected DOC, nitrate as N, and phosphate as P data. units of everything are mg/L
 
 rm(EU)
@@ -179,5 +186,5 @@ number.rivers <- nrow(unique(RIVERS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYP
 #             sd.DOC = sd(DOC),
 #             sd.NO3 = sd(NO3.as.N),
 #             sd.PO4.as.P = sd(PO4.as.P))
-
+rm(lter)
 
