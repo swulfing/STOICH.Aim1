@@ -15,7 +15,7 @@ library(broom)
 ```
 
 ```{r}
-cnp_med <- read_csv("Code/DNguyen/data/ALL_CNP_med.csv")
+cnp_med <- read_csv("data/ALL_CNP_med.csv")#read_csv("Code/DNguyen/data/ALL_CNP_med.csv")
 
 # merge median of medians of PO4 (rivers) and TP (lakes) into one variable
 # this is so we can fit a common model for lakes and rivers
@@ -105,8 +105,8 @@ tibble(Term = tidy_na$term,
   knitr::kable(caption = "Coefficient estimates")
 ```
 
-Need to figure out interpretation of coefficients in log-log regression. 
-See AdamO's comment here [(Link)](https://stats.stackexchange.com/questions/18480/interpretation-of-log-transformed-predictor-and-or-response).
+<!-- Need to figure out interpretation of coefficients in log-log regression.  -->
+<!-- See AdamO's comment here [(Link)](https://stats.stackexchange.com/questions/18480/interpretation-of-log-transformed-predictor-and-or-response). -->
 
 ```{r}
 tidy_all %>%
