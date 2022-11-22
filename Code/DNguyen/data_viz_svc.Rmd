@@ -179,6 +179,33 @@ ggplot()  +
          )
 }
 
+# plot map of sampling locations from SVC_mle object
+plot_svc_residuals <- function(svc.mod, alphaval = 0.8, title = NULL) {
+  # get country polygons
+  world_map <- map_data("world")
+  
+  res <- residuals(svc.mod)
+  locations <- svc.mod$data$locs
+  dat <- cbind(res, locations) %>%
+    mutate(rsign = ifelse(res < 0, "-", "+"))
+  
+  # plot LON/LAT of all sampling locations
+   dat %>%
+ggplot()  +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    geom_point(aes(
+      x = LON ,
+      y = LAT ,
+      col = rsign,
+    ), alpha = alphaval) +
+    labs(title = title, 
+         x = "Longitude", y = "Latitude", 
+         col = "Sign of\nresidual"
+         )
+}
+
+
 # read in fitted models
 # svc_na_lake <- readRDS("Code/DNguyen/models/svc_na_lake.RDS")
 svc_na_lake <- readRDS("models/svc_na_lake_tp.RDS")
@@ -186,6 +213,7 @@ svc_na_river <- readRDS("models/svc_na_river.RDS")
 svc_eu_lake <- readRDS("models/svc_eu_lake_tp.RDS")
 svc_eu_river <- readRDS("models/svc_eu_river.RDS")
 ```
+
 
 ```{r eval = FALSE}
 plot_svc_tile <- function(pred, term, title, term_number, x = "loc_1", y = "loc_2", alpha = 0.8,  ...) {
@@ -211,13 +239,13 @@ plot_svc_tile <- function(pred, term, title, term_number, x = "loc_1", y = "loc_
 plot_svc_tile(pred = pred_eu_lake, term = "SVC_1", title = "Spatial variation of intercept", term_number = 1)
 ```
 
-# Outstanding questions
+<!-- # Outstanding questions -->
 
-* Are there censoring issue from lower limits of detection? I noticed "lines" in the residuals of the North American lakes (PO4) model.
-* Should we "weight" the observations? Since we take medians, an observation that is a median of 5 measurements would have the same influence on the model as a lake with 500 measurements. I did not notice a `weights` argument in the `varycoef` functions.
-    + possible solution would be just to fit varying intercept models using `mgcv::gam` which does have a `weight` argument.
-    + If using weights, what value should I use for weights? Since I use annual medians (median of the yearly medians) there are sort of two sample sizes per coordinate (number of years and number of obs within a year.)
-* In my opinion, the models don't really fit the data that well based on the diagnostic plots. Thoughts on this?
+<!-- * Are there censoring issue from lower limits of detection? I noticed "lines" in the residuals of the North American lakes (PO4) model. -->
+<!-- * Should we "weight" the observations? Since we take medians, an observation that is a median of 5 measurements would have the same influence on the model as a lake with 500 measurements. I did not notice a `weights` argument in the `varycoef` functions. -->
+<!--     + possible solution would be just to fit varying intercept models using `mgcv::gam` which does have a `weight` argument. -->
+<!--     + If using weights, what value should I use for weights? Since I use annual medians (median of the yearly medians) there are sort of two sample sizes per coordinate (number of years and number of obs within a year.) -->
+<!-- * In my opinion, the models don't really fit the data that well based on the diagnostic plots. Thoughts on this? -->
 
 # Overview
 
@@ -226,31 +254,44 @@ I re-fitted SVC models to the CNP data. We subsetted the data into North America
 The linear predictor for all SVC models was
 
 \begin{align*}
-log(y_i) & = \beta_0 + \beta_0(\textbf{s}_i) \\ 
-& + \beta_1 (\log_{10}DOC) + \beta_1(\textbf{s}_i) (\log_{10}DOC) \\
-& + \beta_2 (\log_{10}PO4) + \beta_2(\textbf{s}_i) (\log_{10}PO4) \\
-& + \beta_3 (\log_{10}DOC)\times (\log_{10}PO4) + \epsilon_i
+\log(y_i) & = \beta_0 + \beta_0(\textbf{s}_i) \\ 
+& + \beta_1 (\log DOC) + \beta_1(\textbf{s}_i) (\log DOC) \\
+& + \beta_2 (\log PO4) + \beta_2(\textbf{s}_i) (\log PO4) \\
+& + \beta_3 (\log DOC)\times (\log PO4) + \epsilon_i
 \end{align*}
 
-Where $y_i$ is the $log_{10}$ transformed annual median NO3 for site $i$, and the $\beta_{j}(\textbf{s}_i)$ is the varying slope coefficients (intercept, DOC, PO4) that has distribution $GP(0, \Sigma_j)$ where $\Sigma_j$ has an exponential correlation function (need to check variograms to see if exponential is reasonable.) The nugget (residual error) is modeled by $\epsilon_i \sim N(0, \tau^2)$.
+Where $y_i$ is the  annual median NO3 for site $i$, and the $\beta_{j}(\textbf{s}_i)$ is the varying slope coefficients (intercept, DOC, PO4) that has distribution $GP(0, \Sigma_j)$ where $\Sigma_j$ has an exponential correlation function. The nugget (residual error) is modeled by as normally distributed ($\epsilon_i \sim N(0, \tau^2)$).
 
 I estimated all SVC models using default starting values. All models succesfully converged.
 
+In each of the following sections, I give the model summary results, fixed effect coefficient plot, and maps of the spatially varying coefficient predictions and the associated uncertainty.
+
 # Lakes
 
-We have very few lake observations and they were not densely sampled in space. I think this may be why we were unable to calculate standard errors for covariance parameters which, according to the `varycoef` function, was because the Hessian was not invertible.
+<!-- We have very few lake observations and they were not densely sampled in space. I think this may be why we were unable to calculate standard errors for covariance parameters which, according to the `varycoef` function, was because the Hessian was not invertible. -->
 
-The signs of the point estimates for the fixed effects were in-line with our expectations from prior models (negative effect of DOC, positive effect of PO4). THe interaction between DOC and PO4 was not significant for NA or EU subsets.
+<!-- The signs of the point estimates for the fixed effects were in-line with our expectations from prior models (negative effect of DOC, positive effect of PO4). THe interaction between DOC and PO4 was not significant for NA or EU subsets. -->
 
-Inspection of the SVCs indicates that much of the variability is in the intercept and the nugget term rather than DOC (no variation) or PO4.
+<!-- Inspection of the SVCs indicates that much of the variability is in the intercept and the nugget term rather than DOC (no variation) or PO4. -->
 
-*Note:* the limited number of data sets for lakes is because we only included lakes with PO4 measurements. Apparently, this is not very useful to measure in lakes, so few people measure it. Total phosphorus (tp) is more appropriate to use for lakes and is more commonly measured. The group will gather new lake data and we will move forward using TP instead of PO4. This should take care of the low sample size and sparse spatial coverage issues.
+<!-- *Note:* the limited number of data sets for lakes is because we only included lakes with PO4 measurements. Apparently, this is not very useful to measure in lakes, so few people measure it. Total phosphorus (tp) is more appropriate to use for lakes and is more commonly measured. The group will gather new lake data and we will move forward using TP instead of PO4. This should take care of the low sample size and sparse spatial coverage issues. -->
 
 ### NA lakes TP
 
-```{r}
+```{r eval = FALSE}
 make_svc_maps(svc_na_lake, point_alpha = 0.5, point_shape = 21)
 ```
+
+In the summary output, you can find coefficients estimates and hypothesis tests as well as model R-squared.
+
+Interpretation of the model coefficients can be tricky for models with both response and predictors that are log-transformed. The coefficients can be interpreted as the average % change in the response for a 1% increase in the explanatory variable, holding all other values of the explanatory values constant.
+
+For example, the effect of a 1% increase in median DOC as a sampling site, we expect the median NO3 to decrease by 0.23%, holding all other variables constant.
+
+More generally, we can interpret them for an x percent increase as: 
+$(1.x^{\beta} - 1) \times 100$ % where $\beta$ is the coefficient of interest.
+
+See this resource for more details ([Link](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/)).
 
 ```{r}
 summary(svc_na_lake)
@@ -272,17 +313,16 @@ coef_na_lake %>%
   coord_flip()
 ```
 
-#### Make SVC maps for na rivers
+#### SVC maps
 
-```{r}
-plot_svc_sites(svc_na_lake)
-```
+Here, I make maps of the predicted spatially varying coeffient (SVC) and the uncertainty of that prediction. The way to interpret this SVC map is that it shows how the average median NO3 is predicted to deviate based on the location. For instance, if an area on the map of the intercept ($\beta_1(s)$) is greater than 0, this means that, all else being equal, the model predicts a higher average median NO3 level than would be predicted from the non-spatially varying fixed effects.
 
+The interpretations for the slope estimates ($\beta_2(s), \beta_3(s)$) are similar, however, keep in mind that they represent how the slope varies. That is, if the value on the map is > 0, this means that the relationship between the response and the variable is steeper than would be predicted from the non-spatially varying fixed effect.
 
 ```{r}
 # get predicted SVC for new locations
-pred_na_lake <- predict(svc_na_lake, 
-                        newlocs = make_grid(svc_na_lake)[,c(1,2)])
+# pred_na_lake <- predict(svc_na_lake, 
+#                         newlocs = make_grid(svc_na_lake)[,c(1,2)])
 
 # saveRDS(pred_na_lake, "pred_na_lake.RDS")
 pred_na_lake <- readRDS("pred_na_lake.RDS")
@@ -317,10 +357,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of intercept", x = "Longitude", y = "Latitude"
+    labs( #title = "Spatial variation of intercept", 
+         x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[1](s)))
          ) +
-    scale_fill_viridis()
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
 
 # plot na lake SVC_1 standard error
 p_na_lake_svc1_sd <- pred_sd_na_lake %>%
@@ -332,10 +375,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying intercept", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+
 
 # plot na lake SVC_1 and uncertainty together
 p_na_lake_svc1 + p_na_lake_svc1_sd
@@ -354,10 +400,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[2](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_na_lake_svc2_sd <- pred_sd_na_lake %>%
 ggplot() + 
@@ -368,10 +417,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na lake SVC_2 and uncertainty together
 p_na_lake_svc2 + p_na_lake_svc2_sd
@@ -390,10 +442,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(TP)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(TP)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[3](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_na_lake_svc3_sd <- pred_sd_na_lake %>%
 ggplot() + 
@@ -404,19 +459,34 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(PO4)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[3](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na lake SVC_3 and uncertainty together
 p_na_lake_svc3 + p_na_lake_svc3_sd
 ```
 
+```{r eval = FALSE}
+# try to plot all SVC together
+# Doesn't work
+((p_na_lake_svc1 + p_na_lake_svc1_sd) /
+(p_na_lake_svc2 + p_na_lake_svc2_sd)) /
+(p_na_lake_svc3 + p_na_lake_svc3_sd)
+
+gridExtra::grid.arrange(p_na_lake_svc1, p_na_lake_svc1_sd,
+p_na_lake_svc2, p_na_lake_svc2_sd,
+p_na_lake_svc3, p_na_lake_svc3_sd,
+nrow = 3, ncol = 2)
+```
 
 ### EU lakes
 
-```{r}
+```{r eval = FALSE}
 make_svc_maps(svc_na_lake)
 ```
 
@@ -436,12 +506,14 @@ coef_eu_lake %>%
   coord_flip()
 ```
 
-#### Make SVC maps for EU rivers
+#### SVC maps
+
 
 ```{r}
 # get predicted SVC for new locations
-pred_eu_lake <- predict(svc_eu_lake, 
-                        newlocs = make_grid(svc_eu_lake)[,c(1,2)])
+# pred_eu_lake <- predict(svc_eu_lake, 
+#                         newlocs = make_grid(svc_eu_lake)[,c(1,2)])
+pred_eu_lake <- readRDS("pred_eu_lake.RDS")
 
 # # get sd of predicted SVC for new locations
 # eu_lake_grid <- make_grid(svc_eu_lake, 0.25)[,-3] %>% as.matrix()
@@ -473,10 +545,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of intercept", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of intercept", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[1](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU lake SVC_1 standard error
 p_eu_lake_svc1_sd <- pred_sd_eu_lake %>%
@@ -488,18 +563,17 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying intercept", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying intercept", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU lake SVC_1 and uncertainty together
 p_eu_lake_svc1 + p_eu_lake_svc1_sd
 
-```
-
-```{r}
-plot_svc_sites(svc_eu_lake)
 ```
 
 
@@ -515,10 +589,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(DOC)", 
+         x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[2](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_eu_lake_svc2_sd <- pred_sd_eu_lake %>%
 ggplot() + 
@@ -529,10 +606,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU lake SVC_2 and uncertainty together
 p_eu_lake_svc2 + p_eu_lake_svc2_sd
@@ -551,10 +631,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(TP)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(TP)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[3](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_eu_lake_svc3_sd <- pred_sd_eu_lake %>%
 ggplot() + 
@@ -565,10 +648,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(PO4)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[3](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU lake SVC_3 and uncertainty together
 p_eu_lake_svc3 + p_eu_lake_svc3_sd
@@ -586,7 +672,7 @@ summary(svc_na_lake)
 
 Few observations. Hard to say much.
 
-```{r}
+```{r eval = FALSE}
 make_svc_maps(svc_na_river)
 ```
 
@@ -594,24 +680,7 @@ make_svc_maps(svc_na_river)
 summary(svc_na_river)
 ```
 
-```{r}
-svc_na_river$data$locs %>% 
-  mutate(country = maps::map.where(database = "world", 
-                x = LON, 
-                y = LAT)) %>%
-  group_by(country) %>%
-  summarise(nsites = n()) %>%
-  arrange(desc(nsites))
-
-svc_eu_river$data$locs %>% 
-  mutate(country = maps::map.where(database = "world", 
-                x = LON, 
-                y = LAT)) %>%
-  group_by(country) %>%
-  summarise(nsites = n()) %>%
-  arrange(desc(nsites))
-```
-#### Make SVC maps
+#### SVC maps
 
 ```{r}
 # # get predicted SVC for new locations
@@ -650,8 +719,6 @@ pred_sd_na_river <- readRDS("pred_sd_na_river.RDS")
 #   pull(country)
 # 
 # make_grid(svc_na)
-
-plot_svc_sites(svc_na_river)
 ```
 
 
@@ -670,10 +737,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of intercept", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of intercept", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[1](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na river SVC_1 standard error
 p_na_river_svc1_sd <- pred_sd_na_river %>%
@@ -685,10 +755,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying intercept", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying intercept", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na river SVC_1 and uncertainty together
 p_na_river_svc1 + p_na_river_svc1_sd
@@ -707,10 +780,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[2](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_na_river_svc2_sd <- pred_sd_na_river %>%
 ggplot() + 
@@ -721,10 +797,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[2](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na river SVC_2 and uncertainty together
 p_na_river_svc2 + p_na_river_svc2_sd
@@ -743,10 +822,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(TP)", x = "Longitude", y = "Latitude"
+    labs(#Etitle = "Spatial variation of slope of log(TP)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[3](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_na_river_svc3_sd <- pred_sd_na_river %>%
 ggplot() + 
@@ -757,10 +839,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(PO4)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[3](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot na river SVC_3 and uncertainty together
 p_na_river_svc3 + p_na_river_svc3_sd
@@ -774,7 +859,7 @@ For example, in the French region, we still see spatial pattern that matches lan
 
 Unfortunately, this model still has some issues (see diagnostic plots at end.)
 
-```{r}
+```{r eval = FALSE}
 make_svc_maps(svc_eu_river, point_alpha = 0.5, point_shape = 21)
 ```
 
@@ -782,7 +867,7 @@ make_svc_maps(svc_eu_river, point_alpha = 0.5, point_shape = 21)
 summary(svc_eu_river)
 ```
 
-#### Make SVC maps for EU rivers
+#### SVC maps
 
 ```{r}
 # # get predicted SVC for new locations
@@ -829,8 +914,9 @@ ggplot() +
       x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[1](s)))
          ) +
+    scale_fill_viridis()  +
   theme(legend.position = "top") +
-    scale_fill_viridis()
+  coord_fixed()
 
 # plot EU river SVC_1 standard error
 p_eu_river_svc1_sd <- pred_sd_eu_river %>%
@@ -846,8 +932,9 @@ ggplot() +
          x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
+    scale_fill_viridis() +
   theme(legend.position = "top") +
-    scale_fill_viridis()
+  coord_fixed()
 
 # plot EU river SVC_1 and uncertainty together
 p_eu_river_svc1 + p_eu_river_svc1_sd
@@ -866,10 +953,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[2](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_eu_river_svc2_sd <- pred_sd_eu_river %>%
 ggplot() + 
@@ -880,15 +970,17 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(DOC)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[1](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU river SVC_2 and uncertainty together
 p_eu_river_svc2 + p_eu_river_svc2_sd
 ```
-
 
 ```{r}
 # plot EU river SVC_3
@@ -902,10 +994,13 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Spatial variation of slope of log(TP)", x = "Longitude", y = "Latitude"
+    labs(#title = "Spatial variation of slope of log(TP)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(widehat(beta[3](s)))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis()  +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 p_eu_river_svc3_sd <- pred_sd_eu_river %>%
 ggplot() + 
@@ -916,29 +1011,30 @@ ggplot() +
     ), alpha = 0.8) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
-    labs(title = "Uncertainty of spatially varying slope of log(PO4)", x = "Longitude", y = "Latitude"
+    labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
+      x = "Longitude", y = "Latitude"
          ,fill = expression(sd(widehat(beta[3](s))))
          ) +
-    scale_fill_viridis()
+    scale_fill_viridis() +
+  theme(legend.position = "top") +
+  coord_fixed()
 
 # plot EU river SVC_3 and uncertainty together
 p_eu_river_svc3 + p_eu_river_svc3_sd
 ```
 
-
 # Diagnostic plots
 
-The fitted vs. residuals plots show some sign of bias for NA and EU lakes where the model overestimates low NO3 sites and underestimates high NO3 sites.
+The fitted vs. residuals plots show some sign of bias for NA and EU lakes where the model overestimates low NO3 sites and underestimates high NO3 sites. Fitted vs. residuals plots for the rivers do not show this issue.
 
-From the QQ-plots we can see that the model residuals are heavy-tailed. This is probably the consequence of the model bias mentioned previously. 
+From the QQ-plots we can see that the model residuals are heavy-tailed for all subsets. For the lakes this could be a consequence of the model bias mentioned previously. For both lakes and rivers it could also be because all the observations are weighted equally during model fitting even though our response is a median taken over different sample sizes for each site. This means that sites with small numbers of observations "weigh" as much as sites that have very many. These sites with smaller numbers of observations could show up as outliers.
 
-Not sure how to address this. Could we use an adjusted standard error? I know methods exist for adjusting SE when residuals have heteroscedasticity and/or autocorrelation.
+<!-- Not sure how to address this. Could we use an adjusted standard error? I know methods exist for adjusting SE when residuals have heteroscedasticity and/or autocorrelation. -->
 
 ### NA lakes
 
-#### TP
 
-```{reval = FALSE}
+```{r eval = FALSE}
 plot(svc_na_lake)
 
 pred_y <- fitted(svc_na_lake)$y.pred
@@ -951,8 +1047,6 @@ no3 <- svc_na_lake$data$y
 hist(no3)
 ```
 
-
-#### PO4
 
 ```{r}
 # all.equal(svc_na_lake$data$y - svc_na_lake$fitted$y.pred, residuals(svc_na_lake))
@@ -967,11 +1061,15 @@ plot(svc_na_lake)
 
 ### EU lakes
 
+Not much data here, but less evidence of bias found in the NA lakes subset. Still have heavy tailed residuals.
+
 ```{r}
 plot(svc_eu_lake)
 ```
 
 ### NA river
+
+
 
 ```{r}
 plot(svc_na_river)
@@ -981,4 +1079,16 @@ plot(svc_na_river)
 
 ```{r}
 plot(svc_eu_river)
+```
+
+# residual spatial autocorrelation
+
+We do not see patterns in the sign of the model errors (residuals) for the SVC models. This is in contrast to the OLS model residual maps which show strong clustering in residual patterns. This means that statistical inferences (hypothesis test, confidence intervals) for the SVC models will be more justifiable than the inferences from the OLS model because assumptions about residual error are better satisfied by the SVC model than for the OLS model.
+
+```{r}
+plot_svc_residuals(svc_na_lake, title = "NA lakes")
+plot_svc_residuals(svc_eu_lake, title = "EU lakes")
+plot_svc_residuals(svc_na_river, title = "NA rivers")
+plot_svc_residuals(svc_eu_river, title = "EU rivers")
+
 ```
