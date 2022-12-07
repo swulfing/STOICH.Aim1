@@ -168,15 +168,20 @@ subset <-  bind_rows(LAKES, RIVERS) |>
   mutate(ECO_TYPE = ifelse(VARIABLE == "P" & 
                              ECO_TYPE == "River/Stream", "River/Stream - PO4", ECO_TYPE))
  
+newlabs <- c('DOC', 'Nitrate', 'Phosphorus')
+names(newlabs) <- c('DOC', 'NO3.as.N', 'P')
+
 ggplot(subset) +
-  geom_boxplot(aes(ECO_TYPE, log10(RESULT), fill = ECO_TYPE)) +
-  theme_light() +
+  geom_boxplot(aes(ECO_TYPE, log10(RESULT)), fill = 'grey70') +
+  theme_bw() +
   theme(legend.position = "none") +
  # scale_fill_manual(values = c("red4", "red4", "#336a98", "#336a98")) +
-  facet_wrap(~VARIABLE, scales = "free_x") +
+  facet_wrap(~VARIABLE, scales = "free_x",
+             labeller = labeller(VARIABLE = newlabs)) +
   labs(x = "",
        y = "log10(unit)",
-       caption = "Figure XX. Boxplots comparing distrubtion of logged DOC, nitrate, and phosphorus in lakes vs. streams.")  +
+       caption = "Figure XX. Boxplots comparing distrubtion of logged dissolved organic carbon (DOC), nitrate, and phosphorus 
+in lakes vs. streams.")  +
   theme(
     plot.caption = element_text(hjust = 0)
   )
