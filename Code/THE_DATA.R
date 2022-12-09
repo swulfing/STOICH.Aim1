@@ -160,11 +160,11 @@ LAKES <- ALL_CNP |>
 
 
 #some information about the dataset
-number.sites <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+number.sites <- nrow(unique(ALL_CNP %>% dplyr::select(SITE_ID,ECO_TYPE) %>%
                               distinct()))
-number.lakes <- nrow(unique(LAKES %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+number.lakes <- nrow(unique(LAKES %>% dplyr::select(SITE_ID, ECO_TYPE) %>%
                               distinct()))
-number.rivers <- nrow(unique(RIVERS %>% dplyr::select(SITE_ID, LAT, LON, ECO_TYPE) %>%
+number.rivers <- nrow(unique(RIVERS %>% dplyr::select(SITE_ID, ECO_TYPE) %>%
                                distinct()))
 
 # check.that.sites.are.unique <- ALL_CNP %>% 
