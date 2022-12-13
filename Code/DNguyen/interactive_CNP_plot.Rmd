@@ -6,32 +6,133 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+library(tidyverse)
 setwd("C://Users//david//Documents//STOICH//STOICH.Aim1//Code/DNguyen")
 ```
 
-## R Markdown
+
+# 3D plots
+
+These interactive plots shows measurements of:
+
+* DOC
+* NO3 as N
+* PO4 as P
+
+NO3 is our response and DOC and PO4 are possible explanatory variables.
+
+In the first plot (no transformations), it is clear that there is a "hockey-stick" type of relationship between NO3 ~ DOC*PO4. This indicates that modeling relative changes could be a useful approach, e.g., taking logs.
+
+The second plot shows how log transformation linearizes this relationship.
+
 ```{r message = FALSE, warning = FALSE}
 ALL_CNP <- read.csv("ALL_CNP.csv")
-library(plotly)
+
 fig <- plot_ly(ALL_CNP, x = ~DOC, z = ~NO3.as.N, y = ~PO4.as.P, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
 
-fig <- fig %>% add_markers()
+fig <- fig %>% add_markers(opacity = 0.3)
 
-fig <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+fig
+
+fig_log <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
 
                      zaxis = list(title = 'NO3', type = "log"),
 
                      yaxis = list(title = 'PO4', type = "log")))
 
 
-fig
+fig_log
 ```
 
-This interactive plot shows the log-scaled measurements of:
 
-* DOC
-* NO3 as N
-* PO4 as P
+# NA
 
-Note the two lake clusters in log-CNP space. The low-DOC cluster are all lakes that are in the Great Lakes region of the US. The other lake cluster is in a similar log-CNP space as the river/stream eco type. 
+### Rivers
+
+```{r}
+ALL_CNP_med <- read.csv("data/ALL_CNP_med.csv")
+
+cnp_na_rivers <- ALL_CNP_med %>% filter(ECO_TYPE == "River/Stream", region == "North America")
+
+fig <- plot_ly(cnp_na_rivers, x = ~DOC_med, z = ~N_med, y = ~P_med, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
+
+fig <- fig %>% add_markers(opacity = 0.3)
+
+fig
+
+fig_log <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+
+                     zaxis = list(title = 'NO3', type = "log"),
+
+                     yaxis = list(title = 'PO4', type = "log")))
+
+
+fig_log
+```
+
+### Lakes
+
+```{r}
+cnp_na_lakes <- ALL_CNP_med %>% filter(ECO_TYPE == "Lake", region == "North America")
+
+fig <- plot_ly(cnp_na_lakes, x = ~DOC_med, z = ~N_med, y = ~TP_med, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
+
+fig <- fig %>% add_markers(opacity = 0.3)
+
+fig
+
+fig_log <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+
+                     zaxis = list(title = 'NO3', type = "log"),
+
+                     yaxis = list(title = 'PO4', type = "log")))
+
+
+fig_log
+```
+
+# EU
+### Rivers
+
+``` {r }
+cnp_eu_rivers <- ALL_CNP_med %>% filter(ECO_TYPE == "River/Stream", region == "Europe")
+
+fig <- plot_ly(cnp_eu_rivers, x = ~DOC_med, z = ~N_med, y = ~P_med, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
+
+fig <- fig %>% add_markers(opacity = 0.3)
+
+fig
+
+fig_log <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+
+                     zaxis = list(title = 'NO3', type = "log"),
+
+                     yaxis = list(title = 'PO4', type = "log")))
+
+
+fig_log
+```
+
+
+### Lakes
+
+```{r}
+cnp_eu_lakes <- ALL_CNP_med %>% filter(ECO_TYPE == "Lake", region == "Europe")
+
+fig <- plot_ly(cnp_eu_lakes, x = ~DOC_med, z = ~N_med, y = ~TP_med, color = ~ECO_TYPE, colors = c('#BF382A', '#0C4B8E'))
+
+fig <- fig %>% add_markers(opacity = 0.3)
+
+fig
+
+fig_log <- fig %>% layout(scene = list(xaxis = list(title = 'DOC', type = "log"),
+
+                     zaxis = list(title = 'NO3', type = "log"),
+
+                     yaxis = list(title = 'PO4', type = "log")))
+
+
+fig_log
+```
