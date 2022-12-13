@@ -1,8 +1,11 @@
 # library(fields)
+library(tidyverse)
+library(mgcv)
+library(varycoef)
 
 # make grid of new locations to predict spatially varying terms
 # filter so that only counties that have sampling locations are included
-make_grid <- function(model, grid_size = 0.25) {
+make_grid <- function(model, grid_size = 0.25, too.far = 0.05) {
   
   # get smallest bounding rectangle which contains the sampling locations
   min_lon <- min(model$data$locs$LON)
@@ -21,8 +24,8 @@ make_grid <- function(model, grid_size = 0.25) {
   # filter only cells that are within a country (e.g., filter out oceans)
   new_grid <- new_grid %>% 
     mutate(country = maps::map.where(database = "world", 
-                                     x = LON, y = LAT)) %>% 
-    filter(!is.na(country))
+                                     x = LON, y = LAT)) # %>% 
+    # filter(!is.na(country))
   
   # filter cells within countries with samples
   # Get all countries that contain sampling locations
@@ -32,8 +35,15 @@ make_grid <- function(model, grid_size = 0.25) {
                     y = model$data$locs$LAT) %>% unique()
   sample_countries <- sample_countries[!is.na(sample_countries)]
   
-  # remove cells that are not contained in countries with samples
   new_grid <- new_grid[new_grid$country %in% sample_countries,]
+  
+  # Filter cells that are too far from observed points
+  excluded_points <- mgcv::exclude.too.far(new_grid$LON, new_grid$LAT, 
+                                           model$data$locs$LON, model$data$locs$LAT,
+                                           dist = too.far)
+  
+  # remove cells that are not contained in countries with samples
+  new_grid <-  new_grid[!excluded_points,]
   return(new_grid)
 }
 
@@ -45,7 +55,7 @@ make_grid <- function(model, grid_size = 0.25) {
 # a matrix w/ columns of standard errors for each SVC_1, SVC_2, ...,  SVC_q
 svc_sd <- function(svc.mod, newlocs) {
   # extract estimate range and variance for each svc
-  covest <- cov_par(svc.mod)[-length(cov_par(svc.mod))]
+  covest <- varycoef::cov_par(svc.mod)[-length(cov_par(svc.mod))]
   covest <- matrix(covest, nrow = 3, ncol = 2, byrow = TRUE)
   colnames(covest) <- c("range", "var")
   rownames(covest) <- paste0("SVC_", 1:3)
@@ -81,6 +91,7 @@ svc_sd <- function(svc.mod, newlocs) {
 }
 
 # read in fitted models
+# setwd("C:/Users/david/Documents/STOICH/STOICH.Aim1/Code/DNguyen")
 # svc_na_lake <- readRDS("Code/DNguyen/models/svc_na_lake.RDS")
 svc_na_lake <- readRDS("models/svc_na_lake_tp.RDS")
 svc_na_river <- readRDS("models/svc_na_river.RDS")
@@ -89,10 +100,53 @@ svc_eu_river <- readRDS("models/svc_eu_river.RDS")
 
 # set grid size for sd svc calculations
 grid_size_degrees <- 0.25
+pct_distance <- 0.02 # 2 percent of range of LON and range of LAT
+
+# EU lakes
+# get sd of predicted SVC for new locations
+eu_lake_grid <- make_grid(svc_eu_lake, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
+
+observed_points <- as.data.frame(svc_eu_lake$data$locs)
+prediction_points <- as.data.frame(eu_lake_grid)
+
+world_map <- map_data("world")
+ggplot()  +
+  geom_map(aes(map_id = region), col = "gray", fill = NA,
+           data = world_map, map = world_map) +
+  geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
+  geom_point(data = observed_points,
+             mapping = aes(
+               x = LON ,
+               y = LAT
+             ))
+
+svc_sd_eu_lake <- svc_sd(svc_eu_lake, eu_lake_grid)
+
+# data frame of locs and SVC standard deviations
+pred_sd_eu_lake <- cbind(eu_lake_grid, svc_sd_eu_lake) %>% data.frame()
+
+# # save sd of predicted SVC
+saveRDS(pred_sd_eu_lake, file = "pred_sd_eu_lake.RDS")
 
 # EU rivers
 # get sd of predicted SVC for new locations
-eu_river_grid <- make_grid(svc_eu_river, grid_size_degrees)[,-3] %>% as.matrix()
+eu_river_grid <- make_grid(svc_eu_river, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
+
+observed_points <- as.data.frame(svc_eu_river$data$locs)
+prediction_points <- as.data.frame(eu_river_grid)
+
+world_map <- map_data("world")
+ggplot()  +
+  geom_map(aes(map_id = region), col = "gray", fill = NA,
+           data = world_map, map = world_map) +
+  geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
+  geom_point(data = observed_points,
+             mapping = aes(
+    x = LON ,
+    y = LAT
+  ))
+
+
 
 svc_sd_eu_river <- svc_sd(svc_eu_river, eu_river_grid)
 
@@ -127,6 +181,28 @@ na_river_grid <-
   select(-country) %>%
   as.matrix()
 
+na_river_grid <- 
+  make_grid(svc_na_river, grid_size_degrees, too.far = pct_distance) %>% 
+  filter(country == "USA") %>% select(-country) %>% as.matrix()  #[,-3] %>% as.matrix()
+
+na_river_grid <- 
+  make_grid(svc_na_river, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
+
+observed_points <- as.data.frame(svc_na_river$data$locs)
+prediction_points <- as.data.frame(na_river_grid)
+
+world_map <- map_data("world")
+ggplot()  +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+  geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
+  geom_point(data = observed_points,
+             mapping = aes(
+               x = LON ,
+               y = LAT
+             )) 
+
+
 # get sd
 svc_sd_na_river <- svc_sd(svc_na_river, na_river_grid)
 
@@ -155,6 +231,28 @@ na_lake_grid <-
   filter(country == "USA") %>%
   select(-country) %>%
   as.matrix()
+
+# na_lake_grid <- 
+#   make_grid(svc_na_lake, grid_size_degrees, too.far = pct_distance) %>% 
+#   filter(country == "USA") %>% select(-country) %>% as.matrix()  #[,-3] %>% as.matrix()
+
+na_lake_grid <- 
+  make_grid(svc_na_lake, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
+
+observed_points <- as.data.frame(svc_na_lake$data$locs)
+prediction_points <- as.data.frame(na_lake_grid)
+
+world_map <- map_data("world")
+ggplot()  +
+  geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
+  geom_point(data = observed_points,
+             mapping = aes(
+               x = LON ,
+               y = LAT
+             )) +
+  geom_map(aes(map_id = region), col = "yellow", fill = NA, 
+           data = world_map, map = world_map)
+
 
 svc_sd_na_lake <- svc_sd(svc_na_lake, na_lake_grid)
 
