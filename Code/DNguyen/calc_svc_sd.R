@@ -110,7 +110,7 @@ observed_points <- as.data.frame(svc_eu_lake$data$locs)
 prediction_points <- as.data.frame(eu_lake_grid)
 
 world_map <- map_data("world")
-ggplot()  +
+p_eu_lakes <- ggplot()  +
   geom_map(aes(map_id = region), col = "gray", fill = NA,
            data = world_map, map = world_map) +
   geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
@@ -118,7 +118,8 @@ ggplot()  +
              mapping = aes(
                x = LON ,
                y = LAT
-             ))
+             )) +
+  labs(title = "EU Lakes")
 
 svc_sd_eu_lake <- svc_sd(svc_eu_lake, eu_lake_grid)
 
@@ -128,6 +129,10 @@ pred_sd_eu_lake <- cbind(eu_lake_grid, svc_sd_eu_lake) %>% data.frame()
 # # save sd of predicted SVC
 saveRDS(pred_sd_eu_lake, file = "pred_sd_eu_lake.RDS")
 
+# get predicted SVC1,2,3 for EU rivers
+pred_eu_lake <- predict(svc_eu_lake, newlocs = eu_lake_grid)
+saveRDS(pred_eu_lake, file = "pred_eu_lake.RDS")
+
 # EU rivers
 # get sd of predicted SVC for new locations
 eu_river_grid <- make_grid(svc_eu_river, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
@@ -135,16 +140,16 @@ eu_river_grid <- make_grid(svc_eu_river, grid_size_degrees, too.far = pct_distan
 observed_points <- as.data.frame(svc_eu_river$data$locs)
 prediction_points <- as.data.frame(eu_river_grid)
 
-world_map <- map_data("world")
-ggplot()  +
+p_eu_rivers <- ggplot()  +
   geom_map(aes(map_id = region), col = "gray", fill = NA,
            data = world_map, map = world_map) +
   geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
   geom_point(data = observed_points,
              mapping = aes(
-    x = LON ,
-    y = LAT
-  ))
+               x = LON ,
+               y = LAT
+             )) +
+  labs(title = "EU rivers")
 
 
 
@@ -172,18 +177,18 @@ svc_na_river$data$locs %>%
 
 # na rivers
 # get sd of predicted SVC for new locations
-na_river_grid_big <- 
-  make_grid(svc_na_river, grid_size_degrees)[,-3] %>% as.matrix()
-
-na_river_grid <- 
-  make_grid(svc_na_river, grid_size_degrees) %>% 
-  filter(country %in% c("USA") ) %>%
-  select(-country) %>%
-  as.matrix()
-
-na_river_grid <- 
-  make_grid(svc_na_river, grid_size_degrees, too.far = pct_distance) %>% 
-  filter(country == "USA") %>% select(-country) %>% as.matrix()  #[,-3] %>% as.matrix()
+# na_river_grid_big <- 
+#   make_grid(svc_na_river, grid_size_degrees)[,-3] %>% as.matrix()
+# 
+# na_river_grid <- 
+#   make_grid(svc_na_river, grid_size_degrees) %>% 
+#   filter(country %in% c("USA") ) %>%
+#   select(-country) %>%
+#   as.matrix()
+# 
+# na_river_grid <- 
+#   make_grid(svc_na_river, grid_size_degrees, too.far = pct_distance) %>% 
+#   filter(country == "USA") %>% select(-country) %>% as.matrix()  #[,-3] %>% as.matrix()
 
 na_river_grid <- 
   make_grid(svc_na_river, grid_size_degrees, too.far = pct_distance)[,-3] %>% as.matrix()
@@ -191,16 +196,16 @@ na_river_grid <-
 observed_points <- as.data.frame(svc_na_river$data$locs)
 prediction_points <- as.data.frame(na_river_grid)
 
-world_map <- map_data("world")
-ggplot()  +
-  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+p_na_rivers <- ggplot()  +
+  geom_map(aes(map_id = region), col = "gray", fill = NA,
            data = world_map, map = world_map) +
   geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
   geom_point(data = observed_points,
              mapping = aes(
                x = LON ,
                y = LAT
-             )) 
+             )) +
+  labs(title = "NA rivers")
 
 
 # get sd
@@ -242,16 +247,15 @@ na_lake_grid <-
 observed_points <- as.data.frame(svc_na_lake$data$locs)
 prediction_points <- as.data.frame(na_lake_grid)
 
-world_map <- map_data("world")
-ggplot()  +
+p_na_lakes <- ggplot()  +
+  geom_map(aes(map_id = region), col = "gray", fill = NA,
+           data = world_map, map = world_map) +
   geom_tile(data = prediction_points, aes(x = LON, y = LAT), alpha = 0.2, col = "red") +
   geom_point(data = observed_points,
              mapping = aes(
                x = LON ,
-               y = LAT
-             )) +
-  geom_map(aes(map_id = region), col = "yellow", fill = NA, 
-           data = world_map, map = world_map)
+               y = LAT)) +
+  labs(title = "NA Lakes")
 
 
 svc_sd_na_lake <- svc_sd(svc_na_lake, na_lake_grid)
@@ -265,3 +269,10 @@ saveRDS(pred_sd_na_lake, file = "pred_sd_na_lake.RDS")
 # get predicted SVC1,2,3 for na rivers
 pred_na_lake <- predict(svc_na_lake, newlocs = na_lake_grid)
 saveRDS(pred_na_lake, file = "pred_na_lake.RDS")
+
+
+# Plot observation location and pred grid
+p_na_lakes
+p_na_rivers
+p_eu_lakes 
+p_eu_rivers
