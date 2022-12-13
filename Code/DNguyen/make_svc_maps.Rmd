@@ -1,0 +1,253 @@
+---
+title: "SVC maps"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+      keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(varycoef)
+library(viridis)
+
+# make maps of sd(SVC)
+# svc_pred_sd: data frame of sd(svc)
+# which_svc: choose beta coefficient (0L = intercept, 1L = DOC slope, 2L = P slope)
+make_svc_sd_map <- function(svc_pred_sd, which_svc = NA){
+  
+  state_map <- ggplot2::map_data("state")
+  world_map <- ggplot2::map_data("world")
+  
+  if (which_svc == 0L) {
+   p <-  svc_pred_sd %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = LON ,
+      y = LAT ,
+      fill = SVC_1_sd
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(sd(widehat(beta[0] + beta[0](s))))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+    
+    if ( which_svc == 1L) {
+   p <-   svc_pred_sd %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = LON ,
+      y = LAT ,
+      fill = SVC_2_sd
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+   
+    }
+  }  else {
+  p <-  svc_pred_sd %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = LON ,
+      y = LAT ,
+      fill = SVC_3_sd
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(sd(widehat(beta[2] + beta[2](s))))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+  }
+  print(p)
+}
+
+
+# make maps of SVC
+# svc_pred: data frame of sd(svc)
+# which_svc: choose beta coefficient (0L = intercept, 1L = DOC slope, 2L = P slope)
+make_svc_map <- function(svc_pred, which_svc = NA){
+  
+  state_map <- ggplot2::map_data("state")
+  world_map <- ggplot2::map_data("world")
+  
+  if (which_svc == 0L) {
+   p <-  svc_pred %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = loc_1 ,
+      y = loc_2 ,
+      fill = SVC_1
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(widehat(beta[0] + beta[0](s)))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+    
+    if ( which_svc == 1L) {
+   p <-   svc_pred %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = loc_1 ,
+      y = loc_2 ,
+      fill = SVC_2
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(widehat(beta[1] + beta[1](s)))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+   
+    }
+  }  else {
+  p <-  svc_pred %>%
+  ggplot() + 
+    geom_tile(aes(
+      x = loc_1 ,
+      y = loc_2 ,
+      fill = SVC_3
+    ), col = NA, alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = world_map, map = world_map) +
+    labs(#title = "Uncertainty of spatially varying intercept", 
+         x = "Longitude", y = "Latitude"
+         ,fill = expression(widehat(beta[2] + beta[2](s)))
+         ) +
+  coord_fixed() +
+    scale_fill_viridis() +
+  theme(legend.position = "top")
+  }
+  print(p)
+}
+```
+
+### NA LAKE
+
+```{r}
+# load SVC predictions and standard deviation of prediction
+# these are calculated in calc_svc_sd.R
+pred_na_lake <- readRDS("pred_na_lake.RDS")
+pred_sd_na_lake <- readRDS("pred_sd_na_lake.RDS")
+```
+
+```{r svc_map_na_lake}
+# make maps of predicted SVC
+make_svc_map(pred_na_lake, 0L)  
+make_svc_map(pred_na_lake, 1L)  
+make_svc_map(pred_na_lake, 2L)  
+```
+
+```{r sd_svc_map_na_lake}
+# makes maps of standard deviation of predicted SVC
+make_svc_sd_map(pred_sd_na_lake, 0L)  
+make_svc_sd_map(pred_sd_na_lake, 1L)  
+make_svc_sd_map(pred_sd_na_lake, 2L)  
+```
+
+### NA RIVER
+
+```{r }
+# load SVC predictions and standard deviation of prediction
+# these are calculated in calc_svc_sd.R
+pred_na_river <- readRDS("pred_na_river.RDS")
+pred_sd_na_river <- readRDS("pred_sd_na_river.RDS")
+```
+
+```{r svc_map_na_river}
+# make maps of predicted SVC
+make_svc_map(pred_na_river, 0L)  
+make_svc_map(pred_na_river, 1L)  
+make_svc_map(pred_na_river, 2L)  
+```
+
+```{r sd_svc_map_na_river}
+# makes maps of standard deviation of predicted SVC
+make_svc_sd_map(pred_sd_na_river, 0L)  
+make_svc_sd_map(pred_sd_na_river, 1L)  
+make_svc_sd_map(pred_sd_na_river, 2L)  
+```
+
+
+### EU LAKE
+
+```{r}
+# load SVC predictions and standard deviation of prediction
+# these are calculated in calc_svc_sd.R
+pred_eu_lake <- readRDS("pred_eu_lake.RDS")
+pred_sd_eu_lake <- readRDS("pred_sd_eu_lake.RDS")
+```
+
+```{r svc_map_eu_lake}
+# make maps of predicted SVC
+make_svc_map(pred_eu_lake, 0L)  
+make_svc_map(pred_eu_lake, 1L)  
+make_svc_map(pred_eu_lake, 2L)  
+```
+
+```{r sd_svc_map_eu_lake}
+# makes maps of standard deviation of predicted SVC
+make_svc_sd_map(pred_sd_eu_lake, 0L)  
+make_svc_sd_map(pred_sd_eu_lake, 1L)  
+make_svc_sd_map(pred_sd_eu_lake, 2L)  
+```
+
+### EU RIVER
+
+```{r }
+# load SVC predictions and standard deviation of prediction
+# these are calculated in calc_svc_sd.R
+pred_eu_river <- readRDS("pred_eu_river.RDS")
+pred_sd_eu_river <- readRDS("pred_sd_eu_river.RDS")
+```
+
+```{r svc_map_eu_river}
+# make maps of predicted SVC
+make_svc_map(pred_eu_river, 0L)  
+make_svc_map(pred_eu_river, 1L)  
+make_svc_map(pred_eu_river, 2L)  
+```
+
+```{r sd_svc_map_eu_river}
+# makes maps of standard deviation of predicted SVC
+make_svc_sd_map(pred_sd_eu_river, 0L)  
+make_svc_sd_map(pred_sd_eu_river, 1L)  
+make_svc_sd_map(pred_sd_eu_river, 2L)  
+```
