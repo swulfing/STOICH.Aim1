@@ -1,0 +1,155 @@
+---
+title: "Explore joint distribution of C & P"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+cnp <- read.csv("Code/DNguyen/data/ALL_CNP_med.csv")
+cnp <- 
+  cnp %>% 
+  mutate(phos_med = ifelse(ECO_TYPE == "River/Stream", 
+                                                 P_med,
+                                                 TP_med)) %>%
+  filter(!is.na(phos_med))
+```
+
+# Overview
+
+Goal: Check to make sure that we investigate model at reasonable levels of DOC and P. 
+
+Right now, I just vary one at a time while holding the other variable at some constant (e.g., median, 25th, and 75th quantile).
+But, these combinations of variables aren't necessarily observed in the data.
+
+So let's take a look by plotting the observed joint distributions of the median-of-medians log(DOC) and log(P) across the different ECO_TYPE x region levels. For rivers/streams we use phosphate as a measure of P and in lakes we use TP as a measure of P.
+
+To visualize the distribution of C and P, I will primarily use hexplots, which you can interpret as a 2D histogram that is displayed like a heatmap.
+
+Note, if you want to make the hex plots, make sure you have the `hexbin` package installed. Otherwise, `ggplot2::geom_hex()` will fail with a confusing warning that doesn't explain that the error is the missing `hexbin` package.
+
+# Full data set
+
+We can see that there is some positive correlation between the log(DOC) and log(P). Also, there appears to be some evidence of truncation or censoring caused by lower limits of quantification of the assays used to measure P. This can be inferred by 2 aspects of the plots: 1. rather than an elliptical shape, the distribution is "chopped" at the lower left; 2. there appear to be some horizontal bands of values.
+
+```{r}
+cnp %>% 
+  ggplot() +
+  geom_point(aes(x = log(DOC_med), y = log(phos_med)), alpha = 0.3) +
+  labs(title = "Joint distribution of C & P for entire data set")
+
+cnp %>%
+  ggplot() +
+  geom_hex(aes(x = log(DOC_med), y = log(phos_med))) +
+  labs(title = "Joint distribution of C & P for entire data set") 
+```
+
+# Subset by region and eco_type
+
+Breaking the data into the region (EU and NA) and eco_type (river/stream and lakes) we can see that the general pattern of positive correlation between log(DOC) and log(P) persists.
+THe possible issues with truncation/censoring are more apparent in NA lakes subset.
+
+
+```{r}
+cnp %>%
+  ggplot() +
+  geom_hex(aes(x = log(DOC_med), y = log(phos_med))) +
+  labs(title = "Joint distribution of C & P for region X eco_type") +
+  facet_grid(region ~ ECO_TYPE)
+```
+
+# What quantiles are reasonable?
+
+Moving on to the original problem of defining the covariate values to do inspect nitrate-DOC and nitrate-P relationships.
+Originally, for making plots I used a sequence covering the minimum to maximum observed value of DOC (P) while holding P (DOC) at the 25th, 50th (median), and 75th percentiles.
+However, due to the presence the positive correlation between log(DOC) and log(P), it is possible that these covariate combinations aren't all observed in the data set
+
+By plotting the min, max, and 25th, 50th, and over the hex plots, we can what values of log(DOC) and log(P) I used to make plots.
+The values at which I generated predictions from the GAM, SVC, and OLS, are along the dashed lines contained within the box defined by the min and max observed values.
+We can see that, when using min and max to define the bounds, there are some regions where we predict the model at locations without data.
+*But, is this a problem?* I don't think it's a severe one. The main reason I don't think it matters much is that the GAMs are most sensitive to this issue, but we can see from the previous plots I made that the standard error (prediction uncertainty) of the GAM also blows up in regions where no data were observed. So I don't think we would be seriously mislead in this situation. For SVC and OLS, we would suffer from the typical issues of extrapolating using a linear model.
+
+With that being said, it's easy to just use something else instead of the min and max.
+
+```{r}
+cnp_quantiles <- 
+  cnp %>%
+  group_by(region, ECO_TYPE) %>%
+  transmute(q_DOC = list(quantile(log(DOC_med))),
+         q_phos = list(quantile(log(phos_med))),
+         qt = list(names(quantile(log(DOC_med))))) %>%
+  unnest(c(q_DOC, q_phos, qt)) %>%
+  unique()
+```
+
+```{r}
+cnp %>%
+  ggplot() +
+  geom_hex(aes(x = log(DOC_med), y = log(phos_med))) +
+  geom_hline(data = cnp_quantiles,
+             mapping = aes(yintercept = q_phos), linetype = "dashed", col = "red" ) +
+  geom_vline(data = cnp_quantiles,
+             mapping = aes(xintercept = q_DOC), linetype = "dashed", col = "red" ) +
+  labs(title = "Joint distribution of C & P",
+       subtitle = "dashed red lines are min, 25%, median, 75%, and max") +
+  facet_grid(region ~ ECO_TYPE) +
+  scale_fill_gradient(low = "lightblue", high = "blue")
+```
+
+
+
+```{r}
+shift_size <- 0.03
+qt_bounds <- c(shift_size, 1 - shift_size)
+qt_max <- c(0,1)
+
+cnp_bounds <- 
+  cnp %>%
+  group_by(region, ECO_TYPE) %>%
+  transmute(q_DOC = list(quantile(log(DOC_med), probs = qt_bounds)),
+         q_phos = list(quantile(log(phos_med), probs = qt_bounds)),
+         qt = list(names(quantile(log(DOC_med), probs = qt_bounds)))) %>%
+  unnest(c(q_DOC, q_phos, qt)) %>%
+  unique()
+
+cnp_range <- 
+  cnp %>%
+  group_by(region, ECO_TYPE) %>%
+  transmute(q_DOC = list(quantile(log(DOC_med), probs = qt_max)),
+         q_phos = list(quantile(log(phos_med), probs = qt_max)),
+         qt = list(names(quantile(log(DOC_med), probs = qt_max)))) %>%
+  unnest(c(q_DOC, q_phos, qt)) %>%
+  unique()
+```
+
+# Alternatives to min and max
+
+Here, I use a sequence of values between `r paste0(qt_bounds[1]*100, "% - ", qt_bounds[2]*100, "%")` percentiles of log(DOC) and log(phos). In the plot below, these narrower boundaries are shown in dark green. The original boundaries (min and max) are shown in purple.
+
+It is clear that by using this slightly narrow range of percentiles, the values of covariates we will predict at will all fall closer to the denser areas of covariate space.
+
+Plots made for the OLS, SVC, GAM can use this narrower range of values moving forward.
+
+```{r}
+cnp %>%
+  ggplot() +
+  geom_hex(aes(x = log(DOC_med), y = log(phos_med))) +
+  geom_hline(data = cnp_quantiles,
+             mapping = aes(yintercept = q_phos), linetype = "dashed", col = "red" ) +
+  geom_vline(data = cnp_quantiles,
+             mapping = aes(xintercept = q_DOC), linetype = "dashed", col = "red" ) +
+  geom_hline(data = cnp_bounds,
+             mapping = aes(yintercept = q_phos), col = "darkgreen") +
+  geom_vline(data = cnp_bounds,
+             mapping = aes(xintercept = q_DOC), col = "darkgreen") +
+  geom_hline(data = cnp_range,
+             mapping = aes(yintercept = q_phos), col = "purple") +
+  geom_vline(data = cnp_range,
+             mapping = aes(xintercept = q_DOC), col = "purple") +
+  labs(title = "Joint distribution of C & P for entire data set") +
+  facet_grid(region ~ ECO_TYPE) +
+  scale_fill_gradient(low = "lightblue", high = "blue")
+```
+
