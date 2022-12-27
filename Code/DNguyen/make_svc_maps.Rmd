@@ -157,7 +157,56 @@ make_svc_map <- function(svc_pred, which_svc = NA){
   }
   print(p)
 }
+  
+# Calculate CI of individual SVC terms
+# currenlty underestimates width of CI
+# need to incorporate SE of fixed effect estimate
+
+# returns a data frame combinining prediction, sd, lower and upper approximate 95% CI, 
+# and whether slopes for DOC or P are significant and what direction effect is.
+svc_ci <- function(pred_df, sd_df) {
+  
+  # join point estimate and sd of SVC terms
+  # caluclate 95% CI for each SVC
+  # might be wrong, doesn't account for se of fixed effect
+  new_df <- 
+  full_join(pred_df, 
+          sd_df %>% rename(loc_1 = LON, loc_2 = LAT), 
+          by = c("loc_1", "loc_2")) %>%
+  mutate(lower_svc_1 = SVC_1 - 2 * SVC_1_sd,
+         lower_svc_2 = SVC_2 - 2 * SVC_2_sd,
+         lower_svc_3 = SVC_3 - 2 * SVC_3_sd,
+         upper_svc_1 = SVC_1 + 2 * SVC_1_sd,
+         upper_svc_2 = SVC_2 + 2 * SVC_2_sd,
+         upper_svc_3 = SVC_3 + 2 * SVC_3_sd)
+
+  # make variable for whether DOC or P slope is significantly diff from 0
+  # based on whether previously calculated CI include 0 or not
+  new_df <-
+  new_df %>%
+  mutate(doc_sig = case_when(lower_svc_2 > 0 ~ "+",
+                              upper_svc_2 < 0 ~ "-",
+                              TRUE ~ "n.s."),
+         p_sig = case_when(lower_svc_3 > 0 ~ "+",
+                              upper_svc_3 < 0 ~ "-",
+                              TRUE ~ "n.s."))
+return(new_df)
+}
+
 ```
+
+# Overview
+
+Here, I produce maps of the individual spatially varying coefficients (SVC) for each of the 4 models (region X lake vs river) and 3 SVC terms (intercept (beta0), DOC slope (beta1), P slope (beta2))
+
+I made 3 types of plots:
+
+* plot of the point estimate of the SVC
+* plots of the standard deviation (i.e., standard error) of the estimated svc
+* plots of whether the estimate is significant and, if it is, what direction the slope is (positive or negative)
+
+
+Note, I think the standard error estimates will be biased low since I have not included the uncertainty in the estimate of the fixed effect (i.e., the average slope averaged over space). This means CI will be too narrow and we may have elevated type 1 error. Also, non of the significance tests are corrected for multiple testing.
 
 ### NA LAKE
 
@@ -180,6 +229,22 @@ make_svc_map(pred_na_lake, 2L)
 make_svc_sd_map(pred_sd_na_lake, 0L)  
 make_svc_sd_map(pred_sd_na_lake, 1L)  
 make_svc_sd_map(pred_sd_na_lake, 2L)  
+```
+
+```{r}
+# calculate approx 95% CI
+svc_na_lake_ci <- svc_ci(pred_na_lake, pred_sd_na_lake)
+
+# plot maps of significance
+svc_na_lake_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = doc_sig)) +
+  labs(title = "significance of DOC slope")
+
+svc_na_lake_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = p_sig)) +
+  labs(title = "significance of P slope")
 ```
 
 ### NA RIVER
@@ -205,6 +270,21 @@ make_svc_sd_map(pred_sd_na_river, 1L)
 make_svc_sd_map(pred_sd_na_river, 2L)  
 ```
 
+```{r}
+# calculate approx 95% CI
+svc_na_river_ci <- svc_ci(pred_na_river, pred_sd_na_river)
+
+# plot maps of significance
+svc_na_river_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = doc_sig)) +
+  labs(title = "significance of DOC slope")
+
+svc_na_river_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = p_sig)) +
+  labs(title = "significance of P slope")
+```
 
 ### EU LAKE
 
@@ -229,6 +309,22 @@ make_svc_sd_map(pred_sd_eu_lake, 1L)
 make_svc_sd_map(pred_sd_eu_lake, 2L)  
 ```
 
+```{r}
+# calculate approx 95% CI
+svc_eu_lake_ci <- svc_ci(pred_eu_lake, pred_sd_eu_lake)
+
+# plot maps of significance
+svc_eu_lake_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = doc_sig)) +
+  labs(title = "significance of DOC slope")
+
+svc_eu_lake_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = p_sig)) +
+  labs(title = "significance of P slope")
+```
+
 ### EU RIVER
 
 ```{r }
@@ -251,3 +347,20 @@ make_svc_sd_map(pred_sd_eu_river, 0L)
 make_svc_sd_map(pred_sd_eu_river, 1L)  
 make_svc_sd_map(pred_sd_eu_river, 2L)  
 ```
+
+```{r}
+# calculate approx 95% CI
+svc_eu_river_ci <- svc_ci(pred_eu_river, pred_sd_eu_river)
+
+# plot maps of significance
+svc_eu_river_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = doc_sig)) +
+  labs(title = "significance of DOC slope")
+
+svc_eu_river_ci %>%
+  ggplot() +
+  geom_tile(aes(x = loc_1, y = loc_2, fill = p_sig)) +
+  labs(title = "significance of P slope")
+```
+
