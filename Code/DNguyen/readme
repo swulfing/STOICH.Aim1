@@ -1,0 +1,26 @@
+DNguyen contains all code for analyses and estimated model objects.
+
+The subfolders:
+/models contains fitted models
+/data contains data used to fit models
+
+# data processing and model fitting
+
+* build_new_cnp.R builds data set for analysis. Computes median of medians and saves to /data.
+* fit_ols.rmd runs OLS analyses
+* fit_cnp_models.R fits all SVC models. fitted models are saved in /models
+* fit_gam_cnp.rmd fits all GAM models. Fitted models are saved in /models
+
+# post model fitting 
+
+* calc_svc_sd.R calculates predictions and standard errors for individual svc to make maps. Saved in DNguyen folder.
+* make_gam_derivative_plots.Rmd calculates slopes and plots these for GAM models.
+
+
+# data visualization
+
+* interactive_CNP_plot.Rmd produces interactive plots of CNP data. Output is in google drive.
+* joint_dist_cp.Rmd visualizes the joint distributions of CNP data. Output is in google drive.
+* data_viz_svc.Rmd visualize results of SVC models. Includes diagnostic plots. Output is in google drive.
+* make_svc_maps.Rmd makes improved maps of SVC. Output is in google drive.
+
