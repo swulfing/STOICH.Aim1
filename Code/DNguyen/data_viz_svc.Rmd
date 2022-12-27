@@ -212,7 +212,19 @@ svc_na_lake <- readRDS("models/svc_na_lake_tp.RDS")
 svc_na_river <- readRDS("models/svc_na_river.RDS")
 svc_eu_lake <- readRDS("models/svc_eu_lake_tp.RDS")
 svc_eu_river <- readRDS("models/svc_eu_river.RDS")
+
+# original data
+cnp <- read.csv("data/ALL_CNP_med.csv")
+
+# split between EU and NA, lakes and rivers
+cnp_eu_river <- cnp %>% filter(ECO_TYPE == "River/Stream", region == "Europe")
+cnp_eu_lake <- cnp %>% filter(ECO_TYPE == "Lake", region == "Europe") %>%
+  filter(!is.na(TP_med))
+
+cnp_na_river <- cnp %>% filter(ECO_TYPE == "River/Stream", region == "North America")
+cnp_na_lake <- cnp %>% filter(ECO_TYPE == "Lake", region == "North America")
 ```
+
 
 
 ```{r eval = FALSE}
@@ -313,11 +325,136 @@ coef_na_lake %>%
   coord_flip()
 ```
 
+### Estimated regression
+
+Here's an example of the regression lines for how mean of log median NO3 is expected to change as log of median DOC changes for the 25, 50, and 75th quantiles of log median TP. Note that the uncertainty of the regression lines are much larger than for the OLS model. This is expected because the OLS model incorrectly treats the data as independent even though there is clear spatial correlation. This results in underestimation of uncertainty for OLS model estimates.
+
+```{r}
+
+# Get average regression relationship averaged over space
+# Similar to predict.lm
+# get regression line and se conditioned on all RE == 0
+predict_SVC <- function(svc.mod, Xp) {
+
+  # Get vcov of fixed effects
+  Sigma_final <- svc.mod$MLE$comp.args$Sigma_final
+  X <- svc_na_lake$MLE$call.args$X
+  Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
+  
+  # get predicted values
+  fit <- Xp %*% coef(svc_na_lake)
+
+  # SE = X %*% V %*% t(X)
+  var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+  se.fit <- sqrt(var.fit)
+
+  # return output as list
+  return(list("fit" = fit, "se.fit" = se.fit))
+}
+
+# make Xp the matrix at which to make new predictions
+make_Xp <- function(log_P, log_DOC, qvals = c(0.25, 0.5, 0.75)) {
+
+  log_P <- log_P[!is.na(log_P)]
+  log_DOC <- log_DOC[!is.na(log_DOC)]
+  
+  quant_log_p <- quantile(log_P, qvals, na.rm = T)
+  quant_log_DOC <- quantile(log_DOC, qvals, na.rm = T)
+         
+X_DOC <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = seq(from = min(log_DOC), 
+                                    to = max(log_DOC),
+                                    length = 100),
+                  log_p_med = quant_log_p
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+X_P <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = quant_log_DOC,
+                  log_p_med = seq(from = min(log_P), 
+                                    to = max(log_P),
+                                    length = 100)
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+  
+  return(list(X_DOC = X_DOC, X_P = X_P))
+}
+
+qvals <- c(0.25, 0.5, 0.75)
+
+log_P <- log(cnp_na_lake$TP_med)
+log_DOC <- log(cnp_na_lake$DOC_med)
+
+quant_log_p <- quantile(log_P, qvals, na.rm = T)
+quant_log_DOC <- quantile(log_DOC, qvals, na.rm = T)
+
+X_mat <- make_Xp(log_P = log_P,
+        log_DOC = log_DOC, qvals = qvals)
+
+nd_DOC_na <- X_mat$X_DOC
+
+preds_DOC_na <- predict_SVC(svc_na_lake, as.matrix(nd_DOC_na))
+nd_DOC_na$pred <- preds_DOC_na$fit
+nd_DOC_na$se <- preds_DOC_na$se.fit
+nd_DOC_na <- nd_DOC_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_DOC_na$region <- "North America"
+nd_DOC_na$ECO_TYPE <- "Lake"
+
+nd_DOC_na <-
+  nd_DOC_na %>%
+  rename("log_phos_med" = log_p_med) %>%
+mutate(p_quantile = case_when(
+    log_phos_med == quant_log_p[1] ~ "25%",
+    log_phos_med == quant_log_p[2] ~ "50%",
+    log_phos_med == quant_log_p[3] ~ "75%",
+  )
+)
+
+nd_DOC_na %>%
+  ggplot(aes(x = log_DOC_med, y = pred, ymin = conf.low, ymax = conf.high, fill = factor(log_phos_med))) +
+  geom_line(aes(linetype = factor(log_phos_med))) +
+  geom_ribbon(alpha = 0.3)
+
+# P
+nd_p_na <- X_mat$X_P
+
+preds_p_na <- predict_SVC(svc_na_lake, as.matrix(nd_p_na))
+nd_p_na$pred <- preds_p_na$fit
+nd_p_na$se <- preds_p_na$se.fit
+nd_p_na <- nd_p_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+
+nd_p_na$region <- "North America"
+nd_p_na$ECO_TYPE <- "Lake"
+
+nd_p_na <-
+  nd_p_na %>%
+  rename("log_phos_med" = log_p_med) %>%
+mutate(p_quantile = case_when(
+    log_DOC_med == quant_log_DOC[1] ~ "25%",
+    log_DOC_med == quant_log_DOC[2] ~ "50%",
+    log_DOC_med == quant_log_DOC[3] ~ "75%",
+  )
+)
+
+nd_p_na %>%
+  ggplot(aes(x = log_phos_med, y = pred, ymin = conf.low, ymax = conf.high, fill = factor(log_DOC_med))) +
+  geom_line(aes(linetype = factor(log_DOC_med))) +
+  geom_ribbon(alpha = 0.3)
+```
+
+
 #### SVC maps
 
-Here, I make maps of the predicted spatially varying coeffient (SVC) and the uncertainty of that prediction. The way to interpret this SVC map is that it shows how the average median NO3 is predicted to deviate based on the location. For instance, if an area on the map of the intercept ($\beta_1(s)$) is greater than 0, this means that, all else being equal, the model predicts a higher average median NO3 level than would be predicted from the non-spatially varying fixed effects.
-
-The interpretations for the slope estimates ($\beta_2(s), \beta_3(s)$) are similar, however, keep in mind that they represent how the slope varies. That is, if the value on the map is > 0, this means that the relationship between the response and the variable is steeper than would be predicted from the non-spatially varying fixed effect.
+Here, I make maps of the predicted spatially varying coeffient (SVC) and the uncertainty of that prediction. 
+The top row of maps shows how the coefficients of the fitted linear regression equation relating $\log(NO_3)$ to $\log(DOC)$ and $\log(PO_4)$ change over space.
+The bottom row shows the standard error (uncertainty) of these estimated coefficients over space. 
+Intuitively, the uncertainty in our estimate of the spatially varying coefficient is small in locations with many observed sites nearby, and the uncertainty is large in locations with very few or no observed sites nearby.
 
 ```{r}
 # get predicted SVC for new locations
@@ -346,6 +483,7 @@ pred_sd_na_lake <- readRDS("pred_sd_na_lake.RDS")
 ```{r}
 ### SVC maps for na lakes
 world_map <- map_data("world")
+state_map <- map_data("state")
 
 # plot na lake SVC_1
 p_na_lake_svc1 <- pred_na_lake %>%
@@ -353,13 +491,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_1
-    ), alpha = 0.8) +
+      fill = SVC_1 + svc_na_lake$coefficients[1]
+    ), alpha = 1) +
+    geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs( #title = "Spatial variation of intercept", 
          x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[1](s)))
+         ,fill = expression(widehat(beta[0] + beta[0](s)))
          ) +
   coord_fixed() +
     scale_fill_viridis() +
@@ -372,19 +512,22 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_1_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying intercept", 
          x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
+  coord_fixed() +
     scale_fill_viridis() +
   theme(legend.position = "top")
 
 
 # plot na lake SVC_1 and uncertainty together
-p_na_lake_svc1 + p_na_lake_svc1_sd
+# p_na_lake_svc1 + p_na_lake_svc1_sd
 
 ```
 
@@ -396,13 +539,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_2
-    ), alpha = 0.8) +
+      fill = SVC_2 + svc_na_lake$coefficients[2]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[2](s)))
+         ,fill = expression(widehat(beta[1] + beta[1](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -414,19 +559,21 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_2_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot na lake SVC_2 and uncertainty together
-p_na_lake_svc2 + p_na_lake_svc2_sd
+# p_na_lake_svc2 + p_na_lake_svc2_sd
 ```
 
 
@@ -438,13 +585,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_3
-    ), alpha = 0.8) +
+      fill = SVC_3 + svc_na_lake$coefficients[3]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(TP)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[3](s)))
+         ,fill = expression(widehat(beta[2] + beta[2](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -456,8 +605,10 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_3_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
       x = "Longitude", y = "Latitude"
@@ -468,27 +619,20 @@ ggplot() +
   coord_fixed()
 
 # plot na lake SVC_3 and uncertainty together
+# p_na_lake_svc3 + p_na_lake_svc3_sd
+```
+
+
+```{r}
+# plot svc maps together
+p_na_lake_svc1 + p_na_lake_svc1_sd
+p_na_lake_svc2 + p_na_lake_svc2_sd  
 p_na_lake_svc3 + p_na_lake_svc3_sd
 ```
 
-```{r eval = FALSE}
-# try to plot all SVC together
-# Doesn't work
-((p_na_lake_svc1 + p_na_lake_svc1_sd) /
-(p_na_lake_svc2 + p_na_lake_svc2_sd)) /
-(p_na_lake_svc3 + p_na_lake_svc3_sd)
-
-gridExtra::grid.arrange(p_na_lake_svc1, p_na_lake_svc1_sd,
-p_na_lake_svc2, p_na_lake_svc2_sd,
-p_na_lake_svc3, p_na_lake_svc3_sd,
-nrow = 3, ncol = 2)
-```
 
 ### EU lakes
 
-```{r eval = FALSE}
-make_svc_maps(svc_na_lake)
-```
 
 ```{r}
 coef_eu_lake <- 
@@ -506,28 +650,99 @@ coef_eu_lake %>%
   coord_flip()
 ```
 
+### Estimated regression
+
+Here's an example of the regression lines for how mean of log median NO3 is expected to change as log of median DOC changes for the 25, 50, and 75th quantiles of log median TP. Note that the uncertainty of the regression lines are much larger than for the OLS model. This is expected because the OLS model incorrectly treats the data as independent even though there is clear spatial correlation. This results in underestimation of uncertainty for OLS model estimates.
+
+```{r}
+# Get vcov of fixed beta
+Sigma_final <- svc_eu_lake$MLE$comp.args$Sigma_final
+X <- svc_eu_lake$MLE$call.args$X
+Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
+
+# make new design matrix
+
+log_P <- log(cnp_eu_lake$TP_med)
+log_DOC <- log(cnp_eu_lake$DOC_med)
+
+quant_log_p <- quantile(log_P, c(0.25, 0.5, 0.75), na.rm = T)
+quant_log_DOC <- quantile(log_DOC, c(0.25, 0.5, 0.75), na.rm = T)
+         
+X_DOC <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = seq(from = min(log_DOC), 
+                                    to = max(log_DOC),
+                                    length = 100),
+                  log_p_med = quant_log_p
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+X_P <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = quant_log_DOC,
+                  log_p_med = seq(from = min(log_P), 
+                                    to = max(log_P),
+                                    length = 100)
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+# DOC
+pred <- X_DOC # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_eu_lake)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_DOC_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_p_med))) +
+  geom_line(aes(linetype = factor(log_p_med))) +
+  geom_ribbon(alpha = 0.3)
+
+# P
+pred <- X_P # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_eu_lake)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_p_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_DOC_med))) +
+  geom_line(aes(linetype = factor(log_DOC_med))) +
+  geom_ribbon(alpha = 0.3)
+```
+
 #### SVC maps
 
 
 ```{r}
-# get predicted SVC for new locations
-# pred_eu_lake <- predict(svc_eu_lake, 
-#                         newlocs = make_grid(svc_eu_lake)[,c(1,2)])
-pred_eu_lake <- readRDS("pred_eu_lake.RDS")
-
-# # get sd of predicted SVC for new locations
-# eu_lake_grid <- make_grid(svc_eu_lake, 0.25)[,-3] %>% as.matrix()
-# 
-# svc_sd_eu_lake <- svc_sd(svc_eu_lake, eu_lake_grid)
-# 
-# # data frame of locs and SVC standard deviations
-# pred_sd_eu_lake <- cbind(eu_lake_grid, svc_sd_eu_lake) %>% data.frame()
-# 
-# # save sd of predicted SVC
-# saveRDS(pred_sd_eu_lake, file = "pred_sd_eu_lake.RDS")
-
 # load previously calculated sd of predicted SVC
 pred_sd_eu_lake <- readRDS("pred_sd_eu_lake.RDS")
+
+# get predicted SVC for new locations
+# pred_eu_lake <- predict(svc_eu_lake,
+#                         newlocs = pred_sd_eu_lake %>% select(LON,LAT) %>% as.matrix() )
+# saveRDS(pred_eu_lake, "pred_eu_lake.RDS")
+pred_eu_lake <- readRDS("pred_eu_lake.RDS")
+
+
 ```
 
 
@@ -541,13 +756,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_1
-    ), alpha = 0.8) +
+      fill = SVC_1 + svc_eu_lake$coefficients[1]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of intercept", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[1](s)))
+         ,fill = expression(widehat(beta[0] + beta[0](s)))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
@@ -560,19 +775,19 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_1_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying intercept", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot EU lake SVC_1 and uncertainty together
-p_eu_lake_svc1 + p_eu_lake_svc1_sd
+# p_eu_lake_svc1 + p_eu_lake_svc1_sd
 
 ```
 
@@ -585,13 +800,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_2
-    ), alpha = 0.8) +
+      fill = SVC_2 + svc_eu_lake$coefficients[2]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(DOC)", 
          x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[2](s)))
+         ,fill = expression(widehat(beta[1] + beta[1](s)))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
@@ -603,19 +818,19 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_2_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot EU lake SVC_2 and uncertainty together
-p_eu_lake_svc2 + p_eu_lake_svc2_sd
+# p_eu_lake_svc2 + p_eu_lake_svc2_sd
 ```
 
 
@@ -627,13 +842,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_3
-    ), alpha = 0.8) +
+      fill = SVC_3 + svc_eu_lake$coefficients[3]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(TP)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[3](s)))
+         ,fill = expression(widehat(beta[2] + beta[2](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -645,7 +860,7 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_3_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
@@ -657,6 +872,13 @@ ggplot() +
   coord_fixed()
 
 # plot EU lake SVC_3 and uncertainty together
+# p_eu_lake_svc3 + p_eu_lake_svc3_sd
+```
+
+
+```{r}
+p_eu_lake_svc1 + p_eu_lake_svc1_sd
+p_eu_lake_svc2 + p_eu_lake_svc2_sd
 p_eu_lake_svc3 + p_eu_lake_svc3_sd
 ```
 
@@ -670,14 +892,107 @@ summary(svc_na_lake)
 
 ### NA river
 
-Few observations. Hard to say much.
-
 ```{r eval = FALSE}
 make_svc_maps(svc_na_river)
 ```
 
 ```{r}
 summary(svc_na_river)
+```
+
+```{r}
+coef_na_river <- 
+  summary(svc_na_river)$coef %>% 
+  as.data.frame() %>% 
+  rownames_to_column(var = "term") %>%
+  mutate(lcl = Estimate - 1.96 * `Std. Error`,
+         ucl = Estimate + 1.96 * `Std. Error`)
+
+coef_na_river %>%
+  ggplot(aes(x = term, y = Estimate, ymin = lcl, ymax = ucl)) +
+  geom_point(size = 2) +
+  geom_errorbar(width = 0) +
+  geom_hline(yintercept = 0, linetype = "dashed", col = "red") +
+  coord_flip()
+```
+
+
+### Estimated regression
+
+
+```{r}
+# Get vcov of fixed beta
+Sigma_final <- svc_na_river$MLE$comp.args$Sigma_final
+X <- svc_na_river$MLE$call.args$X
+Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
+
+# make new design matrix
+
+log_P <- log(cnp_na_river$TP_med)
+log_DOC <- log(cnp_na_river$DOC_med)
+
+quant_log_p <- quantile(log_P, c(0.25, 0.5, 0.75), na.rm = T)
+quant_log_DOC <- quantile(log_DOC, c(0.25, 0.5, 0.75), na.rm = T)
+         
+X_DOC <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = seq(from = min(log_DOC, na.rm = T), 
+                                    to = max(log_DOC, na.rm = T),
+                                    length = 100),
+                  log_p_med = quant_log_p
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+X_P <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = quant_log_DOC,
+                  log_p_med = seq(from = min(log_P, na.rm = T), 
+                                    to = max(log_P, na.rm = T),
+                                    length = 100)
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+# DOC
+pred <- X_DOC # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_na_river)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_DOC_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_p_med))) +
+  geom_line(aes(linetype = factor(log_p_med))) +
+  geom_ribbon(alpha = 0.3)
+
+# P
+pred <- X_P # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_na_river)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_p_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_DOC_med))) +
+  geom_line(aes(linetype = factor(log_DOC_med))) +
+  geom_ribbon(alpha = 0.3)
 ```
 
 #### SVC maps
@@ -733,13 +1048,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_1
-    ), alpha = 0.8) +
+      fill = SVC_1 + svc_na_river$coefficients[1]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of intercept", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[1](s)))
+         ,fill = expression(widehat(beta[0] + beta[0](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -752,19 +1069,21 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_1_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying intercept", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot na river SVC_1 and uncertainty together
-p_na_river_svc1 + p_na_river_svc1_sd
+# p_na_river_svc1 + p_na_river_svc1_sd
 
 ```
 
@@ -776,13 +1095,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_2
-    ), alpha = 0.8) +
+      fill = SVC_2 + svc_na_river$coefficients[2]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[2](s)))
+         ,fill = expression(widehat(beta[1] + beta[1](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -794,19 +1115,21 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_2_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[2](s))))
+         ,fill = expression(sd(widehat(beta[2] + beta[2](s))))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot na river SVC_2 and uncertainty together
-p_na_river_svc2 + p_na_river_svc2_sd
+# p_na_river_svc2 + p_na_river_svc2_sd
 ```
 
 
@@ -818,13 +1141,15 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_3
-    ), alpha = 0.8) +
+      fill = SVC_3 + svc_na_river$coefficients[3]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#Etitle = "Spatial variation of slope of log(TP)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[3](s)))
+         ,fill = expression(widehat(beta[2] + beta[2](s)))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
@@ -836,8 +1161,10 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_3_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
+           data = state_map, map = state_map) +
+  geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
       x = "Longitude", y = "Latitude"
@@ -848,8 +1175,16 @@ ggplot() +
   coord_fixed()
 
 # plot na river SVC_3 and uncertainty together
-p_na_river_svc3 + p_na_river_svc3_sd
+# p_na_river_svc3 + p_na_river_svc3_sd
 ```
+
+```{r}
+p_na_river_svc1 + p_na_river_svc1_sd
+p_na_river_svc2 + p_na_river_svc2_sd
+p_na_river_svc3 + p_na_river_svc3_sd
+
+```
+
 
 ### EU river
 
@@ -865,6 +1200,85 @@ make_svc_maps(svc_eu_river, point_alpha = 0.5, point_shape = 21)
 
 ```{r}
 summary(svc_eu_river)
+```
+
+### Estimated regression
+
+Here's an example of the regression lines for how mean of log median NO3 is expected to change as log of median DOC changes for the 25, 50, and 75th quantiles of log median TP. Note that the uncertainty of the regression lines are much larger than for the OLS model. This is expected because the OLS model incorrectly treats the data as independent even though there is clear spatial correlation. This results in underestimation of uncertainty for OLS model estimates.
+
+```{r}
+# Get vcov of fixed beta
+Sigma_final <- svc_eu_river$MLE$comp.args$Sigma_final
+X <- svc_eu_river$MLE$call.args$X
+Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
+
+# make new design matrix
+
+log_P <- log(cnp_eu_river$TP_med)
+log_DOC <- log(cnp_eu_river$DOC_med)
+
+quant_log_p <- quantile(log_P, c(0.25, 0.5, 0.75), na.rm = T)
+quant_log_DOC <- quantile(log_DOC, c(0.25, 0.5, 0.75), na.rm = T)
+         
+X_DOC <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = seq(from = min(log_DOC), 
+                                    to = max(log_DOC),
+                                    length = 100),
+                  log_p_med = quant_log_p
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+X_P <- expand_grid(
+                  intercept = 1,
+                  log_DOC_med = quant_log_DOC,
+                  log_p_med = seq(from = min(log_P, na.rm = T), 
+                                    to = max(log_P, na.rm = T),
+                                    length = 100)
+                  ) %>%
+  mutate(interaction_term = log_DOC_med * log_p_med)
+
+# DOC
+pred <- X_DOC # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_eu_river)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_DOC_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_p_med))) +
+  geom_line(aes(linetype = factor(log_p_med))) +
+  geom_ribbon(alpha = 0.3)
+
+# P
+pred <- X_P # rbind(X_DOC, X_P)
+Xp <- as.matrix(pred)
+
+# SE = X %*% V %*% t(X)
+var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+se.fit <- sqrt(var.fit)
+
+fit <- Xp %*% coef(svc_eu_river)
+
+pred$fit <- fit
+pred$se.fit <- se.fit
+
+pred <- pred %>% mutate(lwr = fit - 1.96 * se.fit,
+                upr = fit + 1.96 * se.fit)
+
+pred %>%
+  ggplot(aes(x = log_p_med, y = fit, ymin = lwr, ymax = upr, fill = factor(log_DOC_med))) +
+  geom_line(aes(linetype = factor(log_DOC_med))) +
+  geom_ribbon(alpha = 0.3)
 ```
 
 #### SVC maps
@@ -906,13 +1320,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_1
-    ), alpha = 0.8) +
+      fill = SVC_1 + svc_eu_river$coefficients[1]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of intercept", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[1](s)))
+         ,fill = expression(widehat(beta[0] + beta[0](s)))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
@@ -925,19 +1339,19 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_1_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying intercept", 
          x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot EU river SVC_1 and uncertainty together
-p_eu_river_svc1 + p_eu_river_svc1_sd
+# p_eu_river_svc1 + p_eu_river_svc1_sd
 
 ```
 
@@ -949,13 +1363,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_2
-    ), alpha = 0.8) +
+      fill = SVC_2 + svc_eu_river$coefficients[2]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[2](s)))
+         ,fill = expression(widehat(beta[1] + beta[1](s)))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
@@ -967,19 +1381,19 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_2_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(DOC)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(sd(widehat(beta[1](s))))
+         ,fill = expression(sd(widehat(beta[1] + beta[1](s))))
          ) +
     scale_fill_viridis() +
   theme(legend.position = "top") +
   coord_fixed()
 
 # plot EU river SVC_2 and uncertainty together
-p_eu_river_svc2 + p_eu_river_svc2_sd
+# p_eu_river_svc2 + p_eu_river_svc2_sd
 ```
 
 ```{r}
@@ -990,13 +1404,13 @@ ggplot() +
     geom_tile(aes(
       x = loc_1 ,
       y = loc_2 ,
-      fill = SVC_3
-    ), alpha = 0.8) +
+      fill = SVC_3 + svc_eu_river$coefficients[3]
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Spatial variation of slope of log(TP)", 
       x = "Longitude", y = "Latitude"
-         ,fill = expression(widehat(beta[3](s)))
+         ,fill = expression(widehat(beta[2] + beta[2](s)))
          ) +
     scale_fill_viridis()  +
   theme(legend.position = "top") +
@@ -1008,7 +1422,7 @@ ggplot() +
       x = LON ,
       y = LAT ,
       fill = SVC_3_sd
-    ), alpha = 0.8) +
+    ), alpha = 1) +
     geom_map(aes(map_id = region), col = "gray", fill = NA, 
            data = world_map, map = world_map) +
     labs(#title = "Uncertainty of spatially varying slope of log(PO4)", 
@@ -1020,8 +1434,17 @@ ggplot() +
   coord_fixed()
 
 # plot EU river SVC_3 and uncertainty together
-p_eu_river_svc3 + p_eu_river_svc3_sd
+# p_eu_river_svc3 + p_eu_river_svc3_sd
 ```
+
+```{r}
+p_eu_river_svc1 + p_eu_river_svc1_sd
+p_eu_river_svc2 + p_eu_river_svc2_sd
+p_eu_river_svc3  + p_eu_river_svc3_sd
+
+
+```
+
 
 # Diagnostic plots
 
@@ -1091,4 +1514,38 @@ plot_svc_residuals(svc_eu_lake, title = "EU lakes")
 plot_svc_residuals(svc_na_river, title = "NA rivers")
 plot_svc_residuals(svc_eu_river, title = "EU rivers")
 
+```
+
+# Spatial variation or non-linearity?
+
+
+### EU river
+```{r}
+svc_eu_df <- cbind(svc_eu_river$data$X[,2:3], svc_eu_river$fitted)
+plot(svc_eu_df$SVC_2 ~ svc_eu_df$`log(DOC_med)`)
+plot(svc_eu_df$SVC_3 ~ svc_eu_df$`log(P_med)`)
+```
+
+### EU lake
+
+```{r}
+svc_eu_df <- cbind(svc_eu_lake$data$X[,2:3], svc_eu_lake$fitted)
+plot(svc_eu_df$SVC_2 ~ svc_eu_df$`log(DOC_med)`)
+plot(svc_eu_df$SVC_3 ~ svc_eu_df$`log(TP_med)`)
+```
+
+### na lake
+
+```{r}
+svc_na_df <- cbind(svc_na_lake$data$X[,2:3], svc_na_lake$fitted)
+plot(svc_na_df$SVC_2 ~ svc_na_df$`log(DOC_med)`)
+plot(svc_na_df$SVC_3 ~ svc_na_df$`log(TP_med)`)
+```
+
+### na river
+
+```{r}
+svc_na_df <- cbind(svc_na_river$data$X[,2:3], svc_na_river$fitted)
+plot(svc_na_df$SVC_2 ~ svc_na_df$`log(DOC_med)`)
+plot(svc_na_df$SVC_3 ~ svc_na_df$`log(P_med)`)
 ```
