@@ -2,9 +2,7 @@
 title: "SVC maps"
 author: "David Nguyen"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-      keep_md: true
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -17,6 +15,8 @@ library(viridis)
 # svc_pred_sd: data frame of sd(svc)
 # which_svc: choose beta coefficient (0L = intercept, 1L = DOC slope, 2L = P slope)
 make_svc_sd_map <- function(svc_pred_sd, which_svc = NA){
+  
+  if(!(which_svc %in% c(0L,1L,2L))) stop("which_svc must be either 0L, 1L, 2L")
   
   state_map <- ggplot2::map_data("state")
   world_map <- ggplot2::map_data("world")
@@ -41,7 +41,7 @@ make_svc_sd_map <- function(svc_pred_sd, which_svc = NA){
     scale_fill_viridis() +
   theme(legend.position = "top")
     
-    if ( which_svc == 1L) {
+  } else  if ( which_svc == 1L) {
    p <-   svc_pred_sd %>%
   ggplot() + 
     geom_tile(aes(
@@ -61,8 +61,7 @@ make_svc_sd_map <- function(svc_pred_sd, which_svc = NA){
     scale_fill_viridis() +
   theme(legend.position = "top")
    
-    }
-  }  else {
+  }  else if( which_svc == 2L ) {
   p <-  svc_pred_sd %>%
   ggplot() + 
     geom_tile(aes(
@@ -91,6 +90,8 @@ make_svc_sd_map <- function(svc_pred_sd, which_svc = NA){
 # which_svc: choose beta coefficient (0L = intercept, 1L = DOC slope, 2L = P slope)
 make_svc_map <- function(svc_pred, which_svc = NA){
   
+  if(!(which_svc %in% c(0L,1L,2L))) stop("which_svc must be either 0L, 1L, 2L")
+  
   state_map <- ggplot2::map_data("state")
   world_map <- ggplot2::map_data("world")
   
@@ -114,7 +115,7 @@ make_svc_map <- function(svc_pred, which_svc = NA){
     scale_fill_viridis() +
   theme(legend.position = "top")
     
-    if ( which_svc == 1L) {
+  } else  if ( which_svc == 1L) {
    p <-   svc_pred %>%
   ggplot() + 
     geom_tile(aes(
@@ -134,8 +135,7 @@ make_svc_map <- function(svc_pred, which_svc = NA){
     scale_fill_viridis() +
   theme(legend.position = "top")
    
-    }
-  }  else {
+  } else  if ( which_svc == 2L){
   p <-  svc_pred %>%
   ggplot() + 
     geom_tile(aes(
@@ -171,7 +171,7 @@ pred_sd_na_lake <- readRDS("pred_sd_na_lake.RDS")
 ```{r svc_map_na_lake}
 # make maps of predicted SVC
 make_svc_map(pred_na_lake, 0L)  
-make_svc_map(pred_na_lake, 1L)  
+make_svc_map(pred_na_lake, 1)  
 make_svc_map(pred_na_lake, 2L)  
 ```
 
