@@ -93,18 +93,21 @@ The quantiles will be determined for each subset, e.g., lakes in north america, 
 This means that model predictions for different subsets of the data will not overlap the same values of DOC/P.
 
 
-```{r make_new_data}
+```{r make_new_data, eval = FALSE}
+# chose quantile
+fix_q <-  0.75 # adjust this value to get different quantiles to fix doc/p at. eg. 0.5 for median.
+
 # DOC quantiles to use
-q_doc_eu_lake <- quantile(cnp_eu_lake$log_DOC_med, c(0.5))
-q_doc_eu_river <- quantile(cnp_eu_river$log_DOC_med, c(0.5))
-q_doc_na_lake <- quantile(cnp_na_lake$log_DOC_med, c(0.5))
-q_doc_na_river <- quantile(cnp_na_river$log_DOC_med, c(0.5))
+q_doc_eu_lake <- quantile(cnp_eu_lake$log_DOC_med, fix_q)
+q_doc_eu_river <- quantile(cnp_eu_river$log_DOC_med, fix_q)
+q_doc_na_lake <- quantile(cnp_na_lake$log_DOC_med, fix_q)
+q_doc_na_river <- quantile(cnp_na_river$log_DOC_med, fix_q)
 
 # Phos quantiles to use
-q_phos_eu_lake <- quantile(cnp_eu_lake$log_phos_med, c(0.5))
-q_phos_eu_river <- quantile(cnp_eu_river$log_phos_med, c(0.5))
-q_phos_na_lake <- quantile(cnp_na_lake$log_phos_med, c(0.5))
-q_phos_na_river <- quantile(cnp_na_river$log_phos_med, c(0.5))
+q_phos_eu_lake <- quantile(cnp_eu_lake$log_phos_med, fix_q)
+q_phos_eu_river <- quantile(cnp_eu_river$log_phos_med, fix_q)
+q_phos_na_lake <- quantile(cnp_na_lake$log_phos_med, fix_q)
+q_phos_na_river <- quantile(cnp_na_river$log_phos_med, fix_q)
 
 # DOC bounds
 b_doc_eu_lake <- quantile(cnp_eu_lake$log_DOC_med, c(0.03, 0.97))
@@ -175,7 +178,7 @@ svc_data_na_lake_phos <- cbind(1, nd_na_lake_phos, nd_na_lake_phos[,1] * nd_na_l
 svc_data_na_river_phos <- cbind(1, nd_na_river_phos, nd_na_river_phos[,1] * nd_na_river_phos[,2])
 ```
 
-```{r predictions_OLS}
+```{r predictions_OLS, eval = FALSE}
 # predictions for each region
 # doc varies
 pred_eu_doc <- 
@@ -199,7 +202,7 @@ pred_na_phos <-
 
 ```
 
-```{r}
+```{r eval = FALSE}
 # pred EU
 pred_gam_eu_doc <- predict(gam_eu, newdata = nd_eu_doc, type = "response", se.fit = TRUE)
 pred_gam_eu_phos <- predict(gam_eu, newdata = nd_eu_phos, type = "response", se.fit = TRUE)
@@ -226,15 +229,15 @@ pred_na_phos$lwr_gam <- pred_gam_na_phos$fit - 2 * pred_gam_na_phos$se.fit
 pred_na_phos$upr_gam <- pred_gam_na_phos$fit + 2 * pred_gam_na_phos$se.fit
 ```
 
-```{r}
+```{r eval = FALSE}
 pred_svc_eu_doc_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_doc))
-pred_svc_na_doc_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_doc))
+pred_svc_na_doc_lake <- predict_SVC(svc_na_lake, Xp = as.matrix(svc_data_na_lake_doc))
 
 pred_svc_eu_doc_river <- predict_SVC(svc_eu_river, Xp = as.matrix(svc_data_eu_river_doc))
 pred_svc_na_doc_river <- predict_SVC(svc_na_river, Xp = as.matrix(svc_data_na_river_doc))
 
 pred_svc_eu_phos_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_phos))
-pred_svc_na_phos_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_phos))
+pred_svc_na_phos_lake <- predict_SVC(svc_na_lake, Xp = as.matrix(svc_data_na_lake_phos))
 
 pred_svc_eu_phos_river <- predict_SVC(svc_eu_river, Xp = as.matrix(svc_data_eu_river_phos))
 pred_svc_na_phos_river <- predict_SVC(svc_na_river, Xp = as.matrix(svc_data_na_river_phos))
@@ -262,12 +265,39 @@ pred_na_phos$upr_svc <- pred_na_phos$fit_svc + 2 * c(pred_svc_na_phos_lake$fit, 
 
 ```
 
-```{r}
+```{r eval = FALSE}
 # combine regions
 pred_doc <- rbind(pred_na_doc %>% mutate(region = "North America"), pred_eu_doc %>% mutate(region = "Europe"))
 pred_phos <- rbind(pred_na_phos %>% mutate(region = "North America"), pred_eu_phos %>% mutate(region = "Europe"))
+
+pred_doc$fix_q <- fix_q
+pred_phos$fix_q <- fix_q
+
+pred_doc_name <- paste0("pred_doc_", fix_q * 100, ".RDS")
+pred_phos_name <- paste0("pred_phos_", fix_q * 100, ".RDS")
+
+saveRDS(pred_doc, file = pred_doc_name)
+saveRDS(pred_phos, file = pred_phos_name)
 ```
+
+
 # plots
+
+```{r}
+# load prediction which were computed earlier
+# vary doc
+pred_doc_25 <- readRDS("pred_doc_25.RDS")
+pred_doc_50 <- readRDS("pred_doc_50.RDS")
+pred_doc_75 <- readRDS("pred_doc_75.RDS")
+# vary phos
+pred_phos_25 <- readRDS("pred_phos_25.RDS")
+pred_phos_50 <- readRDS("pred_phos_50.RDS")
+pred_phos_75 <- readRDS("pred_phos_75.RDS")
+
+pred_doc <- rbind(pred_doc_25, pred_doc_50, pred_doc_75)
+pred_phos <- rbind(pred_phos_25, pred_phos_50, pred_phos_75)
+```
+
 
 Color legend: SVC = darkgreen, OLS = steelblue, GAM = goldenrod
 
@@ -277,9 +307,110 @@ Interpretion: remember, we did log-log regression, so the slope of the curve is 
 
 Notice that for the GAM, we can see that some values of DOC/P concentration are positive whereas others are negative, Scientifically, this suggests that the concentration of a chemical can affect whether it is associated with higher or lower nitrate.
 
+### All quantiles
+
 ```{r}
 pred_doc %>%
-  ggplot(aes(x = log_DOC_med, y = fit_ols, group = ECO_TYPE)) +
+  ggplot(aes(x = log_DOC_med, y = fit_ols, group = factor(fix_q), linetype = factor(fix_q))) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.05, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.05, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.05, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))",
+       linetype = "quantile P")
+```
+
+```{r}
+pred_phos %>%
+  ggplot(aes(x = log_phos_med, group = factor(fix_q), linetype = factor(fix_q))) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.05, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.05, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.05, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))",
+       linetype = "quantile DOC")
+```
+
+# 25th quantile
+
+### All axis on same scale
+
+```{r}
+pred_doc_25 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_25 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+### Axis on different scales
+
+```{r}
+pred_doc_25 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_25 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+
+```{r eval = FALSE}
+pred_doc_25 %>%
+  ggplot(aes(x = log_DOC_med)) +
   geom_line(aes(y = fit_svc), col = "darkgreen") +
   geom_line(aes(y = fit_ols), col = "steelblue") + 
   geom_line(aes(y = fit_gam), col = "goldenrod") +
@@ -289,10 +420,8 @@ pred_doc %>%
   facet_grid(region~ECO_TYPE) +
   labs(y = "Predicted log(med(N mg/l)) 95% CI",
        x = "log(med(DOC mg/l))")
-```
 
-```{r}
-pred_phos %>%
+pred_phos_25 %>%
   ggplot(aes(x = log_phos_med)) +
   geom_line(aes(y = fit_svc), col = "darkgreen") +
   geom_line(aes(y = fit_ols), col = "steelblue") + 
@@ -305,6 +434,197 @@ pred_phos %>%
        x = "log(med(P mg/l))")
 
 ```
+
+# 50th quantile
+
+### All axis on same scale
+
+```{r}
+pred_doc_50 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_50 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+### Axis on different scales
+
+```{r}
+pred_doc_50 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_50 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+```{r eval = FALSE}
+pred_doc_50 %>%
+  ggplot(aes(x = log_DOC_med)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_50 %>%
+  ggplot(aes(x = log_phos_med)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+# 75th quantile
+
+### All axis on same scale
+
+```{r eval = FALSE}
+pred_doc_75 %>%
+  ggplot(aes(x = log_DOC_med)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_75 %>%
+  ggplot(aes(x = log_phos_med)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+### Axis on different scales
+
+```{r}
+pred_doc_75 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_75 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE, scales = "free") +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+```{r}
+pred_doc_75 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_DOC_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+
+pred_phos_75 %>%
+  pivot_longer(cols = starts_with("fit"),
+               names_sep = "_",
+               names_to = c("fit", "method"),
+               values_to = "value") %>%
+  ggplot(aes(x = log_phos_med, fill = method)) +
+  geom_line(aes(y = value,linetype = method, col = method)) +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1) +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1) +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
 
 # Caveats
 
