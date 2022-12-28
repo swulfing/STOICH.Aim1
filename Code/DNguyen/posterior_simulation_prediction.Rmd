@@ -1,0 +1,196 @@
+---
+title: "Posterior simulation of predictions"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(mgcv)
+library(gratia)
+
+```
+
+```{r}
+set.seed(3)
+n <- 400
+
+############################################
+## First example: simulated Tweedie model...
+############################################
+
+dat <- gamSim(1,n=n,dist="poisson",scale=.2)
+dat$y <- rTweedie(exp(dat$f),p=1.3,phi=.5) ## Tweedie response
+b <- gam(y~s(x0)+s(x1)+s(x2)+s(x3),family=tw(),
+          data=dat,method="REML")
+
+## simulate directly from Gaussian approximate posterior...
+br <- rmvn(1000,coef(b),vcov(b))
+
+## Alternatively use MH sampling...
+br <- gam.mh(b,thin=2,ns=2000,rw.scale=.15)#$bs
+br <- br$bs
+## If 'coda' installed, can check effective sample size
+## require(coda);effectiveSize(as.mcmc(br))
+
+## Now compare simulation results and Gaussian approximation for
+## smooth term confidence intervals...
+x <- seq(0,1,length=100)
+pd <- data.frame(x0=x,x1=x,x2=x,x3=x)
+X <- predict(b,newdata=pd,type="lpmatrix")
+par(mfrow=c(2,2))
+for(i in 1:4) {
+  plot(b,select=i,scale=0,scheme=1)
+  ii <- b$smooth[[i]]$first.para:b$smooth[[i]]$last.para
+  ff <- X[,ii]%*%t(br[,ii]) ## posterior curve sample
+  fq <- apply(ff,1,quantile,probs=c(.025,.16,.84,.975))
+  lines(x,fq[1,],col=2,lty=2);lines(x,fq[4,],col=2,lty=2)
+  lines(x,fq[2,],col=2);lines(x,fq[3,],col=2)
+}
+```
+
+```{r}
+###############################################################
+## Second example, where Gaussian approximation is a failure...
+###############################################################
+
+y <- c(rep(0, 89), 1, 0, 1, 0, 0, 1, rep(0, 13), 1, 0, 0, 1, 
+       rep(0, 10), 1, 0, 0, 1, 1, 0, 1, rep(0,4), 1, rep(0,3),  
+       1, rep(0, 3), 1, rep(0, 10), 1, rep(0, 4), 1, 0, 1, 0, 0, 
+       rep(1, 4), 0, rep(1, 5), rep(0, 4), 1, 1, rep(0, 46))
+set.seed(3);x <- sort(c(0:10*5,rnorm(length(y)-11)*20+100))
+b <- gam(y ~ s(x, k = 15),method = 'REML', family = binomial)
+br <- gam.mh(b,thin=2,ns=2000,rw.scale=.4)$bs
+X <- model.matrix(b)
+par(mfrow=c(1,1))
+plot(x, y, col = rgb(0,0,0,0.25), ylim = c(0,1))
+ff <- X%*%t(br) ## posterior curve sample
+linv <- b$family$linkinv
+## Get intervals for the curve on the response scale...
+fq <- linv(apply(ff,1,quantile,probs=c(.025,.16,.5,.84,.975)))
+lines(x,fq[1,],col=2,lty=2);lines(x,fq[5,],col=2,lty=2)
+lines(x,fq[2,],col=2);lines(x,fq[4,],col=2)
+lines(x,fq[3,],col=4)
+## Compare to the Gaussian posterior approximation
+fv <- predict(b,se=TRUE)
+lines(x,linv(fv$fit))
+lines(x,linv(fv$fit-2*fv$se.fit),lty=3)
+lines(x,linv(fv$fit+2*fv$se.fit),lty=3)
+## ... Notice the useless 95% CI (black dotted) based on the
+## Gaussian approximation!
+```
+
+```{r}
+gam_eu <- readRDS("models/gam_eu_spatial.RDS")
+pred_doc_gam <- read_csv("pred_DOC_gam.csv")
+
+# get design matrix for GAM for prediction at desired levels of log(DOC), log(P), ECO_TYPE
+pd <- pred_doc_gam %>% 
+      filter(region == "Europe") %>% 
+      select(ECO_TYPE, log_DOC_med, log_phos_med) %>%
+      mutate(LON = 0, LAT = 0)
+# rearrange so DOC is arranged by within group of eco_type and phos_med
+# will make it easier when handling posterior draws since 
+# different covariate scenarioes aren't jumbled
+# switch to arrange by P as needed
+pd <- 
+  pd %>%
+  group_by(ECO_TYPE, log_phos_med) %>%
+  arrange(log_DOC_med,.by_group = TRUE)
+
+predict(gam_eu, newdata = pd, exclude = )
+
+# make GAM design matrix
+# drop all cols for spatial intercept
+X <- predict(gam_eu,newdata=pd,type="lpmatrix")
+exclude_cols_index <- grep(pattern = "LON", x = colnames(X))
+X <- X[,-exclude_cols_index]
+
+# Metropolis Hastings posterior sampling
+# br <- gam.mh(gam_eu,thin=2,ns=2000,rw.scale=.06) # around .22 RW acceptance
+# br <- br$bs
+
+
+
+# gaussian approx instead
+br <- rmvn(1000, 
+     coef(gam_eu)[-exclude_cols_index], 
+     vcov(gam_eu)[-exclude_cols_index, - exclude_cols_index] )
+
+# get prediction for each posterior sample
+ff <- X %*% t(br)
+
+# get quantiles for credible interval and median
+fq <- apply(ff,1,quantile,probs=c(.025,.5,.975))
+
+# transpose so that quantiles are each column: lower, median, upper
+fq <- t(fq)
+colnames(fq) <- c("lower", "median", "upper")
+
+# make df of covariate values and estimated CrI and median
+bayes_pred <- cbind(pd, fq)
+
+bayes_pred$sample_pred <- X %*% matrix((coef(gam_eu)[-exclude_cols_index]))
+
+# plot
+bayes_pred %>%
+  ggplot(aes(x = log_DOC_med, col = ECO_TYPE)) +
+  geom_line(aes(y = median)) +
+  geom_line(aes(y = sample_pred, group = ECO_TYPE), linetype = "dashed", col = "yellow") +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.3) +
+  facet_wrap(~factor(log_phos_med))
+
+# these predicitons are from the non-spatial gam
+pred_doc_gam %>%
+  filter(region == "Europe") %>%
+  ggplot(aes(x = log_DOC_med, col = ECO_TYPE)) +
+  geom_line(aes(y = pred)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.3) +
+  facet_wrap(~factor(log_phos_med))
+
+```
+
+```{r}
+# # get points where slope switches sign
+# find_switch <- function(x) {
+#     diff(x)  
+# }
+# 
+# scenario_ix <- matrix(1:nrow(ff), ncol = 6)
+# pdraw <- 1
+# 
+# 
+# for (scenario in 1:ncol(scenario_ix)) {
+#   indices <- scenario_ix[,scenario]
+#     ix <- which(diff(sign(diff(ff[indices, pdraw]))) != 0)  
+#     plot(ff[indices,1])
+#     abline(v = (ix + (ix+1)) / 2 )
+# }
+# 
+# 
+
+```
+
+
+```{r}
+pred_doc_gam %>%
+  filter(region == "Europe") %>%
+  ggplot(aes(x = exp(log_DOC_med), col = ECO_TYPE)) +
+  geom_line(aes(y = pred)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.3) +
+  facet_wrap(~factor(log_phos_med)) +
+  scale_x_continuous(trans = "log10") +
+  theme(axis.text.x = element_text( angle=90))
+
+pred_doc_gam %>%
+  filter(region == "Europe") %>%
+  ggplot(aes(x = exp(log_DOC_med), col = ECO_TYPE)) +
+  geom_line(aes(y = exp(pred) )) +
+  geom_ribbon(aes(ymin = exp(conf.low), ymax = exp(conf.high)), alpha = 0.3) +
+  facet_wrap(~factor(exp(log_phos_med)), scales = "free_y") +
+  scale_x_continuous(trans = "log10") #+
+  # theme(axis.text.x = element_text( angle=90))
+```
+
