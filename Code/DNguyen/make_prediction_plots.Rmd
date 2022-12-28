@@ -1,0 +1,316 @@
+---
+title: "make prediction plots"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(mgcv)
+library(varycoef)
+
+# Get average regression relationship averaged over space
+# Similar to predict.lm
+# get regression line and se conditioned on all RE == 0
+predict_SVC <- function(svc.mod, Xp) {
+
+  # Get vcov of fixed effects
+  Sigma_final <- svc.mod$MLE$comp.args$Sigma_final
+  X <- svc.mod$MLE$call.args$X
+  Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
+  
+  # get predicted values
+  fit <- Xp %*% coef(svc.mod)
+
+  # SE = X %*% V %*% t(X)
+  var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
+  se.fit <- sqrt(var.fit)
+
+  # return output as list
+  return(list("fit" = fit, "se.fit" = se.fit))
+}
+
+# read in data
+# original data
+cnp <- read.csv("data/ALL_CNP_med.csv")
+
+cnp$ECO_TYPE <- factor(cnp$ECO_TYPE) # for fitting gam by s(.., by = ECO_TYPE)
+
+# merge median of medians of PO4 (lakes) and TP (lakes) into one variable
+# this is so we can fit a common model for lakes and lakes
+cnp <- cnp %>% mutate(phos_med = ifelse(ECO_TYPE == "River/Stream", 
+                                                 P_med,
+                                                 TP_med))
+# appropriate P measurment missing for 5 EU lakes
+# cnp_med %>% group_by(ECO_TYPE, region) %>% summarise(missing_phos = sum(is.na(phos_med)))
+cnp <- cnp %>% filter(!is.na(phos_med))
+
+# log everything
+cnp <- cnp %>% mutate(log_N_med = log(N_med),
+                              log_phos_med = log(phos_med),
+                              log_DOC_med = log(DOC_med))
+
+
+# split between EU and NA, lakes and lakes
+cnp_eu_river <- cnp %>% filter(ECO_TYPE == "River/Stream", region == "Europe")
+cnp_eu_lake <- cnp %>% filter(ECO_TYPE == "Lake", region == "Europe") %>%# 
+  filter(!is.na(TP_med))
+
+cnp_na_river <- cnp %>% filter(ECO_TYPE == "River/Stream", region == "North America")
+cnp_na_lake <- cnp %>% filter(ECO_TYPE == "Lake", region == "North America")
+
+# read in fitted models
+# SVC
+svc_na_lake <- readRDS("models/svc_na_lake_tp.RDS")
+svc_na_river <- readRDS("models/svc_na_river.RDS")
+svc_eu_lake <- readRDS("models/svc_eu_lake_tp.RDS")
+svc_eu_river <- readRDS("models/svc_eu_river.RDS")
+
+
+# GAM
+gam_eu <- readRDS("models/gam_eu.RDS")
+gam_na <- readRDS("models/gam_na.RDS")
+
+# OLS
+ols_eu <- lm(log_N_med ~ ECO_TYPE * log_DOC_med + ECO_TYPE * log_phos_med + ECO_TYPE + log_DOC_med*log_phos_med, 
+             data = filter(cnp, region == "Europe") )
+ols_na <- lm(log_N_med ~ ECO_TYPE * log_DOC_med + ECO_TYPE * log_phos_med + ECO_TYPE + log_DOC_med*log_phos_med, 
+             data = filter(cnp, region == "North America") )
+```
+
+# Prediction grid
+
+First need to choose what values to predict mean log median of medians nitrate level.
+We want to make sure we aren't making prediction at DOC/P values that are very sparse.
+We will use a grid of values between 3 - 97% percentiles of DOC while P is held at the median, and vice versa. Note, it would be better to use more values than just the median, but it is hard to show in a plot.
+
+Using these percentiles were determined subjectivelly by choosing what seemed to be a good trade-off between predicting over a large interval of values while keeping to concentrations that are frequenty observed. See joint_dist_cp.pdf file in google drive for additional details.
+
+The quantiles will be determined for each subset, e.g., lakes in north america, not quantiles for the entire data set.
+This means that model predictions for different subsets of the data will not overlap the same values of DOC/P.
+
+
+```{r make_new_data}
+# DOC quantiles to use
+q_doc_eu_lake <- quantile(cnp_eu_lake$log_DOC_med, c(0.5))
+q_doc_eu_river <- quantile(cnp_eu_river$log_DOC_med, c(0.5))
+q_doc_na_lake <- quantile(cnp_na_lake$log_DOC_med, c(0.5))
+q_doc_na_river <- quantile(cnp_na_river$log_DOC_med, c(0.5))
+
+# Phos quantiles to use
+q_phos_eu_lake <- quantile(cnp_eu_lake$log_phos_med, c(0.5))
+q_phos_eu_river <- quantile(cnp_eu_river$log_phos_med, c(0.5))
+q_phos_na_lake <- quantile(cnp_na_lake$log_phos_med, c(0.5))
+q_phos_na_river <- quantile(cnp_na_river$log_phos_med, c(0.5))
+
+# DOC bounds
+b_doc_eu_lake <- quantile(cnp_eu_lake$log_DOC_med, c(0.03, 0.97))
+b_doc_eu_river <- quantile(cnp_eu_river$log_DOC_med, c(0.03, 0.97))
+b_doc_na_lake <- quantile(cnp_na_lake$log_DOC_med, c(0.03, 0.97))
+b_doc_na_river <- quantile(cnp_na_river$log_DOC_med, c(0.03, 0.97))
+
+# phos bounds
+b_phos_eu_lake <- quantile(cnp_eu_lake$log_phos_med, c(0.03, 0.97))
+b_phos_eu_river <- quantile(cnp_eu_river$log_phos_med, c(0.03, 0.97))
+b_phos_na_lake <- quantile(cnp_na_lake$log_phos_med, c(0.03, 0.97))
+b_phos_na_river <- quantile(cnp_na_river$log_phos_med, c(0.03, 0.97))
+
+# make df for varying DOC
+nd_eu_lake_doc <- expand.grid(log_DOC_med = seq(b_doc_eu_lake[1], b_doc_eu_lake[2], length = 100),
+                              log_phos_med = q_phos_eu_lake)
+
+nd_eu_river_doc <- expand.grid(log_DOC_med = seq(b_doc_eu_river[1], b_doc_eu_river[2], length = 100),
+                              log_phos_med = q_phos_eu_river)
+
+nd_na_lake_doc <- expand.grid(log_DOC_med = seq(b_doc_na_lake[1], b_doc_na_lake[2], length = 100),
+                              log_phos_med = q_phos_na_lake)
+
+nd_na_river_doc <- expand.grid(log_DOC_med = seq(b_doc_na_river[1], b_doc_na_river[2], length = 100),
+                              log_phos_med = q_phos_na_river)
+
+# make df for varying DOC
+nd_eu_lake_phos <- expand.grid(log_DOC_med = q_doc_eu_lake,
+                              log_phos_med = seq(b_phos_eu_lake[1], b_phos_eu_lake[2], length = 100))
+
+nd_eu_river_phos <- expand.grid(log_DOC_med = q_doc_eu_river,
+                              log_phos_med = seq(b_phos_eu_river[1], b_phos_eu_river[2], length = 100))
+
+nd_na_lake_phos <- expand.grid(log_DOC_med = q_doc_na_lake,
+                              log_phos_med = seq(b_phos_na_lake[1], b_phos_na_lake[2], length = 100))
+
+nd_na_river_phos <- expand.grid(log_DOC_med = q_doc_na_river,
+                              log_phos_med = seq(b_phos_na_river[1], b_phos_na_river[2], length = 100))
+
+# combine eco_types within region for OLS and GAM
+nd_eu_doc <- rbind(nd_eu_lake_doc %>% mutate(ECO_TYPE = "Lake"),  
+                   nd_eu_river_doc %>% mutate(ECO_TYPE = "River/Stream"))
+
+nd_eu_phos <- rbind(nd_eu_lake_phos %>% mutate(ECO_TYPE = "Lake"),  
+                   nd_eu_river_phos %>% mutate(ECO_TYPE = "River/Stream"))
+
+nd_na_doc <- rbind(nd_na_lake_doc %>% mutate(ECO_TYPE = "Lake"),  
+                   nd_na_river_doc %>% mutate(ECO_TYPE = "River/Stream"))
+
+nd_na_phos <- rbind(nd_na_lake_phos %>% mutate(ECO_TYPE = "Lake"),  
+                   nd_na_river_phos %>% mutate(ECO_TYPE = "River/Stream"))
+
+# make model frame for SVC model
+# 4 columns: intercept, logDOC, logPhos, interaction
+
+# vary DOC
+svc_data_eu_lake_doc <- cbind(1, nd_eu_lake_doc, nd_eu_lake_doc[,1] * nd_eu_lake_doc[,2])
+svc_data_eu_river_doc <- cbind(1, nd_eu_river_doc, nd_eu_river_doc[,1] * nd_eu_river_doc[,2])
+
+svc_data_na_lake_doc <- cbind(1, nd_na_lake_doc, nd_na_lake_doc[,1] * nd_na_lake_doc[,2])
+svc_data_na_river_doc <- cbind(1, nd_na_river_doc, nd_na_river_doc[,1] * nd_na_river_doc[,2])
+
+# vary PHOS
+svc_data_eu_lake_phos <- cbind(1, nd_eu_lake_phos, nd_eu_lake_phos[,1] * nd_eu_lake_phos[,2])
+svc_data_eu_river_phos <- cbind(1, nd_eu_river_phos, nd_eu_river_phos[,1] * nd_eu_river_phos[,2])
+
+svc_data_na_lake_phos <- cbind(1, nd_na_lake_phos, nd_na_lake_phos[,1] * nd_na_lake_phos[,2])
+svc_data_na_river_phos <- cbind(1, nd_na_river_phos, nd_na_river_phos[,1] * nd_na_river_phos[,2])
+```
+
+```{r predictions_OLS}
+# predictions for each region
+# doc varies
+pred_eu_doc <- 
+  cbind(nd_eu_doc, predict(ols_eu, newdata = nd_eu_doc, interval = "confidence")) %>%
+  # mutate(region = "Europe") %>% 
+  rename(fit_ols = fit, lwr_ols = lwr, upr_ols = upr)
+pred_na_doc <- 
+  cbind(nd_na_doc, predict(ols_na, newdata = nd_na_doc, interval = "confidence"))%>%
+  # mutate(region = "North America") %>% 
+  rename(fit_ols = fit, lwr_ols = lwr, upr_ols = upr)
+
+# phos varies
+pred_eu_phos <- 
+  cbind(nd_eu_phos, predict(ols_eu, newdata = nd_eu_phos, interval = "confidence")) %>%
+  # mutate(region = "Europe") %>% 
+  rename(fit_ols = fit, lwr_ols = lwr, upr_ols = upr)
+pred_na_phos <- 
+  cbind(nd_na_phos, predict(ols_na, newdata = nd_na_phos, interval = "confidence")) %>%
+  # mutate(region = "North America") %>% 
+  rename(fit_ols = fit, lwr_ols = lwr, upr_ols = upr)
+
+```
+
+```{r}
+# pred EU
+pred_gam_eu_doc <- predict(gam_eu, newdata = nd_eu_doc, type = "response", se.fit = TRUE)
+pred_gam_eu_phos <- predict(gam_eu, newdata = nd_eu_phos, type = "response", se.fit = TRUE)
+
+# pred NA
+pred_gam_na_doc <- predict(gam_na, newdata = nd_na_doc, type = "response", se.fit = TRUE)
+pred_gam_na_phos <- predict(gam_na, newdata = nd_na_phos, type = "response", se.fit = TRUE)
+
+# add prediction and CI to data frame
+pred_eu_doc$fit_gam <- pred_gam_eu_doc$fit
+pred_eu_doc$lwr_gam <- pred_gam_eu_doc$fit - 2 * pred_gam_eu_doc$se.fit
+pred_eu_doc$upr_gam <- pred_gam_eu_doc$fit + 2 * pred_gam_eu_doc$se.fit
+
+pred_eu_phos$fit_gam <- pred_gam_eu_phos$fit
+pred_eu_phos$lwr_gam <- pred_gam_eu_phos$fit - 2 * pred_gam_eu_phos$se.fit
+pred_eu_phos$upr_gam <- pred_gam_eu_phos$fit + 2 * pred_gam_eu_phos$se.fit
+
+pred_na_doc$fit_gam <- pred_gam_na_doc$fit
+pred_na_doc$lwr_gam <- pred_gam_na_doc$fit - 2 * pred_gam_na_doc$se.fit
+pred_na_doc$upr_gam <- pred_gam_na_doc$fit + 2 * pred_gam_na_doc$se.fit
+
+pred_na_phos$fit_gam <- pred_gam_na_phos$fit
+pred_na_phos$lwr_gam <- pred_gam_na_phos$fit - 2 * pred_gam_na_phos$se.fit
+pred_na_phos$upr_gam <- pred_gam_na_phos$fit + 2 * pred_gam_na_phos$se.fit
+```
+
+```{r}
+pred_svc_eu_doc_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_doc))
+pred_svc_na_doc_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_doc))
+
+pred_svc_eu_doc_river <- predict_SVC(svc_eu_river, Xp = as.matrix(svc_data_eu_river_doc))
+pred_svc_na_doc_river <- predict_SVC(svc_na_river, Xp = as.matrix(svc_data_na_river_doc))
+
+pred_svc_eu_phos_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_phos))
+pred_svc_na_phos_lake <- predict_SVC(svc_eu_lake, Xp = as.matrix(svc_data_eu_lake_phos))
+
+pred_svc_eu_phos_river <- predict_SVC(svc_eu_river, Xp = as.matrix(svc_data_eu_river_phos))
+pred_svc_na_phos_river <- predict_SVC(svc_na_river, Xp = as.matrix(svc_data_na_river_phos))
+
+# add prediction and CI to data frame
+# EU doc
+pred_eu_doc$fit_svc <- c(pred_svc_eu_doc_lake$fit, pred_svc_eu_doc_river$fit) 
+pred_eu_doc$lwr_svc <- pred_eu_doc$fit_svc - 2 * c(pred_svc_eu_doc_lake$fit, pred_svc_eu_doc_river$fit) 
+pred_eu_doc$upr_svc <- pred_eu_doc$fit_svc + 2 * c(pred_svc_eu_doc_lake$fit, pred_svc_eu_doc_river$fit)
+
+# NA doc
+pred_na_doc$fit_svc <- c(pred_svc_na_doc_lake$fit, pred_svc_na_doc_river$fit) 
+pred_na_doc$lwr_svc <- pred_na_doc$fit_svc - 2 * c(pred_svc_na_doc_lake$fit, pred_svc_na_doc_river$fit) 
+pred_na_doc$upr_svc <- pred_na_doc$fit_svc + 2 * c(pred_svc_na_doc_lake$fit, pred_svc_na_doc_river$fit)
+
+# EU doc
+pred_eu_phos$fit_svc <- c(pred_svc_eu_phos_lake$fit, pred_svc_eu_phos_river$fit) 
+pred_eu_phos$lwr_svc <- pred_eu_phos$fit_svc - 2 * c(pred_svc_eu_phos_lake$fit, pred_svc_eu_phos_river$fit) 
+pred_eu_phos$upr_svc <- pred_eu_phos$fit_svc + 2 * c(pred_svc_eu_phos_lake$fit, pred_svc_eu_phos_river$fit)
+
+# NA doc
+pred_na_phos$fit_svc <- c(pred_svc_na_phos_lake$fit, pred_svc_na_phos_river$fit) 
+pred_na_phos$lwr_svc <- pred_na_phos$fit_svc - 2 * c(pred_svc_na_phos_lake$fit, pred_svc_na_phos_river$fit) 
+pred_na_phos$upr_svc <- pred_na_phos$fit_svc + 2 * c(pred_svc_na_phos_lake$fit, pred_svc_na_phos_river$fit)
+
+```
+
+```{r}
+# combine regions
+pred_doc <- rbind(pred_na_doc %>% mutate(region = "North America"), pred_eu_doc %>% mutate(region = "Europe"))
+pred_phos <- rbind(pred_na_phos %>% mutate(region = "North America"), pred_eu_phos %>% mutate(region = "Europe"))
+```
+# plots
+
+Color legend: SVC = darkgreen, OLS = steelblue, GAM = goldenrod
+
+When DOC is varied, P is held at median and vice-versa.
+
+Interpretion: remember, we did log-log regression, so the slope of the curve is what corresponds to the exponential decay parameter k in Taylor and Townsend. So, if the slope of the curve is negative, there is a exponential decaying relationship and if the slope of the curve is positive, there is an exponential increasing relationship.
+
+Notice that for the GAM, we can see that some values of DOC/P concentration are positive whereas others are negative, Scientifically, this suggests that the concentration of a chemical can affect whether it is associated with higher or lower nitrate.
+
+```{r}
+pred_doc %>%
+  ggplot(aes(x = log_DOC_med, y = fit_ols, group = ECO_TYPE)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(DOC mg/l))")
+```
+
+```{r}
+pred_phos %>%
+  ggplot(aes(x = log_phos_med)) +
+  geom_line(aes(y = fit_svc), col = "darkgreen") +
+  geom_line(aes(y = fit_ols), col = "steelblue") + 
+  geom_line(aes(y = fit_gam), col = "goldenrod") +
+  geom_ribbon(aes(ymin = lwr_svc, ymax = upr_svc) ,alpha = 0.1, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lwr_ols, ymax = upr_ols), alpha = 0.1, fill = "steelblue") +
+  geom_ribbon(aes(ymin = lwr_gam, ymax = upr_gam), alpha = 0.1, fill = "goldenrod") +
+  facet_grid(region~ECO_TYPE) +
+  labs(y = "Predicted log(med(N mg/l)) 95% CI",
+       x = "log(med(P mg/l))")
+
+```
+
+# Caveats
+
+Not sure what's going on with the SVC confidence intervals. They seem weirdly narrow at some values.
+
+The SVC spatial average prediction doesn't seem to match well with the GAM and OLS. I think a possible reason for this, is that when I get this prediction, I set all random effects equal to zero instead of marginalizing over them.
+
+The GAM model I'm plotting does not include a spatial smooth. This is because there is no built-in predict method for predicting the response when the spatial smooth is set to zero. So it will have the same issues wrt to underestimation of uncertainty as the OLS model.
+
