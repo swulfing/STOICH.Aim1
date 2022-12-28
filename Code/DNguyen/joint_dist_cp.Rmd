@@ -8,7 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
-cnp <- read.csv("Code/DNguyen/data/ALL_CNP_med.csv")
+cnp <- read.csv("data/ALL_CNP_med.csv")
 cnp <- 
   cnp %>% 
   mutate(phos_med = ifelse(ECO_TYPE == "River/Stream", 
