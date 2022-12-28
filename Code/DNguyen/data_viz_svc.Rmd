@@ -338,11 +338,11 @@ predict_SVC <- function(svc.mod, Xp) {
 
   # Get vcov of fixed effects
   Sigma_final <- svc.mod$MLE$comp.args$Sigma_final
-  X <- svc_na_lake$MLE$call.args$X
+  X <- svc.mod$MLE$call.args$X
   Sigma_FE <- solve(crossprod(X, solve(Sigma_final, X)))
   
   # get predicted values
-  fit <- Xp %*% coef(svc_na_lake)
+  fit <- Xp %*% coef(svc.mod)
 
   # SE = X %*% V %*% t(X)
   var.fit <- rowSums((Xp %*% Sigma_FE) * Xp)
