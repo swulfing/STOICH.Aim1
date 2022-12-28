@@ -23,4 +23,4 @@ The subfolders:
 * joint_dist_cp.Rmd visualizes the joint distributions of CNP data. Output is in google drive.
 * data_viz_svc.Rmd visualize results of SVC models. Includes diagnostic plots. Output is in google drive.
 * make_svc_maps.Rmd makes improved maps of SVC. Output is in google drive.
-
+* make_prediction_plots.Rmd calculate and plot regression curves. Output in google drive. Save outputs loose in DNguyen folder, named things like pred_nutrient_quantile.RDS.
