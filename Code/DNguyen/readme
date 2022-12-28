@@ -15,7 +15,7 @@ The subfolders:
 
 * calc_svc_sd.R calculates predictions and standard errors for individual svc to make maps. Saved in DNguyen folder.
 * make_gam_derivative_plots.Rmd calculates slopes and plots these for GAM models.
-
+* posterior_simulation_prediction.Rmd  Preliminary work to compute credible intervals for "inflection points" from GAM prediction. Code is incomplete.
 
 # data visualization
 
