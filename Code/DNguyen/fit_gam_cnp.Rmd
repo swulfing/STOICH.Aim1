@@ -1,0 +1,493 @@
+---
+title: "Fit GAM to cnp data"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# gams for manuscript
+library(tidyverse)
+library(mgcv)
+
+```
+
+# Overview
+
+I fit GAMs of the form
+
+\begin{align*}
+\log_{10}(y_i) &= \beta_0 + \beta_1 \text{ECOTYPE}\\ 
+               &+ f_1(\log_{10}DOC_i) \times \text{ECOTYPE} + f_2(\log_{10}PO_4) \times \text{ECOTYPE}\\ 
+               &+ f_3(\log_{10}DOC \times \log_{10}PO_4)  \epsilon_i
+\end{align*}
+
+<!-- $$\log_{10}(y_i) = \beta_0 + \beta_1 \text{ECOTYPE} + f_1(\log_{10}DOC_i) \times \text{ECOTYPE} + f_2(\log_{10}PO_4) \times \text{ECOTYPE} + f_3(\log_{10}DOC \times \log_{10}PO_4)  \epsilon_i$$ -->
+
+Where $y_i$ is the annual median NO3 for site $i$. The functions $f(.)$ are smooth functions. ECOTYPE is an indicator which determines whether the site is a lake or a river/stream. The error is assumed iid normal (on the log-scale) with zero mean.
+
+Using the `mgcv` package I fit this model using the syntax: `gam(y ~ s(DOC, by = ECO_TYPE) + s(PO4, by = ECO_TYPE) + ti(DOC, PO4) + ECO_TYPE)`
+
+The `mgcv::ti()` function can be used to specify the r formula equivalent of the interaction `DOC:PO4`.
+
+I suppose I should include ECO_TYPE along with the interaction term.
+
+```{r}
+# read in data
+cnp <- read.csv("data/ALL_CNP_med.csv")
+cnp$ECO_TYPE <- factor(cnp$ECO_TYPE) # for fitting gam by s(.., by = ECO_TYPE)
+
+# merge median of medians of PO4 (rivers) and TP (lakes) into one variable
+# this is so we can fit a common model for lakes and rivers
+cnp <- cnp %>% mutate(phos_med = ifelse(ECO_TYPE == "River/Stream", 
+                                                 P_med,
+                                                 TP_med))
+# appropriate P measurment missing for 5 EU lakes
+# cnp_med %>% group_by(ECO_TYPE, region) %>% summarise(missing_phos = sum(is.na(phos_med)))
+cnp <- cnp %>% filter(!is.na(phos_med))
+
+# log everything
+cnp <- cnp %>% mutate(log_N_med = log(N_med),
+                              log_phos_med = log(phos_med),
+                              log_DOC_med = log(DOC_med))
+
+# define Europe vs NA subset
+cnp$region <- factor(ifelse(cnp$LON < -50, "North America", "Europe"))
+
+# split into NA and EU subset
+cnp_med_na <- filter(cnp, region == "North America")
+cnp_med_eu <- filter(cnp, region == "Europe")
+
+### CHeck that subsetting was correst
+# world_map <- map_data("world")
+# cnp %>%
+# ggplot() +
+#   geom_map(aes(map_id = region), col = "gray", fill = "white", 
+#            data = world_map, map = world_map) +
+#   geom_point(aes(
+#     x = LON,
+#     y = LAT,
+#     col = region))
+
+gam_eu <- readRDS("models/gam_eu.RDS")
+gam_na <- readRDS("models/gam_na.RDS")
+```
+
+
+```{r}
+cnp %>% group_by(region, ECO_TYPE) %>% summarise(nsites = n()) %>%
+  knitr::kable(caption = "Number of sites per region and type")
+```
+
+# Europe
+
+```{r}
+# EU region
+# fit 2d smooth or 2 separate smooths
+# both have interaction with ECO_TYPE and main effect
+# gam_eu <- gam(log_N_med ~ s(log_DOC_med, by = ECO_TYPE, bs = "fs") + 
+#                             s(log_phos_med, by = ECO_TYPE, bs = "fs", k = 30) + 
+#                             ti(log_DOC_med, log_phos_med) + 
+#                             ECO_TYPE,
+#     data = filter(cnp, region == "Europe"), method = "REML") 
+# saveRDS(gam_eu, file = "models/gam_eu.RDS")
+
+
+### gam with spatially varying intercept
+gam_eu_spatial <- gam(log_N_med ~ s(log_DOC_med, by = ECO_TYPE, bs = "fs") +
+                            s(log_phos_med, by = ECO_TYPE, bs = "fs", k = 30) +
+                            ti(log_DOC_med, log_phos_med) +
+                            ECO_TYPE +
+                s(LON, LAT, k = 100),
+    data = filter(cnp, region == "Europe"), method = "REML")
+
+# saveRDS(gam_eu_spatial, file = "models/gam_eu_spatial.RDS")
+gam_eu_spatial <- readRDS("models/gam_eu_spatial.RDS")
+
+summary(gam_eu_spatial)
+
+summary(gam_eu)
+
+plot(gam_eu_spatial, pages = 1, scheme = 2)
+plot(gam_eu, pages = 1, scheme = 2)
+
+gam.check(gam_eu_spatial)
+```
+
+
+```{r}
+### gam with spatially varying intercept
+# gam_na_spatial <- gam(log_N_med ~ s(log_DOC_med, by = ECO_TYPE, bs = "fs") +
+#                             s(log_phos_med, by = ECO_TYPE, bs = "fs", k = 30) +
+#                             ti(log_DOC_med, log_phos_med) +
+#                             ECO_TYPE +
+#                 s(LON, LAT, k = 100),
+#     data = filter(cnp, region == "North America"), method = "REML")
+# 
+# saveRDS(gam_na_spatial, file = "models/gam_na_spatial.RDS")
+gam_na_spatial <- readRDS("models/gam_na_spatial.RDS")
+
+summary(gam_na_spatial)
+
+summary(gam_na)
+
+plot(gam_na_spatial, pages = 1, scheme = 2)
+plot(gam_na, pages = 1, scheme = 2)
+
+gam.check(gam_na_spatial)
+```
+
+
+```{r}
+world_map <- map_data("world")
+
+cnp_med_na$gam_resid <- residuals(gam_na)
+cnp_med_eu$gam_resid <- residuals(gam_eu)
+
+cnp_med_na$gam_resid_sp <- residuals(gam_na_spatial)
+cnp_med_eu$gam_resid_sp <- residuals(gam_eu_spatial)
+
+cnp_med_na <- cnp_med_na %>% mutate(sign_resid = ifelse(gam_resid < 0, "-", "+"),
+                                    sign_resid_sp = ifelse(gam_resid_sp < 0, "-", "+"))
+cnp_med_eu <- cnp_med_eu %>% mutate(sign_resid = ifelse(gam_resid < 0, "-", "+"),
+                                    sign_resid_sp = ifelse(gam_resid_sp < 0, "-", "+"))
+
+pr_na <- cnp_med_na %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = sign_resid,
+    size = abs(gam_resid)),
+    alpha = 0.05, shape = 16) +
+  viridis::scale_color_viridis(discrete = T) +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Residual",
+       col = "Sign")+ 
+  guides(colour = guide_legend(override.aes = list(alpha = 1)),
+                              size = guide_legend(override.aes = list(alpha = 1)))
+
+
+pr_eu <- cnp_med_eu %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = sign_resid,
+    size = abs(gam_resid)),
+    alpha = 0.05, shape = 16) +
+  viridis::scale_color_viridis(discrete = T) +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Residual",
+       col = "Sign") + 
+  guides(colour = guide_legend(override.aes = list(alpha = 1)),
+                              size = guide_legend(override.aes = list(alpha = 1)))
+
+pr_na_sp <- cnp_med_na %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = sign_resid_sp,
+    size = abs(gam_resid_sp)),
+    alpha = 0.05, shape = 16) +
+  viridis::scale_color_viridis(discrete = T) +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Residual",
+       col = "Sign")+ 
+  guides(colour = guide_legend(override.aes = list(alpha = 1)),
+                              size = guide_legend(override.aes = list(alpha = 1)))
+
+
+pr_eu_sp <- cnp_med_eu %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = sign_resid_sp,
+    size = abs(gam_resid_sp)),
+    alpha = 0.05, shape = 16) +
+  viridis::scale_color_viridis(discrete = T) +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Residual",
+       col = "Sign") + 
+  guides(colour = guide_legend(override.aes = list(alpha = 1)),
+                              size = guide_legend(override.aes = list(alpha = 1)))
+
+library(patchwork)
+pr_na + pr_na_sp + pr_eu + pr_eu_sp
+```
+
+### Predicted NO3 maps
+
+#### North America
+
+We can easily see in the map that predicted NO[3] median of medians is lower in lakes relative to rivers.
+
+```{r}
+cnp_med_na %>% 
+  ggplot() +
+  geom_map(aes(map_id = region), col = "gray", fill = "white",
+           data = world_map, map = world_map) +
+  geom_point(aes(
+    x = LON,
+    y = LAT,
+    col = lm_fit),
+    alpha = 0.5, shape = 1) +
+  scale_color_viridis() +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Predicted log(NO3)",
+       col = "Prediction")
+
+
+### Compare DOC x PO4 interaction model with main effects model
+```
+
+```{r eval = FALSE}
+# interaction model better by AIC -->
+AIC(gam_eu_interaction, gam_eu_main) -->
+``` 
+
+### Plot regression predictions
+
+```{r}
+quant_log_phos_na <- quantile(cnp_med_na$log_phos_med, c(0.25, 0.5, 0.75))
+quant_log_phos_eu <- quantile(cnp_med_eu$log_phos_med, c(0.25, 0.5, 0.75))
+         
+nd_DOC_na <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(DOC_med)` = seq(from = log(min(cnp_med_na$DOC_med)), 
+                  #                   to = log(max(cnp_med_na$DOC_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_na$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_DOC_med = seq(from = min(cnp_med_na$log_DOC_med), 
+                                    to = max(cnp_med_na$log_DOC_med),
+                                    length = 100),
+                  log_phos_med = quant_log_phos_na
+                  )
+preds_DOC_na <- predict(gam_na, newdata = nd_DOC_na, se.fit = TRUE)
+nd_DOC_na$pred <- preds_DOC_na$fit
+nd_DOC_na$se <- preds_DOC_na$se.fit
+nd_DOC_na <- nd_DOC_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_DOC_eu <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(DOC_med)` = seq(from = log(min(cnp_med_eu$DOC_med)), 
+                  #                   to = log(max(cnp_med_eu$DOC_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_eu$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_DOC_med = seq(from = min(cnp_med_eu$log_DOC_med), 
+                                    to = max(cnp_med_eu$log_DOC_med),
+                                    length = 100),
+                  log_phos_med = quant_log_phos_eu
+                  )
+preds_DOC_eu <- predict(gam_eu, newdata = nd_DOC_eu, se.fit = TRUE)
+nd_DOC_eu$pred <- preds_DOC_eu$fit
+nd_DOC_eu$se <- preds_DOC_eu$se.fit
+nd_DOC_eu <- nd_DOC_eu %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_DOC_eu <- nd_DOC_eu %>% mutate(region = "Europe",
+                                  p_quantile = case_when(
+                                    log_phos_med == quant_log_phos_eu[1] ~ "25%",
+                                    log_phos_med == quant_log_phos_eu[2] ~ "50%",
+                                    log_phos_med == quant_log_phos_eu[3] ~ "75%",
+                                                         ))
+nd_DOC_na <- nd_DOC_na %>% mutate(region = "North America",
+                                  p_quantile = case_when(
+                                    log_phos_med == quant_log_phos_na[1] ~ "25%",
+                                    log_phos_med == quant_log_phos_na[2] ~ "50%",
+                                    log_phos_med == quant_log_phos_na[3] ~ "75%",
+                                                         ))
+nd_DOC_all <- rbind(nd_DOC_eu, nd_DOC_na)
+
+nd_DOC_all$model <- "GAM"
+# write_csv(nd_DOC_all, "pred_DOC_gam")
+```
+
+```{r}
+nd_DOC_all %>%
+  ggplot(aes(x = log_DOC_med, y = pred)) +
+  geom_line(aes(linetype = ECO_TYPE), size = 1.5) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = ECO_TYPE), alpha = 0.5) +
+  viridis::scale_fill_viridis(discrete = T) +
+  facet_grid(p_quantile~region)
+```
+
+```{r}
+quant_log_DOC_na <- quantile(cnp_med_na$log_DOC_med, c(0.25, 0.5, 0.75))
+quant_log_DOC_eu <- quantile(cnp_med_eu$log_DOC_med, c(0.25, 0.5, 0.75))
+         
+nd_phos_na <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(phos_med)` = seq(from = log(min(cnp_med_na$phos_med)), 
+                  #                   to = log(max(cnp_med_na$phos_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_na$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_phos_med = seq(from = min(cnp_med_na$log_phos_med), 
+                                    to = max(cnp_med_na$log_phos_med),
+                                    length = 100),
+                  log_DOC_med = quant_log_DOC_na
+                  )
+preds_phos_na <- predict(gam_na, newdata = nd_phos_na, se.fit = TRUE)
+nd_phos_na$pred <- preds_phos_na$fit
+nd_phos_na$se <- preds_phos_na$se.fit
+nd_phos_na <- nd_phos_na %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_phos_eu <- expand_grid(ECO_TYPE = c("River/Stream", "Lake"),
+                  # `log(phos_med)` = seq(from = log(min(cnp_med_eu$phos_med)), 
+                  #                   to = log(max(cnp_med_eu$phos_med)),
+                  #                   length = 100),
+                  # `log(phos_med)` = log(quantile(cnp_med_eu$phos_med, 
+                  #                                c(0.25, 0.5, 0.75)))
+                  log_phos_med = seq(from = min(cnp_med_eu$log_phos_med), 
+                                    to = max(cnp_med_eu$log_phos_med),
+                                    length = 100),
+                  log_DOC_med = quant_log_DOC_eu
+                  )
+preds_phos_eu <- predict(gam_eu, newdata = nd_phos_eu, se.fit = TRUE)
+nd_phos_eu$pred <- preds_phos_eu$fit
+nd_phos_eu$se <- preds_phos_eu$se.fit
+nd_phos_eu <- nd_phos_eu %>% mutate(conf.low = pred - 2 * se,
+                     conf.high = pred + 2 * se)
+
+nd_phos_eu <- nd_phos_eu %>% mutate(region = "Europe",
+                                  DOC_quantile = case_when(
+                                    log_DOC_med == quant_log_DOC_eu[1] ~ "25%",
+                                    log_DOC_med == quant_log_DOC_eu[2] ~ "50%",
+                                    log_DOC_med == quant_log_DOC_eu[3] ~ "75%",
+                                                         ))
+nd_phos_na <- nd_phos_na %>% mutate(region = "North America",
+                                  DOC_quantile = case_when(
+                                    log_DOC_med == quant_log_DOC_na[1] ~ "25%",
+                                    log_DOC_med == quant_log_DOC_na[2] ~ "50%",
+                                    log_DOC_med == quant_log_DOC_na[3] ~ "75%",
+                                                         ))
+
+nd_phos_all <- rbind(nd_phos_eu, nd_phos_na)
+
+nd_phos_all$model <- "GAM"
+# write_csv(nd_phos_all, "pred_phos_gam.csv")
+```
+
+```{r}
+nd_phos_all %>%
+  ggplot(aes(x = log_phos_med, y = pred)) +
+  geom_line(aes(linetype = ECO_TYPE), size = 1.5) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = ECO_TYPE), alpha = 0.5) +
+  viridis::scale_fill_viridis(discrete = T) +
+  facet_grid(DOC_quantile~region)
+```
+
+
+### Plot smooths
+
+<!-- Note that all "smooth" plots are partial effect plots, e.g., they are centered on zero. Not the same as prediction plots. -->
+
+```{r}
+# how to make better plots?
+plot(gam_eu, scheme = 2#
+     ,page = 1
+     ,shift = coef(gam_eu)[1]
+     )
+```
+
+### Plot predicted average median log(NO3)
+
+First level of ECO_TYpe is "lake" and second level is "River/Stream.
+
+Pay attention to direction of axis when interpreting (should extract all this and make better plots instead). 
+
+```{r}
+vis.gam(gam_eu, view = c("ECO_TYPE", "log_DOC_med"), theta = 240)
+vis.gam(gam_eu, view = c("ECO_TYPE", "log_phos_med"), theta = 60)
+```
+
+### Model checking
+
+Model assumptions are reasonably well met.
+
+May have slight heteroskedasticity, low predicted values have smaller error than high predicted values (see residual vs fitted plot).
+
+Values of basis dimension k are ok since edf < k.
+
+```{r}
+# Seems fine wrt to basis functions. edf < k for all smooths
+gam.check(gam_eu)
+```
+
+# North America
+
+
+```{r}
+# NA region
+# fit 2d smooth or 2 separate smooths
+# both have interaction with ECO_TYPE and main effect
+# gam_NA_interaction <- gam(log10(N_med) ~ s(log10(DOC_med), by = ECO_TYPE) + s(log10(P_med), by = ECO_TYPE) + ti(log10(DOC_med), log10(P_med)) + ECO_TYPE,
+#                           data = filter(cnp, region == "North America"), method = "ML") 
+# 
+# gam_NA_main <- gam(log10(N_med) ~ s(log10(DOC_med), by = ECO_TYPE) + s(log10(P_med), by = ECO_TYPE) + ECO_TYPE,
+#                    data = filter(cnp, region == "North America"), method = "ML") 
+# 
+# summary(gam_NA_interaction)
+# summary(gam_NA_main)
+
+# gam_na <- gam(log_N_med ~ s(log_DOC_med, by = ECO_TYPE, bs = "fs") + 
+#                             s(log_phos_med, by = ECO_TYPE, bs = "fs", k = 30) + 
+#                             ti(log_DOC_med, log_phos_med) + 
+#                             ECO_TYPE,
+#                    data = filter(cnp, region == "North America"), method = "REML") 
+# saveRDS(gam_na, file = "models/gam_na.RDS")
+summary(gam_na)
+```
+
+<!-- ### AIC -->
+
+<!-- ```{r} -->
+<!-- # interaction model better by AIC -->
+<!-- AIC(gam_NA_interaction, gam_NA_main) -->
+<!-- ``` -->
+
+### Plot smooths
+
+```{r}
+# how to make better plots?
+plot(gam_na, scheme = 2
+     ,page = 1
+     ,shift = coef(gam_na)[1]
+     )
+```
+
+### Plot predicted log(NO3)
+
+```{r}
+vis.gam(gam_na, view = c("ECO_TYPE", "log_DOC_med"), theta = 300)
+vis.gam(gam_na, view = c("ECO_TYPE", "log_phos_med"), theta = 300)#330)
+
+```
+
+### Check k
+
+Model assumptions not met. Even ignoring issues with spatial correlation. This may be problematic since GAM can be more sensitive to misspecification than GLM according to mgcv docs.
+
+Residuals are right skewed (see qq plot and histogram). Also, appears to show heteroskedasticity, low predicted values have higher error than high predicted values (see residual vs fitted plot).
+
+Values of basis dimension k are ok since edf < k.
+
+```{r}
+# need to fix this problem
+# gam.check(gam_NA_interaction)
+gam.check(gam_na)
+```
