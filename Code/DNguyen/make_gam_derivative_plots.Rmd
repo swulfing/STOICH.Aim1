@@ -1,0 +1,300 @@
+---
+title: "Identifying inflection points of GAM smooths"
+author: "David Nguyen"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(patchwork)
+library(tidyverse)
+library(mgcv)
+library(gratia)
+
+# setwd("C:/Users/david/Documents/STOICH/STOICH.Aim1/Code/DNguyen")
+
+gam_eu <- readRDS("models/gam_eu_spatial.RDS")# readRDS("models/gam_eu.RDS")
+gam_na <- readRDS("models/gam_na_spatial.RDS")# readRDS("models/gam_na.RDS")
+```
+
+According to Taylor and Townsend the biogeochemical processes occuring between DOC and nitrate change for different values of DOC.
+
+* For DOC < 3 mg/L no trend between nitrate vs. DOC is expected
+* For 3 < DOC < 5 mg L messy negative trend is expected
+* For DOC > 5 mg/L a clear negative trend is expected 
+
+*Nevermind, this is wrong. TT described C:N (molar DOC/molar NO3 as N) thresholds not DOC thresholds.* Also, the way they described finding these threshold is nonsensical. They defined the threshold as the x,y value of the inflection point (2nd derivative = 0) of the fitted exponential model of nitrate vs DOC. However, the exponential function they fit, $y = a + b ^ {-kx}$ doesn't have any inflection points, since the second derivative $y'' = k^2 \log ^2(b) b ^ {-kx}$ is never zero unless the fitted model is just a horizontal line ($k = 0$ or $b = 1$) which isn't the case for any of their reported estimated models. However, when $k > 0$ the 2nd derivative of the exponential model is an exponentially decaying function that approaches zero as DOC ($x$) gets larger. So, it is possible if they solved for the inflection point numerically, that they "found" an inflection point simply because the 2nd derivative got close to zero but wasn't actually zero.
+
+To try to detect where these changes in the nitrate vs. DOC relationship occur, we fitted generalized additive models which can flexible fit nonlinear relationships based on the data. To identify where the trend first becomes negative, we can examine the 1st derivative of the fitted smooth of the effect of DOC on nitrate.
+
+The first derivative of the smooth represents the slope of the smooth at that particular point. So, if the first derivative is 0, that means the slope of the smooth at that point is zero such that nitrate is not estimated to change with DOC. If it is negative, that means the the slope of nitrate vs DOC relationship is negative such that nitrate is estimated to decrease as DOC increases.
+
+So, based on Taylor and Townsend, we would expect the 1st derivative (slope) to be negative after a DOC threshold of about 3 mg/L.
+
+Using the `gratia` package, I calculated the 1st derivatives and associated simultaneous 95% confidence interval of the fitted smooths for nitrate vs DOC. If the confidence interval of the 1st derivative doesn't overlap 0 this means that we are 95% confident that the slope of the smooth is non-zero at that point.
+
+```{r}
+deriv_order <- 1L
+
+deriv_DOC_eu <- derivatives(gam_eu, 
+                         term = c("s(log_DOC_med):ECO_TYPELake",
+                                  "s(log_DOC_med):ECO_TYPERiver/Stream"),
+                         interval = "simultaneous",
+                         order = deriv_order,
+                         n = 200) # default # points
+
+deriv_DOC_na <- derivatives(gam_na, 
+                         term = c("s(log_DOC_med):ECO_TYPELake",
+                                  "s(log_DOC_med):ECO_TYPERiver/Stream"),
+                         interval = "simultaneous",
+                         order = deriv_order,
+                         n = 200) # default # points
+
+# add ECO_TYPE to make plotting easier
+deriv_DOC_eu <- 
+  deriv_DOC_eu %>%
+  mutate(ECO_TYPE = str_detect(smooth, "Lake"),
+         ECO_TYPE = ifelse(ECO_TYPE, "Lake", "River/Stream"))
+deriv_DOC_na <- 
+  deriv_DOC_na %>%
+  mutate(ECO_TYPE = str_detect(smooth, "Lake"),
+         ECO_TYPE = ifelse(ECO_TYPE, "Lake", "River/Stream"))
+
+deriv_phos_eu <- derivatives(gam_eu, 
+                         term = c("s(log_phos_med):ECO_TYPELake",
+                                  "s(log_phos_med):ECO_TYPERiver/Stream"),
+                         interval = "simultaneous",
+                         order = deriv_order,
+                         n = 200) # default # points
+
+deriv_phos_na <- derivatives(gam_na, 
+                         term = c("s(log_phos_med):ECO_TYPELake",
+                                  "s(log_phos_med):ECO_TYPERiver/Stream"),
+                         interval = "simultaneous",
+                         order = deriv_order,
+                         n = 200) # default # points
+
+# add ECO_TYPE to make plotting easier
+deriv_phos_eu <- 
+  deriv_phos_eu %>%
+  mutate(ECO_TYPE = str_detect(smooth, "Lake"),
+         ECO_TYPE = ifelse(ECO_TYPE, "Lake", "River/Stream"))
+deriv_phos_na <- 
+  deriv_phos_na %>%
+  mutate(ECO_TYPE = str_detect(smooth, "Lake"),
+         ECO_TYPE = ifelse(ECO_TYPE, "Lake", "River/Stream"))
+
+# add indicator for slope != 0
+# happens when CI doesn't contain 0
+deriv_phos_eu <-
+  deriv_phos_eu %>%
+  mutate(nonzero = factor(lower > 0 | upper < 0))
+
+deriv_DOC_eu <-
+  deriv_DOC_eu %>%
+  mutate(nonzero = factor(lower > 0 | upper < 0))
+
+deriv_phos_na <-
+  deriv_phos_na %>%
+  mutate(nonzero = factor(lower > 0 | upper < 0))
+
+deriv_DOC_na <-
+  deriv_DOC_na %>%
+  mutate(nonzero = factor(lower > 0 | upper < 0))
+
+# get ymin and ymax of bounds on first derivatives for plotting
+doc_min <- min(c(deriv_DOC_eu$lower, deriv_DOC_na$lower)) 
+doc_max <- max(c(deriv_DOC_eu$upper, deriv_DOC_na$upper)) 
+phos_min <- min(c(deriv_phos_eu$lower, deriv_phos_na$lower))
+phos_max <- max(c(deriv_phos_eu$upper, deriv_phos_na$upper))
+```
+
+### Nitrate vs DOC
+
+Below is the plotted 1st derivative and 95% CI for nitrate vs DOC. The vertical dashed line is log(3) which is the predicted threshold after which a negative nitrate-DOC relationship should occur. The existence of a DOC threshold at around 3-5 mg/L DOC is supported in both North American and European lakes and rivers since the upper bound of the 95% CI is less than 0 near when DOC is < 3 to 5 mg/L (approximate values in table below). The estimated DOC threshold is closer to 3 mg/L in lakes and is closer to 5 mg/L in rivers.
+
+
+For the DOC smooths in all regions and ECO_TYPEs the negative slope is no longer significant for higher DOC values.
+This may be due to low numbers of observations (high uncertainty) for higher values of DOC (ex. Europe lakes) or because the slope is no longer negative. 
+A possible scientific reason for slopes non-distinguishable from zero at higher values of DOC is that C is in abundance there may be some other nutrient limiting nitrate uptake.
+
+```{r}
+range_DOC_eu_neg <- deriv_DOC_eu %>%
+  filter(upper < 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "Europe",
+            slope = "-",
+            min_DOC_mgL = exp(min(data)),
+            max_DOC_mgL = exp(max(data)))
+
+range_DOC_eu_pos <-deriv_DOC_eu %>%
+  filter(lower > 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "Europe",
+            slope = "+",
+            min_DOC_mgL = exp(min(data)),
+            max_DOC_mgL = exp(max(data)))
+
+range_DOC_na_neg <- deriv_DOC_na %>%
+  filter(upper < 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "North America",
+            slope = "-",
+            min_DOC_mgL = exp(min(data)),
+            max_DOC_mgL = exp(max(data)))
+
+range_DOC_na_pos <- deriv_DOC_na %>%
+  filter(lower > 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "North America",
+            slope = "+",
+            min_DOC_mgL = exp(min(data)),
+            max_DOC_mgL = exp(max(data)))
+
+DOC_slope <- rbind(range_DOC_eu_neg, range_DOC_na_neg, range_DOC_eu_pos, range_DOC_na_pos)
+```
+
+
+```{r}
+p_eu <- deriv_DOC_eu %>%
+  ggplot(aes(x = exp(data), y = derivative, ymin = lower, ymax = upper)) +
+  geom_segment(col = "red", aes(x = min(exp(data)), xend = max(exp(data)), y = 0, yend = 0)) +
+  geom_ribbon(alpha = 1) +
+  geom_line(col = "white") +
+  geom_vline(data = filter(DOC_slope, region == "Europe"), mapping = aes(xintercept = min_DOC_mgL), linetype = "dashed") +
+    geom_vline(data = filter(DOC_slope, region == "Europe"), mapping = aes(xintercept = max_DOC_mgL), linetype = "dashed") +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Europe",
+       y = "1st derivative of smooth",
+       x = "med(DOC) mg/l") +
+  scale_x_continuous(trans = "log") +
+  ylim(doc_min, doc_max)
+
+p_na <- deriv_DOC_na %>%
+  ggplot(aes(x = exp(data), y = derivative, ymin = lower, ymax = upper)) +
+  # geom_hline(yintercept = 0, col = "red") +
+  geom_segment(col = "red", aes(x = min(exp(data)), xend = max(exp(data)), y = 0, yend = 0)) +
+  geom_ribbon(alpha = 1) +
+  geom_line(col = "white") +
+  geom_vline(data = filter(DOC_slope, region == "North America"), mapping = aes(xintercept = min_DOC_mgL), linetype = "dashed") +
+    geom_vline(data = filter(DOC_slope, region == "North America"), mapping = aes(xintercept = max_DOC_mgL), linetype = "dashed") +
+  facet_wrap(~ECO_TYPE)+
+  labs(title = "North America",
+       y = "1st derivative of smooth",
+       x = "med(DOC) mg/l") +
+    scale_x_continuous(trans = "log") +
+  ylim(doc_min, doc_max)
+
+p_eu / p_na
+```
+
+Note that the values in the table aren't exact because the derivatives are only evaluated at a discrete number of points. Since 200 evenly spaced points are used, the difference between the exact minimum and maximum at which slopes are non-zero should be off by 0.029 at most on the log scale. This is about a 3% error in the data scale in mg/L.
+
+```{r}
+# print table of min/max
+DOC_slope %>%
+  arrange(desc(ECO_TYPE)) %>%
+  knitr::kable(caption = "Ranges of DOC smooth with non-zero slope (mg/L)",
+               digits = 2)
+```
+
+### Nitrate vs phosphorus (TP for lakes, PO4 for rivers/streams)
+
+```{r warning = FALSE}
+range_phos_eu_neg <- deriv_phos_eu %>%
+  filter(upper < 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "Europe",
+            slope = "-",
+            min_phos_mgL = exp(min(data)),
+            max_phos_mgL = exp(max(data)))
+
+range_phos_eu_pos <-deriv_phos_eu %>%
+  filter(lower > 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "Europe",
+            slope = "+",
+            min_phos_mgL = exp(min(data)),
+            max_phos_mgL = exp(max(data)))
+
+range_phos_na_neg <- deriv_phos_na %>%
+  filter(upper < 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "North America",
+            slope = "-",
+            min_phos_mgL = exp(min(data)),
+            max_phos_mgL = exp(max(data)))
+
+range_phos_na_pos <- deriv_phos_na %>%
+  filter(lower > 0) %>%
+  group_by(ECO_TYPE) %>%
+  summarise(region = "North America",
+            slope = "+",
+            min_phos_mgL = exp(min(data)),
+            max_phos_mgL = exp(max(data)))
+
+phos_slope <- rbind(range_phos_eu_neg, range_phos_na_neg, range_phos_eu_pos, range_phos_na_pos)
+
+```
+
+
+```{r}
+p_phos_eu <- deriv_phos_eu %>%
+  ggplot(aes(x = exp(data), y = derivative, ymin = lower, ymax = upper)) +
+  geom_segment(col = "red", aes(x = min(exp(data)), xend = max(exp(data)), y = 0, yend = 0)) +
+  # geom_hline(yintercept = 0, col = "red") +
+  geom_ribbon(alpha = 1) +
+  geom_line(col = "white") +
+      geom_vline(data = filter(phos_slope, region == "Europe"), mapping = aes(xintercept = min_phos_mgL), linetype = "dashed") +
+    geom_vline(data = filter(phos_slope, region == "Europe"), mapping = aes(xintercept = max_phos_mgL), linetype = "dashed") +
+  facet_wrap(~ECO_TYPE) +
+  labs(title = "Europe",
+       y = "1st derivative of smooth",
+       x = "med(P) mg/l") +
+    scale_x_continuous(trans = "log") +
+  ylim(phos_min, phos_max)
+
+p_phos_na <- deriv_phos_na %>%
+  ggplot(aes(x = exp(data), y = derivative, ymin = lower, ymax = upper)) +
+  # geom_hline(yintercept = 0, col = "red") +
+  geom_segment(col = "red", aes(x = min(exp(data)), xend = max(exp(data)), y = 0, yend = 0)) +
+  geom_ribbon(alpha = 1) +
+  geom_line(col = "white") +
+    geom_vline(data = filter(phos_slope, region == "North America"), mapping = aes(xintercept = min_phos_mgL), linetype = "dashed") +
+    geom_vline(data = filter(phos_slope, region == "North America"), mapping = aes(xintercept = max_phos_mgL), linetype = "dashed") +
+  facet_wrap(~ECO_TYPE)+
+  labs(title = "North America",
+       y = "1st derivative of smooth",
+       x = "med(P) mg/l") +
+    scale_x_continuous(trans = "log") +
+  ylim(phos_min, phos_max)
+
+p_phos_eu / p_phos_na
+```
+There's an error in the table below for North American River/Stream - the code I wrote doesn't handle this case well because there are two distinct intervals where the slope is > 0.
+
+```{r warning = FALSE}
+
+phos_slope %>%
+  arrange(desc(ECO_TYPE)) %>%
+  knitr::kable(caption = "Ranges of TP/PO4 smooth with non-zero slope (mg/L)",
+               digits = 2)
+```
+
+# Derivatives of interaction term 
+
+`gratia::derivatives()` doesn't work with interaction smooth between DOC and P. If it did, it would have been useful for looking at thresholds in the ratio (interaction) between C and P. I don't see any reason we couldn't get these derivatives (and maybe confidence intervals?) but it would require writing custom code.
+
+
+```{r echo = TRUE, error = TRUE}
+# names(gam_eu$coefficients)
+
+deriv_2d <- derivatives(gam_eu, 
+                         term = "ti(log_DOC_med,log_phos_med)",
+                         interval = "simultaneous",
+                         order = deriv_order,
+                         n = 200) # default # points
+```
+
