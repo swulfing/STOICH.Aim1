@@ -179,14 +179,14 @@ ggplot(subset) +
   facet_wrap(~VARIABLE, scales = "free_x",
              labeller = labeller(VARIABLE = newlabs)) +
   labs(x = "",
-       y = "log10(unit)",
-       caption = "Figure XX. Boxplots comparing distrubtion of logged dissolved organic carbon (DOC), nitrate, and phosphorus 
-in lakes vs. streams.")  +
+       y = "log10(unit)") +
+       #caption = "Figure XX. Boxplots comparing distrubtion of logged dissolved organic carbon (DOC), nitrate, and phosphorus 
+#in lakes vs. streams.")  +
   theme(
     plot.caption = element_text(hjust = 0)
   )
 
-ggsave("Figures/boxplot_basic_stats.png", height = 4.5, width = 6.5, dpi = 500)
+ggsave("Figures/boxplot_basic_stats.png", height = 4.5, width = 6.5, dpi = 1200)
 
 
 
